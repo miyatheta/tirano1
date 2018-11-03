@@ -1,8 +1,18 @@
 *スタート
-[eval exp="f.hand"]
-[eval exp="f.option=[[0,'グー'],[1,'グー'],[2,'チョキ'],[3,'チョキ'],[4,'パー']]"]
-[eval exp="f.selectOption=[]"]
-
+[iscript]
+f.hand;
+f.mainOption=[
+[0,'グー',0],
+[1,'グー',0],
+[2,'グー',0],
+[3,'チョキ',0],
+[4,'チョキ',0],
+[5,'チョキ',0],
+[6,'パー',0],
+[7,'パー',0],
+[8,'パー',0]];
+f.selectOption=[];
+[endscript]
 *敵抽選
 [iscript]
 //敵の行動パターン抽選
@@ -42,79 +52,130 @@ if(tf.release == 0){
 
 *選択１
 [iscript]
-f.option1=f.option;
+f.tempOption = f.mainOption.slice(0,f.mainOption.length);;
+if(f.return==1){
+  f.tempOption[f.selectOption[0][0]][2]=0;
+  f.selectOption.pop();
+  f.return=0;
+}
 [endscript]
-[cm]
-
-;残りの数字は[emb exp="f.option1"][l]
-１手目[l]
-[glink target="選択２" text="選択肢1" exp="f.selectOption[0]=f.option1[0]" size=20 y=100]
-[glink target="選択２" text="選択肢2" exp="f.selectOption[0]=f.option1[1]" size=20 y=150]
-[glink target="選択２" text="選択肢3" exp="f.selectOption[0]=f.option1[2]" size=20 y=200]
-[glink target="選択２" text="選択肢4" exp="f.selectOption[0]=f.option1[3]" size=20 y=250]
-[glink target="選択２" text="選択肢5" exp="f.selectOption[0]=f.option1[4]" size=20 y=300]
+１手目[l][r][cm]
+・・・・[emb exp="f.tempOption[0]"][r]
+・・・・[emb exp="f.tempOption[1]"][r]
+・・・・[emb exp="f.tempOption[2]"][r]
+・・・・[emb exp="f.tempOption[3]"][r]
+・・・・[emb exp="f.tempOption[4]"][r]
+・・・・[emb exp="f.tempOption[5]"][r]
+・・・・[emb exp="f.tempOption[6]"][r]
+・・・・[emb exp="f.tempOption[7]"][r]
+・・・・[emb exp="f.tempOption[8]"][r]
+[glink target="*選択2" text="選択肢1" exp="f.selectOption[0]=f.tempOption[0]" size=15 x=0 y=35]
+[glink target="*選択2" text="選択肢2" exp="f.selectOption[0]=f.tempOption[1]" size=15 x=0 y=70]
+[glink target="*選択2" text="選択肢3" exp="f.selectOption[0]=f.tempOption[2]" size=15 x=0 y=105]
+[glink target="*選択2" text="選択肢4" exp="f.selectOption[0]=f.tempOption[3]" size=15 x=0 y=140]
+[glink target="*選択2" text="選択肢5" exp="f.selectOption[0]=f.tempOption[4]" size=15 x=0 y=175]
+[glink target="*選択2" text="選択肢6" exp="f.selectOption[0]=f.tempOption[5]" size=15 x=0 y=210]
+[glink target="*選択2" text="選択肢7" exp="f.selectOption[0]=f.tempOption[6]" size=15 x=0 y=245]
+[glink target="*選択2" text="選択肢8" exp="f.selectOption[0]=f.tempOption[7]" size=15 x=0 y=280]
+[glink target="*選択2" text="選択肢9" exp="f.selectOption[0]=f.tempOption[8]" size=15 x=0 y=315]
 [s]
 
 
-*選択２
-[cm]
-;あなたの選択肢1は[emb exp="f.selectOption[0]"]です[l][r]
-
+*選択2
 [iscript]
-if(f.return!=1){
-  f.option2 = f.option1.slice(0,f.option1.length);
-  i = f.option2.indexOf(f.selectOption[0]);
-  f.option2.splice(i,1);
-  f.return=0
+f.selectOption[0][2]=1;//配列の参照型を利用して選択肢をオンに
+if(f.return==1){
+  f.tempOption[f.selectOption[1][0]][2]=0;
+  f.selectOption.pop();
+  f.return=0;
 }
 [endscript]
-
-;残りの数字は[emb exp="f.option2"][l]
-2手目[l]
-[glink target="選択３" text="選択肢1" exp="f.selectOption[1]=f.option2[0]" size=20 y=100]
-[glink target="選択３" text="選択肢2" exp="f.selectOption[1]=f.option2[1]" size=20 y=150]
-[glink target="選択３" text="選択肢3" exp="f.selectOption[1]=f.option2[2]" size=20 y=200]
-[glink target="選択３" text="選択肢4" exp="f.selectOption[1]=f.option2[3]" size=20 y=250]
-[glink target="選択１" text="戻る" exp="f.return=1" size=20 y=300]
+あなたの選択肢1は[emb exp="f.tempOption[f.selectOption[0][0]]"]です[l][r]
+2手目[l][cm]
+・・・・[emb exp="f.tempOption[0]"][r]
+・・・・[emb exp="f.tempOption[1]"][r]
+・・・・[emb exp="f.tempOption[2]"][r]
+・・・・[emb exp="f.tempOption[3]"][r]
+・・・・[emb exp="f.tempOption[4]"][r]
+・・・・[emb exp="f.tempOption[5]"][r]
+・・・・[emb exp="f.tempOption[6]"][r]
+・・・・[emb exp="f.tempOption[7]"][r]
+・・・・[emb exp="f.tempOption[8]"][r]
+[if exp="f.tempOption[0][2]!=1"]
+[glink target="*選択3" text="選択肢1" exp="f.selectOption[1]=f.tempOption[0]" size=15 x=0 y=35][endif]
+[if exp="f.tempOption[1][2]!=1"]
+[glink target="*選択3" text="選択肢2" exp="f.selectOption[1]=f.tempOption[1]" size=15 x=0 y=70][endif]
+[if exp="f.tempOption[2][2]!=1"]
+[glink target="*選択3" text="選択肢3" exp="f.selectOption[1]=f.tempOption[2]" size=15 x=0 y=105][endif]
+[if exp="f.tempOption[3][2]!=1"]
+[glink target="*選択3" text="選択肢4" exp="f.selectOption[1]=f.tempOption[3]" size=15 x=0 y=140][endif]
+[if exp="f.tempOption[4][2]!=1"]
+[glink target="*選択3" text="選択肢5" exp="f.selectOption[1]=f.tempOption[4]" size=15 x=0 y=175][endif]
+[if exp="f.tempOption[5][2]!=1"]
+[glink target="*選択3" text="選択肢6" exp="f.selectOption[1]=f.tempOption[5]" size=15 x=0 y=210][endif]
+[if exp="f.tempOption[6][2]!=1"]
+[glink target="*選択3" text="選択肢7" exp="f.selectOption[1]=f.tempOption[6]" size=15 x=0 y=245][endif]
+[if exp="f.tempOption[7][2]!=1"]
+[glink target="*選択3" text="選択肢8" exp="f.selectOption[1]=f.tempOption[7]" size=15 x=0 y=280][endif]
+[if exp="f.tempOption[8][2]!=1"]
+[glink target="*選択3" text="選択肢9" exp="f.selectOption[1]=f.tempOption[8]" size=15 x=0 y=315][endif]
+[glink target="*選択１" text="戻る" exp="f.return=1" size=15 x=0 y=350]
 [s]
 
-*選択３
-;あなたの選択肢2は[emb exp="f.selectOption[1]"]です[l][r]
-
+*選択3
 [iscript]
-if(f.return!=1){
-  f.option3=f.option2.slice(0,f.option2.length);
-  i = f.option3.indexOf(f.selectOption[1]);
-  f.option3.splice(i,1);
-  f.return=0
+f.selectOption[1][2]=1;//配列の参照型を利用して選択肢をオンに
+if(f.return==1){
+  f.tempOption[f.selectOption[2][0]][2]=0;
+  f.selectOption.pop();
+  f.return=0;
 }
 [endscript]
-
-;残りの数字は[emb exp="f.option3"][l]
-3手目[l]
-[glink target="確認" text="選択肢1" exp="f.selectOption[2]=f.option3[0]" size=20 y=100]
-[glink target="確認" text="選択肢2" exp="f.selectOption[2]=f.option3[1]" size=20 y=150]
-[glink target="確認" text="選択肢3" exp="f.selectOption[2]=f.option3[2]" size=20 y=200]
-[glink target="選択２" text="戻る" exp="f.return=1" size=20 y=250]
+あなたの選択肢1は[emb exp="f.tempOption[f.selectOption[0][0]]"]です[l][r]
+あなたの選択肢2は[emb exp="f.tempOption[f.selectOption[1][0]]"]です[l][r]
+3手目[l][cm]
+・・・・[emb exp="f.tempOption[0]"][r]
+・・・・[emb exp="f.tempOption[1]"][r]
+・・・・[emb exp="f.tempOption[2]"][r]
+・・・・[emb exp="f.tempOption[3]"][r]
+・・・・[emb exp="f.tempOption[4]"][r]
+・・・・[emb exp="f.tempOption[5]"][r]
+・・・・[emb exp="f.tempOption[6]"][r]
+・・・・[emb exp="f.tempOption[7]"][r]
+・・・・[emb exp="f.tempOption[8]"][r]
+[if exp="f.tempOption[0][2]!=1"]
+[glink target="*確認" text="選択肢1" exp="f.selectOption[2]=f.tempOption[0]" size=15 x=0 y=35][endif]
+[if exp="f.tempOption[1][2]!=1"]
+[glink target="確認" text="選択肢2" exp="f.selectOption[2]=f.tempOption[1]" size=15 x=0 y=70][endif]
+[if exp="f.tempOption[2][2]!=1"]
+[glink target="確認" text="選択肢3" exp="f.selectOption[2]=f.tempOption[2]" size=15 x=0 y=105][endif]
+[if exp="f.tempOption[3][2]!=1"]
+[glink target="確認" text="選択肢4" exp="f.selectOption[2]=f.tempOption[3]" size=15 x=0 y=140][endif]
+[if exp="f.tempOption[4][2]!=1"]
+[glink target="確認" text="選択肢5" exp="f.selectOption[2]=f.tempOption[4]" size=15 x=0 y=175][endif]
+[if exp="f.tempOption[5][2]!=1"]
+[glink target="確認" text="選択肢6" exp="f.selectOption[2]=f.tempOption[5]" size=15 x=0 y=210][endif]
+[if exp="f.tempOption[6][2]!=1"]
+[glink target="確認" text="選択肢7" exp="f.selectOption[2]=f.tempOption[6]" size=15 x=0 y=245][endif]
+[if exp="f.tempOption[7][2]!=1"]
+[glink target="確認" text="選択肢8" exp="f.selectOption[2]=f.tempOption[7]" size=15 x=0 y=280][endif]
+[if exp="f.tempOption[8][2]!=1"]
+[glink target="確認" text="選択肢9" exp="f.selectOption[2]=f.tempOption[8]" size=15 x=0 y=315][endif]
+[glink target="*選択2" text="戻る" exp="f.return=1" size=15 x=0 y=350]
 [s]
 
 *確認
-;あなたの選択肢3は[emb exp="f.selectOption[2]"]です[l][r]
-
 [iscript]
-if(f.return!=1){
-  f.option4=f.option3.slice(0,f.option3.length);
-  i = f.option4.indexOf(f.selectOption[2]);
-  f.option4.splice(i,1);
-  f.return=0
+f.selectOption[2][2]=1;//配列の参照型を利用して選択肢をオンに
+if(f.return==1){
+  f.selectOption.pop();
+  f.return=0;
 }
 [endscript]
-
 [cm]
-;残りの数字は[emb exp="f.option4"][l]
 あなたの選択は[emb exp="f.selectOption"]です[l][r]
-[glink target="比較" text="決定" size=20 y=100]
-[glink target="選択３" text="戻る" exp="f.return=1" size=20 y=150]
+[glink target="*比較" text="決定" size=20 y=100]
+[glink target="*選択3" text="戻る" exp="f.return=1" size=20 y=150]
 [s]
 
 *比較

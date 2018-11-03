@@ -90,7 +90,7 @@ if(f.return==1){
   f.return=0;
 }
 [endscript]
-あなたの選択肢1は[emb exp="f.tempOption[f.selectOption[0][0]]"]です[l][r]
+選択肢1:[emb exp="f.tempOption[f.selectOption[0][0]]"][r]
 2手目[l][cm]
 ・・・・[emb exp="f.tempOption[0]"][r]
 ・・・・[emb exp="f.tempOption[1]"][r]
@@ -131,8 +131,8 @@ if(f.return==1){
   f.return=0;
 }
 [endscript]
-あなたの選択肢1は[emb exp="f.tempOption[f.selectOption[0][0]]"]です[l][r]
-あなたの選択肢2は[emb exp="f.tempOption[f.selectOption[1][0]]"]です[l][r]
+選択肢1:[emb exp="f.tempOption[f.selectOption[0][0]]"][r]
+選択肢2:[emb exp="f.tempOption[f.selectOption[1][0]]"][r]
 3手目[l][cm]
 ・・・・[emb exp="f.tempOption[0]"][r]
 ・・・・[emb exp="f.tempOption[1]"][r]
@@ -173,50 +173,70 @@ if(f.return==1){
 }
 [endscript]
 [cm]
-あなたの選択は[emb exp="f.selectOption"]です[l][r]
+選択肢1:[emb exp="f.tempOption[f.selectOption[0][0]]"][r]
+選択肢2:[emb exp="f.tempOption[f.selectOption[1][0]]"][r]
+選択肢3:[emb exp="f.tempOption[f.selectOption[2][0]]"][r]
 [glink target="*比較" text="決定" size=20 y=100]
 [glink target="*選択3" text="戻る" exp="f.return=1" size=20 y=150]
 [s]
 
 *比較
-あなたの選択は[emb exp="f.selectOption"]です[l][r]
-敵の選択は[emb exp="f.enSelectOption"]です[l][r]
+あなたの選択は[r]
+選択肢1:[emb exp="f.selectOption[0][1]"][r]
+選択肢2:[emb exp="f.selectOption[1][1]"][r]
+選択肢3:[emb exp="f.selectOption[2][1]"][r]
+敵の選択は[r]
+[emb exp="f.enSelectOption[0]"][r]
+[emb exp="f.enSelectOption[1]"][r]
+[emb exp="f.enSelectOption[2]"][r][l]
 [cm]
 [iscript]
-tf.hand = f.selectOption[0][1];
-tf.enHand = f.enSelectOption[0];
+f.N=0;
+f.VP=0;
+[endscript]
+
+*判定
+[iscript]
+tf.hand = f.selectOption[f.N][1];
+tf.enHand = f.enSelectOption[f.N];
 [endscript]
 
 [if exp="tf.hand == 'グー' && tf.enHand == 'チョキ'"]
-勝利1[l][r]
+[eval exp="f.VP = f.VP + 1"]勝利１[r]
 [endif]
 [if exp="tf.hand == 'チョキ' && tf.enHand == 'パー'"]
-勝利2[l][r]
+[eval exp="f.VP = f.VP + 1"]勝利２[r]
 [endif]
 [if exp="tf.hand == 'パー' && tf.enHand == 'グー'"]
-勝利3[l][r]
+[eval exp="f.VP = f.VP + 1"]勝利３[r]
 [endif]
 
 [if exp="tf.hand == 'グー' && tf.enHand == 'パー'"]
-敗北1[l][r]
+[eval exp="f.VP = f.VP - 1"]敗北１[r]
 [endif]
 [if exp="tf.hand == 'チョキ' && tf.enHand == 'グー'"]
-敗北2[l][r]
+[eval exp="f.VP = f.VP - 1"]敗北２[r]
 [endif]
 [if exp="tf.hand == 'パー' && tf.enHand == 'チョキ'"]
-敗北3[l][r]
+[eval exp="f.VP = f.VP - 1"]敗北３[r]
 [endif]
 
 [if exp="tf.hand == 'グー' && tf.enHand == 'グー'"]
-相討1[l][r]
+[eval exp="f.VP = f.VP + 0"]相討１[r]
 [endif]
 [if exp="tf.hand == 'チョキ' && tf.enHand == 'チョキ'"]
-相討2[l][r]
+[eval exp="f.VP = f.VP + 0"]相討２[r]
 [endif]
 [if exp="tf.hand == 'パー' && tf.enHand == 'パー'"]
-相討3[l][r]
+[eval exp="f.VP = f.VP + 0"]相討３[r]
+[endif]
+
+[if exp="f.N>=2"][jump target="*クリア"]
+[else][eval exp="f.N=f.N+1"][jump target="*判定"]
 [endif]
 
 *クリア
+[l][cm]
+VPは[emb exp="f.VP"]です。[l][r]
 クリアです。おめでとう。
 [jump target="スタート"]

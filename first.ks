@@ -2,23 +2,25 @@
 [iscript]
 f.hand;
 f.mainOption=[
-[0,'グー',0],
-[1,'グー',0],
-[2,'グー',0],
-[3,'チョキ',0],
-[4,'チョキ',0],
-[5,'チョキ',0],
-[6,'パー',0],
-[7,'パー',0],
-[8,'パー',0]];
+{id:0, hand:'グー', switch:0},
+{id:1, hand:'グー', switch:0},
+{id:2, hand:'グー', switch:0},
+{id:3, hand:'チョキ', switch:0},
+{id:4, hand:'チョキ', switch:0},
+{id:5, hand:'チョキ', switch:0},
+{id:6, hand:'パー', switch:0},
+{id:7, hand:'パー', switch:0},
+{id:8, hand:'パー', switch:0}];
 f.selectOption=[];
 
 f.tempOption=[];
-for(i=0; i<f.mainOption.length; i++){
-  f.tempOption[i] = f.mainOption[i].concat();//多言配列の値渡し
-}
+f.tempOption = JSON.stringify(f.mainOption);
+f.tempOption = JSON.parse(f.tempOption);
 
 f.count = 0;
+
+f.chara1=[];
+f.chara1=[{name:"主人公名",hp:100,at:2,df:0,lv:1,exp:0}];
 [endscript]
 
 
@@ -54,7 +56,7 @@ if(tf.release == 0){
   tf.releaseNote = '？,？,' + f.enSelectOption[tf.release];
 }
 [endscript]
-
+[emb exp="f.tempOption[0].switch"][l]
 [cm]
 敵の行動は[emb exp="tf.releaseNote"]です[l][r]
 [cm]
@@ -272,9 +274,8 @@ VPは[emb exp="f.VP"]です。[l][r]
 [iscript]
 if(f.selectOption.length>=9){
   f.tempOption = [];
-  for(i=0; i<f.mainOption.length; i++){
-    f.tempOption[i] = f.mainOption[i].concat();
-  }
+  f.tempOption = JSON.stringify(f.mainOption);
+  f.tempOption = JSON.parse(f.tempOption);
   f.selectOption = [];
 }
 [endscript]

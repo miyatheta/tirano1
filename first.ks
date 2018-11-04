@@ -90,46 +90,73 @@ f.TempEnSPD = f.BaseEnSPD;
 f.TempEnFP = f.BaseEnFP;
 f.TempEnERO = f.BaseEnERO;
 f.TempEnARS = f.BaseEnARS;//arouse
+
+f.originEnOption=[
+{id:0, hand:'グー', name:'力', switch:0},
+{id:1, hand:'グー', name:'力', switch:0},
+{id:2, hand:'グー', name:'力', switch:0},
+{id:3, hand:'チョキ', name:'技', switch:0},
+{id:4, hand:'チョキ', name:'技', switch:0},
+{id:5, hand:'チョキ', name:'技', switch:0},
+{id:6, hand:'パー', name:'速', switch:0},
+{id:7, hand:'パー', name:'速', switch:0},
+{id:8, hand:'パー', name:'速', switch:0}];
+
+f.BaseEnOption = JSON.stringify(f.originEnOption);
+f.BaseEnOption = JSON.parse(f.BaseEnOption);
+f.TempEnOption = JSON.stringify(f.BaseEnOption);
+f.TempEnOption = JSON.parse(f.TempEnOption);
+
+f.EnCount = 0;
 [endscript]
 
 *ターン開始
 [cm]
+[eval exp="f.TempSPD = f.TempSPD - 10"]
+[eval exp="f.TempEnSPD = f.TempEnSPD - 10"]
 [showStatus]
 
 *敵抽選
 [cm]
 [iscript]
 //敵の行動パターン抽選
-tf.Min = 0;
-tf.Max = 5;
-tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-if(tf.dice == 0){
-  f.enSelectOption = ['グー','チョキ','チョキ'];
-}else if(tf.dice == 1){
-  f.enSelectOption = ['グー','パー','グー'];
-}else if(tf.dice == 2){
-  f.enSelectOption = ['パー','チョキ','グー'];
-}else if(tf.dice == 3){
-  f.enSelectOption = ['パー','グー','グー'];
-}else if(tf.dice == 4){
-  f.enSelectOption = ['チョキ','チョキ','グー'];
-}else if(tf.dice == 5){
-  f.enSelectOption = ['チョキ','グー','チョキ'];
+if(f.EnCount==0){
+  tf.Min = 0;
+  tf.Max = 5;
+  tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+  if(tf.dice == 0){
+    f.enSelectOption = ['グー','チョキ','チョキ','パー','パー','グー','グー','パー','チョキ'];
+  }else if(tf.dice == 1){
+    f.enSelectOption = ['グー','パー','グー','チョキ','パー','グー','チョキ','チョキ','パー'];
+  }else if(tf.dice == 2){
+    f.enSelectOption = ['パー','チョキ','グー','チョキ','パー','グー','パー','チョキ','グー'];
+  }else if(tf.dice == 3){
+    f.enSelectOption = ['チョキ','グー','グー','チョキ','パー','チョキ','パー','パー','グー'];
+  }else if(tf.dice == 4){
+    f.enSelectOption = ['チョキ','チョキ','グー','チョキ','パー','グー','グー','パー','パー'];
+  }else if(tf.dice == 5){
+    f.enSelectOption = ['チョキ','グー','チョキ','パー','パー','グー','グー','パー','チョキ'];
+  }
 }
 //開示箇所の抽選
-tf.Min = 0;
-tf.Max = 2;
+tf.Min = 0 + (f.EnCount * 3);
+tf.Max = 2 + (f.EnCount * 3);
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 tf.release = tf.dice;
-if(tf.release == 0){
-  tf.releaseNote = f.enSelectOption[tf.release] + '→？→？';
-}else if(tf.release == 1){
-  tf.releaseNote = '？→' + f.enSelectOption[tf.release] + '→？';
+if(tf.release == 0 + (f.EnCount * 3)){
+  f.releaseNote = f.enSelectOption[tf.release] + '→？→？';
+}else if(tf.release == 1 + (f.EnCount * 3)){
+  f.releaseNote = '？→' + f.enSelectOption[tf.release] + '→？';
 }else{
-  tf.releaseNote = '？→？→' + f.enSelectOption[tf.release];
+  f.releaseNote = '？→？→' + f.enSelectOption[tf.release];
+}
+//
+f.usedNote = [];
+if(f.EnCount>0){
+  f.usedNote = f.enSelectOption.slice(0, f.EnCount*3);
 }
 [endscript]
-敵の行動は[emb exp="tf.releaseNote"]です[l][r][cm]
+敵の行動は[emb exp="f.EnCount"]巡目[emb exp="f.releaseNote"]です[l][r][cm]
 
 
 *選択１
@@ -141,8 +168,6 @@ if(f.return==1){
   f.return=0;
 }
 [endscript]
-;テスト[emb exp="f.count"][l][r]
-１手目・・・・・・・・・[cm]
 [emb exp="f.TempOption[0].hand"][r]
 [emb exp="f.TempOption[1].hand"][r]
 [emb exp="f.TempOption[2].hand"][r]
@@ -152,7 +177,7 @@ if(f.return==1){
 [emb exp="f.TempOption[6].hand"][r]
 [emb exp="f.TempOption[7].hand"][r]
 [emb exp="f.TempOption[8].hand"][r][r]
-敵行動：[emb exp="tf.releaseNote"]
+敵行動：[emb exp="f.releaseNote"]/使用済み：[emb exp="f.usedNote"]
 [if exp="f.TempOption[0].switch!=1"]
 [glink target="*選択2" text="選択肢1" exp="f.selectOption[f.count]=f.TempOption[0]" size=15 x=150 y=35][endif]
 [if exp="f.TempOption[1].switch!=1"]
@@ -197,7 +222,7 @@ if(f.return==1){
 [emb exp="f.TempOption[7].hand"][r]
 [emb exp="f.TempOption[8].hand"][r][r]
 選択済：[emb exp="f.TempOption[f.selectOption[f.count-1].id].hand"][r]
-敵行動：[emb exp="tf.releaseNote"]
+敵行動：[emb exp="f.releaseNote"]/使用済み：[emb exp="f.usedNote"]
 [if exp="f.TempOption[0].switch!=1"]
 [glink target="*選択3" text="選択肢1" exp="f.selectOption[f.count]=f.TempOption[0]" size=15 x=150 y=35][endif]
 [if exp="f.TempOption[1].switch!=1"]
@@ -242,7 +267,7 @@ if(f.return==1){
 [emb exp="f.TempOption[7].hand"][r]
 [emb exp="f.TempOption[8].hand"][r][r]
 選択済：[emb exp="f.TempOption[f.selectOption[f.count-2].id].hand"]→[emb exp="f.TempOption[f.selectOption[f.count-1].id].hand"][r]
-敵行動：[emb exp="tf.releaseNote"]
+敵行動：[emb exp="f.releaseNote"]/使用済み：[emb exp="f.usedNote"]
 [if exp="f.TempOption[0].switch!=1"]
 [glink target="*確認" text="選択肢1" exp="f.selectOption[f.count]=f.TempOption[0]" size=15 x=150 y=35][endif]
 [if exp="f.TempOption[1].switch!=1"]
@@ -280,7 +305,7 @@ if(f.return==1){
 選択済:[emb exp="f.TempOption[f.selectOption[f.count-3].id].hand"]→
 [emb exp="f.TempOption[f.selectOption[f.count-2].id].hand"]→
 [emb exp="f.TempOption[f.selectOption[f.count-1].id].hand"][r]
-敵行動：[emb exp="tf.releaseNote"]
+敵行動：[emb exp="f.releaseNote"]
 [glink target="*比較" text="決定" size=15 x=50 y=100]
 [glink target="*選択3" text="戻る" exp="f.return=1" size=15 x=150 y=100]
 [s]
@@ -291,9 +316,9 @@ if(f.return==1){
 [emb exp="f.selectOption[f.count-2].hand"]→
 [emb exp="f.selectOption[f.count-1].hand"][r][r]
 敵の手札は[r]
-[emb exp="f.enSelectOption[0]"]→
-[emb exp="f.enSelectOption[1]"]→
-[emb exp="f.enSelectOption[2]"][r][l][cm]
+[emb exp="f.enSelectOption[0 + (f.EnCount * 3)]"]→
+[emb exp="f.enSelectOption[1 + (f.EnCount * 3)]"]→
+[emb exp="f.enSelectOption[2 + (f.EnCount * 3)]"][r][l][cm]
 
 [iscript]
 f.N=0;
@@ -306,80 +331,80 @@ f.EnVB=0;
 *判定
 [iscript]
 tf.hand = f.selectOption[f.H].hand;
-tf.enHand = f.enSelectOption[f.N];
+tf.enHand = f.enSelectOption[f.N + (f.EnCount * 3)];
 [endscript]
 
 [if exp="tf.hand == 'グー' && tf.enHand == 'チョキ'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
-  勝利１(VP[emb exp="f.VP"])[r]
+  勝利１(VP+1)[r]
 [endif]
 [if exp="tf.hand == 'チョキ' && tf.enHand == 'パー'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
-  勝利２(VP[emb exp="f.VP"])[r]
+  勝利２(VP+1)[r]
 [endif]
 [if exp="tf.hand == 'パー' && tf.enHand == 'グー'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
-  勝利３(VP[emb exp="f.VP"])[r]
+  勝利３(VP+1)[r]
 [endif]
 
 [if exp="tf.hand == 'グー' && tf.enHand == 'パー'"]
   [eval exp="f.VP = f.VP - 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
-  敗北１(VP[emb exp="f.VP"])[r]
+  敗北１(VP-1)[r]
   [endif]
 [if exp="tf.hand == 'チョキ' && tf.enHand == 'グー'"]
   [eval exp="f.VP = f.VP - 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
-  敗北２(VP[emb exp="f.VP"])[r]
+  敗北２(VP-1)[r]
 [endif]
 [if exp="tf.hand == 'パー' && tf.enHand == 'チョキ'"]
   [eval exp="f.VP = f.VP - 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
-  敗北３(VP[emb exp="f.VP"])[r]
+  敗北３(VP-1)[r]
 [endif]
 
-[if exp="tf.hand == 'グー' && tf.enHand == 'グー' && f.TempSPD >= f.TempEnSPD"]
-  [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.TempSPD = f.TempSPD -10"]
-  相討勝利(VP[emb exp="f.VP"])【はやさ-】[r]
-[elsif exp="tf.hand == 'グー' && tf.enHand == 'グー' && f.TempSPD < f.TempEnSPD"]
-  [eval exp="f.VP = f.VP - 1"]
-  相討敗北(VP[emb exp="f.VP"])[r]
+[if exp="tf.hand == 'グー' && tf.enHand == 'グー' "]
+  [eval exp="f.VP = f.VP + 0"]
+  相討(VP+0)[r]
 [endif]
-
-[if exp="tf.hand == 'チョキ' && tf.enHand == 'チョキ' && f.TempSPD >= f.TempEnSPD"]
-  [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.TempSPD = f.TempSPD - 10"]
-  相討勝利(VP[emb exp="f.VP"])【はやさ-】[r]
-[elsif exp="tf.hand == 'チョキ' && tf.enHand == 'チョキ' && f.TempSPD < f.TempEnSPD"]
-  [eval exp="f.VP = f.VP - 1"]
-  相討敗北(VP[emb exp="f.VP"])[r]
+[if exp="tf.hand == 'チョキ' && tf.enHand == 'チョキ' "]
+  [eval exp="f.VP = f.VP + 0"]
+  相討(VP+0)[r]
 [endif]
-
-[if exp="tf.hand == 'パー' && tf.enHand == 'パー' && f.TempSPD >= f.TempEnSPD"]
-  [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.TempSPD = f.TempSPD - 10"]
-  相討勝利(VP[emb exp="f.VP"])【はやさ-】[r]
-[elsif exp="tf.hand == 'パー' && tf.enHand == 'パー' && f.TempSPD < f.TempEnSPD"]
-  [eval exp="f.VP = f.VP - 1"]
-  相討敗北(VP[emb exp="f.VP"])[r]
+[if exp="tf.hand == 'パー' && tf.enHand == 'パー' "]
+  [eval exp="f.VP = f.VP + 0"]
+  相討(VP+0)[r]
 [endif]
 
 [if exp="f.N<2"]
   [eval exp="f.N=f.N+1,f.H=f.H+1"][jump target="*判定"]
 [endif]
 
+[l][cm]
+[if exp="f.VP>0"]
+  クヌギの攻撃![l][cm]
+[elsif exp="f.VP==0 && f.TempSPD >= f.TempEnSPD"]
+  [eval exp="f.VP = f.VP + 0.5"]
+  すばやさ:[eval exp="f.TempSPD"]対[eval exp="f.TempEnSPD"][l][cm]
+  クヌギの攻撃![l][cm]
+[elsif exp="f.VP==0 && f.TempSPD < f.TempEnSPD"]
+  [eval exp="f.VP = f.VP - 0.5"]
+  すばやさ:[eval exp="f.TempSPD"]対[eval exp="f.TempEnSPD"][l][cm]
+  敵の攻撃![l][cm]
+[else]
+  敵の攻撃![l][cm]
+[endif]
+
 *ダメージ計算
-ダメージ計算[l][cm]
 [if exp="f.VP>=0"]
   [iscript]
   if(f.VB > 2){
     f.VBuff=2.0;
   }else if(f.VB > 1){
-    f.VBuff=1.5;
+    f.VBuff=1.3;
   }else{
     f.VBuff=1.0;
   }
@@ -388,7 +413,7 @@ tf.enHand = f.enSelectOption[f.N];
   tf.Damage = tf.ATP - tf.EnDFP;
   if(tf.Damage<0){tf.Damage=0;}
   [endscript]
-  クヌギの攻撃！敵の体力が[emb exp="tf.Damage"]減少した。[l][cm]
+  敵の体力が[emb exp="tf.Damage"]減少した。[l][cm]
   [eval exp="f.TempEnHP = f.TempEnHP - tf.Damage"]
   [eval exp="f.TempEnFP = f.TempEnFP + 10"]
 [else]
@@ -396,7 +421,7 @@ tf.enHand = f.enSelectOption[f.N];
   if(f.EnVB > 2){
     f.EnVBuff=2.0;
   }else if(f.EnVB > 1){
-    f.EnVBuff=1.5;
+    f.EnVBuff=1.3;
   }else{
     f.EnVBuff=1.0;
   }
@@ -405,7 +430,7 @@ tf.enHand = f.enSelectOption[f.N];
   tf.Damage = tf.EnATP - tf.DFP;
   if(tf.Damage<0){tf.Damage=0;}
   [endscript]
-  敵の攻撃！クヌギの体力が[emb exp="tf.Damage"]減少した。[l][cm]
+  クヌギの体力が[emb exp="tf.Damage"]減少した。[l][cm]
   [eval exp="f.TempHP = f.TempHP - tf.Damage"]
   [eval exp="f.TempFP = f.TempFP + 10"]
 [endif]
@@ -421,7 +446,17 @@ if(f.selectOption.length>=9){
   f.selectOption = [];
   f.count=0;
 }
+f.EnCount++;
+if(f.EnCount>2){
+  f.EnCount=0;
+}
 [endscript]
+[if exp="f.TempSPD<=0"]
+  [eval exp="f.TempSPD = f.BaseSPD"]
+[endif]
+[if exp="f.TempEnSPD<=0"]
+  [eval exp="f.TempEnSPD = f.BaseEnSPD"]
+[endif]
 [jump target="*ターン開始"]
 
 *戦闘終了

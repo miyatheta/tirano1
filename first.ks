@@ -1,5 +1,6 @@
 *スタート
 [iscript]
+
 f.hand;
 f.mainOption=[
 {id:0, hand:'グー', switch:0},
@@ -54,7 +55,6 @@ if(tf.release == 0){
   tf.releaseNote = '？,？,' + f.enSelectOption[tf.release];
 }
 [endscript]
-[emb exp="f.tempOption[0].switch"][l]
 [cm]
 敵の行動は[emb exp="tf.releaseNote"]です[l][r]
 [cm]
@@ -68,7 +68,7 @@ if(f.return==1){
   f.return=0;
 }
 [endscript]
-テスト[emb exp="f.count"][l][r]
+;テスト[emb exp="f.count"][l][r]
 １手目[l][r][cm]
 ・・・・[emb exp="f.tempOption[0].hand"][r]
 ・・・・[emb exp="f.tempOption[1].hand"][r]
@@ -220,60 +220,60 @@ if(f.return==1){
 [emb exp="f.enSelectOption[2]"][r][l]
 [cm]
 [iscript]
-f.N=f.count-3;
+f.N=0;
+f.H=f.count-3;
 f.VP=0;
 [endscript]
 
 *判定
 [iscript]
-tf.hand = f.selectOption[f.N].hand;
+tf.hand = f.selectOption[f.H].hand;
 tf.enHand = f.enSelectOption[f.N];
 [endscript]
 
 [if exp="tf.hand == 'グー' && tf.enHand == 'チョキ'"]
-[eval exp="f.VP = f.VP + 1"]勝利１[r]
+[eval exp="f.VP = f.VP + 1"]勝利１(VP[emb exp="f.VP"])[r]
 [endif]
 [if exp="tf.hand == 'チョキ' && tf.enHand == 'パー'"]
-[eval exp="f.VP = f.VP + 1"]勝利２[r]
+[eval exp="f.VP = f.VP + 1"]勝利２(VP[emb exp="f.VP"])[r]
 [endif]
 [if exp="tf.hand == 'パー' && tf.enHand == 'グー'"]
-[eval exp="f.VP = f.VP + 1"]勝利３[r]
+[eval exp="f.VP = f.VP + 1"]勝利３(VP[emb exp="f.VP"])[r]
 [endif]
 
 [if exp="tf.hand == 'グー' && tf.enHand == 'パー'"]
-[eval exp="f.VP = f.VP - 1"]敗北１[r]
+[eval exp="f.VP = f.VP - 1"]敗北１(VP[emb exp="f.VP"])[r]
 [endif]
 [if exp="tf.hand == 'チョキ' && tf.enHand == 'グー'"]
-[eval exp="f.VP = f.VP - 1"]敗北２[r]
+[eval exp="f.VP = f.VP - 1"]敗北２(VP[emb exp="f.VP"])[r]
 [endif]
 [if exp="tf.hand == 'パー' && tf.enHand == 'チョキ'"]
-[eval exp="f.VP = f.VP - 1"]敗北３[r]
+[eval exp="f.VP = f.VP - 1"]敗北３(VP[emb exp="f.VP"])[r]
 [endif]
 
 [if exp="tf.hand == 'グー' && tf.enHand == 'グー'"]
-[eval exp="f.VP = f.VP + 0"]相討１[r]
+[eval exp="f.VP = f.VP + 0"]相討１(VP[emb exp="f.VP"])[r]
 [endif]
 [if exp="tf.hand == 'チョキ' && tf.enHand == 'チョキ'"]
-[eval exp="f.VP = f.VP + 0"]相討２[r]
+[eval exp="f.VP = f.VP + 0"]相討２(VP[emb exp="f.VP"])[r]
 [endif]
 [if exp="tf.hand == 'パー' && tf.enHand == 'パー'"]
-[eval exp="f.VP = f.VP + 0"]相討３[r]
+[eval exp="f.VP = f.VP + 0"]相討３(VP[emb exp="f.VP"])[r]
 [endif]
 
 [if exp="f.N>=2"][jump target="*クリア"]
-[else][eval exp="f.N=f.N+1"][jump target="*判定"]
+[else][eval exp="f.N=f.N+1,f.H=f.H+1"][jump target="*判定"]
 [endif]
 
 *クリア
-[cm]
+[l][cm]
 VPは[emb exp="f.VP"]です。[l][r]
-クリアです。おめでとう。[l][r]
 
 [iscript]
 if(f.selectOption.length>=9){
-  f.tempOption = [];
-  f.tempOption = JSON.stringify(f.mainOption);
-  f.tempOption = JSON.parse(f.tempOption);
+  for(i=0; i<f.selectOption.length; i++){
+    f.selectOption[i].switch=0
+  }
   f.selectOption = [];
 }
 [endscript]

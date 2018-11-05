@@ -76,6 +76,7 @@ f.originEnSPD = 30;
 f.originEnFP = 0;
 f.originEnERO = 0;
 f.originEnARS = 0;//arouse
+f.originBindPower = 100;
 
 f.BaseEnHP = f.originEnHP;
 f.BaseEnSTR = f.originEnSTR;
@@ -84,6 +85,7 @@ f.BaseEnSPD = f.originEnSPD;
 f.BaseEnFP = f.originEnFP;
 f.BaseEnERO = f.originEnERO;
 f.BaseEnARS = f.originEnARS;//arouse
+f.BaseBindPower = f.originBindPower;
 
 f.TempEnHP = f.BaseEnHP;
 f.TempEnSTR = f.BaseEnSTR;
@@ -92,6 +94,7 @@ f.TempEnSPD = f.BaseEnSPD;
 f.TempEnFP = f.BaseEnFP;
 f.TempEnERO = f.BaseEnERO;
 f.TempEnARS = f.BaseEnARS;//arouse
+f.TempBindPower = f.BaseBindPower;
 
 f.originEnOption=[
 {id:0, hand:'グー', name:'力', switch:0},
@@ -117,13 +120,30 @@ f.EnCount = 0;
 [iscript]
 //環境変数
 f.turn = 0;
+f.BindCount=0;
 [endscript]
 
 *ターン開始
 [cm]
 [eval exp="f.TempSPD = f.TempSPD - 10"]
 [eval exp="f.TempEnSPD = f.TempEnSPD - 10"]
+
+[if exp="f.TempSPD < 0"]
+  [eval exp="f.TempSPD = f.BaseSPD"]
+  すばやさ回復[cm]
+[endif]
+[if exp="f.TempEnSPD < 0"]
+  [eval exp="f.TempEnSPD = f.BaseEnSPD"]
+  すばやさ回復[cm]
+[endif]
+
 [showStatus]
+
+[iscript]
+//ターン数
+f.turn++;
+[endscript]
+[emb exp="f.turn"]合目[l][r][cm]
 
 *敵抽選
 [cm]
@@ -154,11 +174,20 @@ f.usedNote = [];
 if(f.EnCount>0){
   f.usedNote = f.enSelectOption.slice(0, f.EnCount*3);
 }
-//ターン数
-f.turn++;
+//組付判定
+tf.Min = 0;
+tf.Max = 99;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+if(tf.dice < 20){
+  f.Clutch = 1;
+}else{
+  f.Clutch = 0;
+}
 [endscript]
 
-[emb exp="f.turn"]合目[l][r][cm]
+[if exp="f.Clutch == 1"]
+[jump target="組付判定"]
+[endif]
 
 *選択１
 [iscript]
@@ -212,7 +241,6 @@ if(f.return==1){
   f.count++;
 }
 [endscript]
-2手目・・・・・・・・・[cm]
 [emb exp="f.TempOption[0].hand"][r]
 [emb exp="f.TempOption[1].hand"][r]
 [emb exp="f.TempOption[2].hand"][r]
@@ -257,7 +285,6 @@ if(f.return==1){
   f.count++;
 }
 [endscript]
-3手目・・・・・・・・・[cm]
 [emb exp="f.TempOption[0].hand"][r]
 [emb exp="f.TempOption[1].hand"][r]
 [emb exp="f.TempOption[2].hand"][r]
@@ -492,13 +519,162 @@ if(f.EnCount>2){
   f.EnCount=0;
 }
 [endscript]
-[if exp="f.TempSPD<=0"]
-  [eval exp="f.TempSPD = f.BaseSPD"]
-[endif]
-[if exp="f.TempEnSPD<=0"]
-  [eval exp="f.TempEnSPD = f.BaseEnSPD"]
-[endif]
 [jump target="*ターン開始"]
+
+*組付判定
+敵が組み付いてきた！[l][cm]
+[iscript]
+tf.Min = 0;
+tf.Max = 99;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+if(f.TempSPD < f.TempEnSPD){
+  f.Clutch=1;
+}else if(tf.dice > f.TempSPD - f.TempEnSPD){
+  f.Clutch=1;
+}else{
+  f.Clutch=0;
+}
+[endscript]
+
+[if exp="f.Clutch==0"]
+;組み付き失敗
+クヌギは組付を回避した![l][cm]
+[jump target="*ターン開始"]
+[endif]
+;組み付き成功
+クヌギ「きゃあ！！」[l][cm]
+クヌギは敵に組み敷かれた[l][cm]
+
+[iscript]
+f.BindCount++;
+f.TempBindPower = f.BaseBindPower * f.BindCount;
+[endscript]
+
+*組付選択
+[showStatus]
+[iscript]
+tf.Min = 0;
+tf.Max = 89;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+if(tf.dice < 30){
+  tf.enHand="グー";
+}else if(tf.dice > 60){
+  tf.enHand="チョキ";
+}else{
+  tf.enHand="パー";
+}
+[endscript]
+[glink text="グー" exp="tf.hand='グー'" target="*組付比較" size=15 x=0 y=50]
+[glink text="チョキ" exp="tf.hand='チョキ'" target="*組付比較" size=15 x=0 y=100]
+[glink text="パー" exp="tf.hand='パー'" target="*組付比較" size=15 x=0 y=150]
+[s]
+
+*組付比較
+クヌギ「離しなさいよ！」[l]
+クヌギは抵抗した！！[l][cm]
+[eval exp="f.TempFP = f.TempFP + 5"]
+
+[if exp="tf.hand == 'グー' && tf.enHand == 'チョキ'"][eval exp="f.resist=2"]
+[endif]
+[if exp="tf.hand == 'チョキ' && tf.enHand == 'パー'"][eval exp="f.resist=2"]
+[endif]
+[if exp="tf.hand == 'パー' && tf.enHand == 'グー'"][eval exp="f.resist=2"]
+[endif]
+
+[if exp="tf.hand == 'グー' && tf.enHand == 'パー'"][eval exp="f.resist=0"]
+[endif]
+[if exp="tf.hand == 'チョキ' && tf.enHand == 'グー'"][eval exp="f.resist=0"]
+[endif]
+[if exp="tf.hand == 'パー' && tf.enHand == 'チョキ'"][eval exp="f.resist=0"]
+[endif]
+
+[if exp="tf.hand == 'グー' && tf.enHand == 'グー'"][eval exp="f.resist=1"]
+[endif]
+[if exp="tf.hand == 'チョキ' && tf.enHand == 'チョキ'"][eval exp="f.resist=1"]
+[endif]
+[if exp="tf.hand == 'パー' && tf.enHand == 'パー'"][eval exp="f.resist=1"]
+[endif]
+
+[if exp="f.resist == 0"]
+[jump target="*抵抗失敗"]
+[endif]
+
+[if exp="f.resist > 0"]
+[jump target="*抵抗成功"]
+[endif]
+
+*抵抗失敗
+しかし、敵の拘束は緩まなかった[l][cm]
+[jump target="*組付攻撃"]
+
+*抵抗成功
+[iscript]
+tf.Min = 1;
+tf.Max = 20;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+f.randomNum = (tf.dice / 100) + 1;
+f.resistPower = Math.floor(22 * f.resist * f.randomNum);
+f.TempBindPower = f.TempBindPower - f.resistPower;
+if(f.TempBindPower < 0){f.TempBindPower = 0;}
+[endscript]
+
+[if exp="f.TempBindPower <= 0"]
+クヌギは敵の拘束を振りほどいた[l][cm]
+[jump target="*組付終了"]
+[endif]
+
+[if exp="f.resist > 1"]
+敵の拘束が大きく緩んだ。[l][cm]
+[else]
+敵の拘束が緩んだ。[l][cm]
+[endif]
+
+*組付攻撃
+[iscript]
+tf.Min = 0;
+tf.Max = 89;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+if(tf.dice < 30){
+  f.enBindOption=1;
+}else if(tf.dice > 60){
+  f.enBindOption=2;
+}else{
+  f.enBindOption=3;
+}
+[endscript]
+
+[if exp="f.enBindOption==1"]
+  敵はクヌギの胸を揉みしだいた[l][cm]
+  クヌギの興奮度が上昇した[l][cm]
+  [eval exp="f.TempERO=f.TempERO+10"]
+[endif]
+
+[if exp="f.enBindOption==2"]
+  敵はクヌギを締め上げた[l][cm]
+  [iscript]
+  tf.Min = 1;
+  tf.Max = 9;
+  tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+  f.randomNum = (tf.dice / 100) + 1;
+
+  tf.Damage = Math.floor(f.TempEnSTR * 0.9 * f.randomNum);
+  [endscript]
+  [eval exp="f.TempHP = f.TempHP - tf.Damage"]
+  クヌギの体力が[emb exp="tf.Damage"]減少した[l][cm]
+[endif]
+
+[if exp="f.enBindOption==3"]
+  敵はクヌギの尻に股間を押し付けた[l][cm]
+  敵の興奮度が上昇した[l][cm]
+  [eval exp="f.TempEnERO=f.TempEnERO+10"]
+[endif]
+
+[jump target="*組付選択"]
+
+*組付終了
+[eval exp="f.Clutch=0"]
+[jump target="*ターン開始"]
+
 
 *戦闘終了
 [if exp="f.TempEnHP <= 0"]

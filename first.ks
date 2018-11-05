@@ -9,8 +9,8 @@ alert("クヌギ　\n体力：" + f.TempHP + "　すばやさ：" + f.TempSPD + 
 [iscript]
 //PL初期設定
 f.originHP = 1000;
-f.originSTR = 100;
-f.originDEF = 100;
+f.originSTR = 50;
+f.originDEF = 50;
 f.originSPD = 100;
 f.originFP = 0;//force
 f.originERO = 0;
@@ -54,7 +54,9 @@ f.TempDEF = f.BaseDEF;
 f.TempSPD = f.BaseSPD;
 f.TempFP = f.BaseFP;
 f.TempERO = f.BaseERO;
-f.TempARS= f.BaseARS;//arouse
+f.TempARS = f.BaseARS;//arouse
+
+f.VBuff = 1.0;
 
 f.TempOption = [];
 f.TempOption = JSON.stringify(f.BaseOption);
@@ -68,8 +70,8 @@ f.count = 0;
 [iscript]
 //敵の設定
 f.originEnHP = 1000;
-f.originEnSTR = 100;
-f.originEnDEF = 100;
+f.originEnSTR = 50;
+f.originEnDEF = 50;
 f.originEnSPD = 30;
 f.originEnFP = 0;
 f.originEnERO = 0;
@@ -107,7 +109,14 @@ f.BaseEnOption = JSON.parse(f.BaseEnOption);
 f.TempEnOption = JSON.stringify(f.BaseEnOption);
 f.TempEnOption = JSON.parse(f.TempEnOption);
 
+f.EnVBuff = 1.0;
+
 f.EnCount = 0;
+[endscript]
+
+[iscript]
+//環境変数
+f.turn = 0;
 [endscript]
 
 *ターン開始
@@ -138,26 +147,18 @@ if(f.EnCount==0){
     f.enSelectOption = ['チョキ','グー','チョキ','パー','パー','グー','グー','パー','チョキ'];
   }
 }
-//開示箇所の抽選
-tf.Min = 0 + (f.EnCount * 3);
-tf.Max = 2 + (f.EnCount * 3);
-tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-tf.release = tf.dice;
-if(tf.release == 0 + (f.EnCount * 3)){
-  f.releaseNote = f.enSelectOption[tf.release] + '→？→？';
-}else if(tf.release == 1 + (f.EnCount * 3)){
-  f.releaseNote = '？→' + f.enSelectOption[tf.release] + '→？';
-}else{
-  f.releaseNote = '？→？→' + f.enSelectOption[tf.release];
-}
-//
+//１手目開示
+f.releaseNote = f.enSelectOption[f.EnCount * 3] + '→？→？';
+//使用済み手札の表示
 f.usedNote = [];
 if(f.EnCount>0){
   f.usedNote = f.enSelectOption.slice(0, f.EnCount*3);
 }
+//ターン数
+f.turn++;
 [endscript]
-敵の行動は[emb exp="f.EnCount"]巡目[emb exp="f.releaseNote"]です[l][r][cm]
 
+[emb exp="f.turn"]合目[l][r][cm]
 
 *選択１
 [iscript]
@@ -337,46 +338,69 @@ tf.enHand = f.enSelectOption[f.N + (f.EnCount * 3)];
 [if exp="tf.hand == 'グー' && tf.enHand == 'チョキ'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
-  勝利１(VP+1)[r]
+  [eval exp="f.VBuff = 1.2"]
+  勝利(VP+1)　クヌギの攻撃力上昇[r]
 [endif]
 [if exp="tf.hand == 'チョキ' && tf.enHand == 'パー'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
-  勝利２(VP+1)[r]
+  [eval exp="f.TempFP = f.TempFP + 5"]
+  勝利(VP+1)　クヌギの気力上昇[r]
 [endif]
 [if exp="tf.hand == 'パー' && tf.enHand == 'グー'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
-  勝利３(VP+1)[r]
+  [eval exp="f.TempSPD = f.TempSPD + 5"]
+  勝利(VP+1)　クヌギのすばやさ上昇[r]
 [endif]
 
 [if exp="tf.hand == 'グー' && tf.enHand == 'パー'"]
   [eval exp="f.VP = f.VP - 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
-  敗北１(VP-1)[r]
+  [eval exp="f.EnVBuff = 1.2"]
+  敗北(VP-1)　敵の攻撃力上昇[r]
   [endif]
 [if exp="tf.hand == 'チョキ' && tf.enHand == 'グー'"]
   [eval exp="f.VP = f.VP - 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
-  敗北２(VP-1)[r]
+  [eval exp="f.TempEnFP = f.TempEnFP + 5"]
+  敗北(VP-1)　敵の気力上昇[r]
 [endif]
 [if exp="tf.hand == 'パー' && tf.enHand == 'チョキ'"]
   [eval exp="f.VP = f.VP - 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
-  敗北３(VP-1)[r]
+  [eval exp="f.TempEnSPD = f.TempEnSPD + 5"]
+  敗北(VP-1)　敵のすばやさ上昇[r]
 [endif]
 
-[if exp="tf.hand == 'グー' && tf.enHand == 'グー' "]
-  [eval exp="f.VP = f.VP + 0"]
-  相討(VP+0)[r]
+[if exp="tf.hand == 'グー' && tf.enHand == 'グー' && f.TempSPD >= f.TempEnSPD"]
+  [eval exp="f.VP = f.VP + 1"]
+  [eval exp="f.TempSPD = f.TempSPD -10"]
+  相討(VP+1)　クヌギのすばやさ低下[r]
+[elsif exp="tf.hand == 'グー' && tf.enHand == 'グー' && f.TempSPD < f.TempEnSPD"]
+  [eval exp="f.VP = f.VP - 1"]
+  [eval exp="f.TempEnSPD = f.TempEnSPD - 10"]
+  相討(VP-1)[r]
 [endif]
-[if exp="tf.hand == 'チョキ' && tf.enHand == 'チョキ' "]
-  [eval exp="f.VP = f.VP + 0"]
-  相討(VP+0)[r]
+
+[if exp="tf.hand == 'チョキ' && tf.enHand == 'チョキ' && f.TempSPD >= f.TempEnSPD"]
+  [eval exp="f.VP = f.VP + 1"]
+  [eval exp="f.TempSPD = f.TempSPD - 10"]
+  相討(VP+1)　クヌギのすばやさ低下[r]
+[elsif exp="tf.hand == 'チョキ' && tf.enHand == 'チョキ' && f.TempSPD < f.TempEnSPD"]
+  [eval exp="f.VP = f.VP - 1"]
+  [eval exp="f.TempEnSPD = f.TempEnSPD - 10"]
+  相討(VP-1)[r]
 [endif]
-[if exp="tf.hand == 'パー' && tf.enHand == 'パー' "]
-  [eval exp="f.VP = f.VP + 0"]
-  相討(VP+0)[r]
+
+[if exp="tf.hand == 'パー' && tf.enHand == 'パー' && f.TempSPD >= f.TempEnSPD"]
+  [eval exp="f.VP = f.VP + 1"]
+  [eval exp="f.TempSPD = f.TempSPD - 10"]
+  相討(VP+1)　クヌギのすばやさ低下[r]
+[elsif exp="tf.hand == 'パー' && tf.enHand == 'パー' && f.TempSPD < f.TempEnSPD"]
+  [eval exp="f.VP = f.VP - 1"]
+  [eval exp="f.TempEnSPD = f.TempEnSPD - 10"]
+  相討(VP-1)[r]
 [endif]
 
 [if exp="f.N<2"]
@@ -402,38 +426,55 @@ tf.enHand = f.enSelectOption[f.N + (f.EnCount * 3)];
 [if exp="f.VP>=0"]
   [iscript]
   if(f.VB > 2){
-    f.VBuff=2.0;
+    f.VBonus = 1.5;
   }else if(f.VB > 1){
-    f.VBuff=1.3;
+    f.VBonus = 1.2;
   }else{
-    f.VBuff=1.0;
+    f.VBonus = 1.0;
   }
-  tf.ATP = Math.floor(f.TempSTR * 1.5 * f.VBuff );
+
+  tf.Min = 1;
+  tf.Max = 9;
+  tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+  f.randomNum = (tf.dice / 100) + 1;
+
+  tf.ATP = Math.floor(f.TempSTR * 2.0 * f.VBonus * f.VBuff * f.randomNum);
   tf.EnDFP = Math.floor(f.TempEnDEF);
   tf.Damage = tf.ATP - tf.EnDFP;
   if(tf.Damage<0){tf.Damage=0;}
+
+  f.VBuff = 1.0;
   [endscript]
   敵の体力が[emb exp="tf.Damage"]減少した。[l][cm]
   [eval exp="f.TempEnHP = f.TempEnHP - tf.Damage"]
-  [eval exp="f.TempEnFP = f.TempEnFP + 10"]
+  [eval exp="f.TempEnFP = f.TempEnFP + 20"]
 [else]
   [iscript]
   if(f.EnVB > 2){
-    f.EnVBuff=2.0;
+    f.EnVBonus = 1.5;
   }else if(f.EnVB > 1){
-    f.EnVBuff=1.3;
+    f.EnVBonus = 1.2;
   }else{
-    f.EnVBuff=1.0;
+    f.EnVBonus = 1.0;
   }
-  tf.EnATP = Math.floor(f.TempEnSTR * 1.5 * f.EnVBuff);
+
+  tf.Min = 1;
+  tf.Max = 9;
+  tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+  f.randomNum = (tf.dice / 100) + 1;
+
+  tf.EnATP = Math.floor(f.TempEnSTR * 2.0 * f.EnVBonus * f.EnVBuff * f.randomNum);
   tf.DFP = Math.floor(f.TempDEF);
   tf.Damage = tf.EnATP - tf.DFP;
   if(tf.Damage<0){tf.Damage=0;}
+
+  f.EnVBuff = 1.0;
   [endscript]
   クヌギの体力が[emb exp="tf.Damage"]減少した。[l][cm]
   [eval exp="f.TempHP = f.TempHP - tf.Damage"]
-  [eval exp="f.TempFP = f.TempFP + 10"]
+  [eval exp="f.TempFP = f.TempFP + 20"]
 [endif]
+
 [if exp="f.TempEnHP <= 0"][jump target="*戦闘終了"][endif]
 [if exp="f.TempHP <= 0"][jump target="*戦闘終了"][endif]
 

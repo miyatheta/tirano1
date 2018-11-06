@@ -9,8 +9,8 @@ alert("くぬぎ　\n体力：" + f.TempHP + "　すばやさ：" + f.TempSPD + 
 [iscript]
 //PL初期設定
 f.originHP = 1000;
-f.originSTR = 50;
-f.originDEF = 50;
+f.originSTR = 70;
+f.originDEF = 70;
 f.originSPD = 100;
 f.originFP = 0;//force
 f.originERO = 0;
@@ -70,13 +70,15 @@ f.count = 0;
 [iscript]
 //敵の設定
 f.originEnHP = 1000;
-f.originEnSTR = 50;
-f.originEnDEF = 50;
+f.originEnSTR = 80;
+f.originEnDEF = 60;
 f.originEnSPD = 30;
 f.originEnFP = 0;
-f.originEnERO = 0;
-f.originEnARS = 0;//arouse
+f.originEnERO = 60;
+f.originEnARS = 2;//arouse
 f.originBindPower = 100;
+
+f.ClutchRate = 80;//組付初期値
 
 f.BaseEnHP = f.originEnHP;
 f.BaseEnSTR = f.originEnSTR;
@@ -112,24 +114,31 @@ f.BaseEnOption = JSON.parse(f.BaseEnOption);
 f.TempEnOption = JSON.stringify(f.BaseEnOption);
 f.TempEnOption = JSON.parse(f.TempEnOption);
 
-f.EnVBuff = 1.0;
-
 f.EnCount = 0;
+
+f.EnVBuff = 1.0;
+f.EnStan = 0;
 [endscript]
 
 [iscript]
 //環境変数
 f.turn = 0;
-f.BindCount=0;
+f.BindCount = 0;
+f.ClutchTurn = 0
 [endscript]
 
 *ターン開始
-[if exp="f.TempSPD < 0"]
-  [eval exp="f.TempSPD = f.BaseSPD"]
-[endif]
-[if exp="f.TempEnSPD < 0"]
-  [eval exp="f.TempEnSPD = f.BaseEnSPD"]
-[endif]
+[iscript]
+if(f.TempSPD < 0){
+  f.TempSPD = f.BaseSPD;
+}
+if(f.TempEnSPD < 0){
+  f.TempEnSPD = f.BaseEnSPD;
+}
+if(f.EnStan > 0){
+  f.EnStan--;
+}
+[endscript]
 
 [showStatus]
 
@@ -160,6 +169,7 @@ if(f.EnCount==0){
     f.enSelectOption = ['チョキ','グー','チョキ','パー','パー','グー','グー','パー','チョキ'];
   }
 }
+
 //１手目開示
 f.releaseNote = f.enSelectOption[f.EnCount * 3] + '→？→？';
 //使用済み手札の表示
@@ -167,13 +177,21 @@ f.usedNote = [];
 if(f.EnCount>0){
   f.usedNote = f.enSelectOption.slice(0, f.EnCount*3);
 }
+
 //組付判定
 tf.Min = 0, tf.Max = 99;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-if(tf.dice < 20){
-  f.Clutch = 1;
+f.Rate = f.ClutchRate + f.TempEnERO/2  + f.ClutchTurn*5;
+if(tf.dice < f.Rate && f.ClutchTurn != 0){
+  f.Clutch = 1, f.ClutchTurn = 0;
 }else{
-  f.Clutch = 0;
+  f.Clutch = 0, f.ClutchTurn++;
+}
+if(f.turn == 0){f.Clutch = 0;}
+
+//麻痺時
+if(f.EnStan>0){
+  f.releaseNote = '行動不能に陥っている';
 }
 [endscript]
 
@@ -341,6 +359,23 @@ if(f.return==1){
 [s]
 
 *比較
+[iscript]
+f.N=0;
+f.H=f.count-3;
+f.VP=0;
+f.VB=0;
+f.EnVB=0;
+[endscript]
+
+[if exp="f.EnStan > 0"]
+くぬぎの手札は[r]
+[emb exp="f.selectOption[f.count-3].hand"]→
+[emb exp="f.selectOption[f.count-2].hand"]→
+[emb exp="f.selectOption[f.count-1].hand"][r][r]
+敵は行動不能に陥っている[r][l][cm]
+[jump target="*敵行動不能"]
+[endif]
+
 くぬぎの手札は[r]
 [emb exp="f.selectOption[f.count-3].hand"]→
 [emb exp="f.selectOption[f.count-2].hand"]→
@@ -349,14 +384,6 @@ if(f.return==1){
 [emb exp="f.enSelectOption[0 + (f.EnCount * 3)]"]→
 [emb exp="f.enSelectOption[1 + (f.EnCount * 3)]"]→
 [emb exp="f.enSelectOption[2 + (f.EnCount * 3)]"][r][l][cm]
-
-[iscript]
-f.N=0;
-f.H=f.count-3;
-f.VP=0;
-f.VB=0;
-f.EnVB=0;
-[endscript]
 
 *判定
 [iscript]
@@ -367,7 +394,7 @@ tf.enHand = f.enSelectOption[f.N + (f.EnCount * 3)];
 [if exp="tf.hand == 'グー' && tf.enHand == 'チョキ'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
-  [eval exp="f.VBuff = 1.2"]
+  [eval exp="f.VBuff = 1.1"]
   勝利(VP+1)　くぬぎの攻撃力上昇[r]
 [endif]
 [if exp="tf.hand == 'チョキ' && tf.enHand == 'パー'"]
@@ -386,7 +413,7 @@ tf.enHand = f.enSelectOption[f.N + (f.EnCount * 3)];
 [if exp="tf.hand == 'グー' && tf.enHand == 'パー'"]
   [eval exp="f.VP = f.VP - 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
-  [eval exp="f.EnVBuff = 1.2"]
+  [eval exp="f.EnVBuff = 1.1"]
   敗北(VP-1)　敵の攻撃力上昇[r]
   [endif]
 [if exp="tf.hand == 'チョキ' && tf.enHand == 'グー'"]
@@ -409,7 +436,7 @@ tf.enHand = f.enSelectOption[f.N + (f.EnCount * 3)];
 [elsif exp="tf.hand == 'グー' && tf.enHand == 'グー' && f.TempSPD < f.TempEnSPD"]
   [eval exp="f.VP = f.VP - 1"]
   [eval exp="f.TempEnSPD = f.TempEnSPD - 10"]
-  相討(VP-1)敵のすばやさ低下[r]
+  相討(VP-1)　敵のすばやさ低下[r]
 [endif]
 
 [if exp="tf.hand == 'チョキ' && tf.enHand == 'チョキ' && f.TempSPD >= f.TempEnSPD"]
@@ -419,7 +446,7 @@ tf.enHand = f.enSelectOption[f.N + (f.EnCount * 3)];
 [elsif exp="tf.hand == 'チョキ' && tf.enHand == 'チョキ' && f.TempSPD < f.TempEnSPD"]
   [eval exp="f.VP = f.VP - 1"]
   [eval exp="f.TempEnSPD = f.TempEnSPD - 10"]
-  相討(VP-1)敵のすばやさ低下[r]
+  相討(VP-1)　敵のすばやさ低下[r]
 [endif]
 
 [if exp="tf.hand == 'パー' && tf.enHand == 'パー' && f.TempSPD >= f.TempEnSPD"]
@@ -429,7 +456,7 @@ tf.enHand = f.enSelectOption[f.N + (f.EnCount * 3)];
 [elsif exp="tf.hand == 'パー' && tf.enHand == 'パー' && f.TempSPD < f.TempEnSPD"]
   [eval exp="f.VP = f.VP - 1"]
   [eval exp="f.TempEnSPD = f.TempEnSPD - 10"]
-  相討(VP-1)敵のすばやさ低下[r]
+  相討(VP-1)　敵のすばやさ低下[r]
 [endif]
 
 [if exp="f.N<2"]
@@ -439,32 +466,57 @@ tf.enHand = f.enSelectOption[f.N + (f.EnCount * 3)];
 [l][cm]
 [if exp="f.VP>0"]
   くぬぎの攻撃![l][cm]
-[elsif exp="f.VP==0 && f.TempSPD >= f.TempEnSPD"]
-  [eval exp="f.VP = f.VP + 0.5"]
-  すばやさ:[eval exp="f.TempSPD"]対[eval exp="f.TempEnSPD"][l][cm]
-  くぬぎの攻撃![l][cm]
-[elsif exp="f.VP==0 && f.TempSPD < f.TempEnSPD"]
-  [eval exp="f.VP = f.VP - 0.5"]
-  すばやさ:[eval exp="f.TempSPD"]対[eval exp="f.TempEnSPD"][l][cm]
-  敵の攻撃![l][cm]
 [else]
   敵の攻撃![l][cm]
 [endif]
+[jump target="*ダメージ計算"]
+
+*敵行動不能
+[iscript]
+tf.hand = f.selectOption[f.H].hand;
+[endscript]
+
+[if exp="tf.hand == 'グー'"]
+  [eval exp="f.VP = f.VP + 1"]
+  [eval exp="f.VB = f.VB + 1"]
+  [eval exp="f.VBuff = 1.1"]
+  勝利(VP+1)　くぬぎの攻撃力上昇[r]
+[endif]
+[if exp="tf.hand == 'チョキ'"]
+  [eval exp="f.VP = f.VP + 1"]
+  [eval exp="f.VB = f.VB + 1"]
+  [eval exp="f.TempFP = f.TempFP + 5"]
+  勝利(VP+1)　くぬぎの気力上昇[r]
+[endif]
+[if exp="tf.hand == 'パー'"]
+  [eval exp="f.VP = f.VP + 1"]
+  [eval exp="f.VB = f.VB + 1"]
+  [eval exp="f.TempSPD = f.TempSPD + 5"]
+  勝利(VP+1)　くぬぎのすばやさ上昇[r]
+[endif]
+
+[if exp="f.N<2"]
+  [eval exp="f.N=f.N+1,f.H=f.H+1"][jump target="*敵行動不能"]
+[endif]
+
+[l][cm]
+くぬぎの攻撃![l][cm]
+[jump target="*ダメージ計算"]
 
 *ダメージ計算
 [if exp="f.VP>=0"]
   [iscript]
   if(f.VB > 2){
-    f.VBonus = 1.5;
+    f.VBonus = 1.3;
   }else if(f.VB > 1){
-    f.VBonus = 1.2;
+    f.VBonus = 1.1;
   }else{
     f.VBonus = 1.0;
   }
 
-  tf.Min = 1, tf.Max = 9;
+  tf.Min = 0, tf.Max = 50;
   tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-  f.randomNum = (tf.dice / 100) + 1;
+  f.randomNum = (tf.dice / 1000) + 1;
 
   tf.ATP = Math.floor(f.TempSTR * 2.0 * f.VBonus * f.VBuff * f.randomNum);
   tf.EnDFP = Math.floor(f.TempEnDEF);
@@ -479,16 +531,16 @@ tf.enHand = f.enSelectOption[f.N + (f.EnCount * 3)];
 [else]
   [iscript]
   if(f.EnVB > 2){
-    f.EnVBonus = 1.5;
+    f.EnVBonus = 1.3;
   }else if(f.EnVB > 1){
-    f.EnVBonus = 1.2;
+    f.EnVBonus = 1.1;
   }else{
     f.EnVBonus = 1.0;
   }
 
-  tf.Min = 1, tf.Max = 9;
+  tf.Min = 0, tf.Max = 50;
   tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-  f.randomNum = (tf.dice / 100) + 1;
+  f.randomNum = (tf.dice / 1000) + 1;
 
   tf.EnATP = Math.floor(f.TempEnSTR * 2.0 * f.EnVBonus * f.EnVBuff * f.randomNum);
   tf.DFP = Math.floor(f.TempDEF);
@@ -522,6 +574,11 @@ if(f.EnCount>2){
 [eval exp="f.TempSPD = f.TempSPD - 10"]
 [eval exp="f.TempEnSPD = f.TempEnSPD - 10"]
 
+[if exp="f.EnStan == 1"]
+敵は行動不能から復帰した[l][cm]
+[eval exp="f.EnStan=0"]
+[endif]
+
 [jump target="*ターン開始"]
 
 *組付判定
@@ -530,11 +587,11 @@ if(f.EnCount>2){
 tf.Min = 0, tf.Max = 99;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 if(f.TempSPD < f.TempEnSPD){
-  f.Clutch=1;
+  f.Clutch = 1;
 }else if(tf.dice > f.TempSPD - f.TempEnSPD){
-  f.Clutch=1;
+  f.Clutch = 1;
 }else{
-  f.Clutch=0;
+  f.Clutch = 0;
 }
 [endscript]
 
@@ -573,7 +630,7 @@ if(tf.dice < 30){
 *組付比較
 くぬぎ「このっ!離しなさいよ！」[l][r]
 くぬぎは抵抗した！！[l][cm]
-[eval exp="f.TempFP = f.TempFP + 5"]
+[eval exp="f.TempFP = f.TempFP + 8"]
 
 [if exp="tf.hand == 'グー' && tf.enHand == 'チョキ'"][eval exp="f.resist=2"][endif]
 [if exp="tf.hand == 'チョキ' && tf.enHand == 'パー'"][eval exp="f.resist=2"][endif]
@@ -636,46 +693,65 @@ if(tf.dice < 30){
   くぬぎの興奮度が上昇した[r]
   敵の興奮度が上昇した[l][cm]
   [eval exp="f.TempERO=f.TempERO+10"]
-  [eval exp="f.TempEnERO=f.TempEnERO+5"]
+  [eval exp="f.TempEnERO=f.TempEnERO + 5 * f.TempEnARS"]
 [endif]
 
 [if exp="f.enBindOption==2"]
   敵はくぬぎを締め上げた[l][cm]
   [iscript]
-  tf.Min = 1, tf.Max = 9;
+  tf.Min = 0, tf.Max = 50;
   tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-  f.randomNum = (tf.dice / 100) + 1;
+  f.randomNum = (tf.dice / 1000) + 1;
 
-  tf.Damage = Math.floor(f.TempEnSTR * 0.9 * f.randomNum);
+  tf.Damage = Math.floor(f.TempEnSTR * 0.5 * f.randomNum);
   [endscript]
   [eval exp="f.TempHP = f.TempHP - tf.Damage"]
   くぬぎの体力が[emb exp="tf.Damage"]減少した[l][cm]
+  [if exp="f.TempEnHP <= 0"][jump target="*戦闘終了"][endif]
 [endif]
 
 [if exp="f.enBindOption==3"]
   敵はくぬぎの尻に股間を押し付けてきた[l][cm]
   くぬぎ「ひっ！」[l][cm]
   敵の興奮度が上昇した[l][cm]
-  [eval exp="f.TempEnERO=f.TempEnERO+10"]
+  [eval exp="f.TempEnERO=f.TempEnERO + 10 * f.TempEnARS"]
 [endif]
-
+[if exp="f.TempEnERO >= 100"][jump target="*敵絶頂組付時"][endif]
 [jump target="*組付選択"]
 
 *組付終了
-[eval exp="f.Clutch=0"]
+[eval exp="f.Clutch = 0"]
 [jump target="*ターン開始"]
+
+*敵絶頂組付時
+敵「くそっ！もう堪らん！！」[l][cm]
+目を血走らせた敵は衣をはだけてイキリ立った怒張を取り出した[l][r]
+そして、そのまま押し倒したくぬぎに向けて精を放った[l][cm]
+くぬぎ「きゃあっ！？」[l][cm]
+びちゃ、びちゃと白濁した体液がくぬぎの肌を汚していく[l][cm]
+敵「ふううううう」[l][cm]
+自らの手でマラをしごいて最後の一滴まで出し尽くすと敵は満足気に息をついた[l][r]
+しかし、[l][cm]
+くぬぎ「隙ありっ！！」[l][cm]
+敵「ぐおっ！」[l][cm]
+くぬぎはすかさず敵を突き飛ばした[l][cm]
+くぬぎは敵の拘束を振りほどいた[r]
+敵は行動不能になっている[r]
+敵の興奮度が下がった[l][cm]
+[eval exp="f.TempEnERO = 0"]
+[eval exp="f.EnStan = 2"]
+[jump target="*組付終了"]
 
 *発動超必殺技
 くぬぎ「受けてみなさい！忍法・鳴神の舞」[l][r]
 [iscript]
-tf.Min = 1, tf.Max = 9;
+tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-f.randomNum = (tf.dice / 100) + 1;
+f.randomNum = (tf.dice / 1000) + 1;
 //残HPボーナス
-f.HPRate = (f.BaseHP - f.TempHP)/f.BaseHP + 1;
-//すばやさ補正
-f.SPDRate = (f.TempSPD / f.BaseSPD) * 0.2 + 1;
-tf.ATP = Math.floor(250 * f.HPRate * f.SPDRate * f.randomNum);
+f.HPBonus = (f.BaseHP - f.TempHP)/f.BaseHP * 1.2 + 1;
+
+tf.ATP = Math.floor(300 * f.HPBonus * f.randomNum);
 tf.EnDFP = Math.floor(f.TempEnDEF);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
@@ -684,17 +760,17 @@ if(tf.Damage<0){tf.Damage=0;}
 [eval exp="f.TempEnHP = f.TempEnHP - tf.Damage"]
 [eval exp="f.TempFP = 0"]
 [if exp="f.TempEnHP <= 0"][jump target="*戦闘終了"][endif]
-[eval exp="f.TempEnFP = f.TempEnFP + 20"]
+
 [jump target="*ターン開始"]
 
 *発動敵超必殺技
 敵「散れい！小娘！！」[l][r]
 [iscript]
-tf.Min = 1, tf.Max = 9;
+tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-f.randomNum = (tf.dice / 100) + 1;
+f.randomNum = (tf.dice / 1000) + 1;
 
-tf.ATP = Math.floor(f.TempEnSTR * 7.0 * f.randomNum);
+tf.ATP = Math.floor(350 * f.randomNum);
 tf.EnDFP = Math.floor(f.TempEnDEF);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
@@ -703,7 +779,7 @@ if(tf.Damage<0){tf.Damage=0;}
 [eval exp="f.TempHP = f.TempHP - tf.Damage"]
 [eval exp="f.TempEnFP = 0"]
 [if exp="f.TempHP <= 0"][jump target="*戦闘終了"][endif]
-[eval exp="f.TempFP = f.TempFP + 20"]
+
 [jump target="*ターン開始"]
 
 *戦闘終了

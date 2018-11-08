@@ -62,6 +62,10 @@ f.TempOption = [];
 f.TempOption = JSON.stringify(f.BaseOption);
 f.TempOption = JSON.parse(f.TempOption);
 
+f.skill1CT = 0;
+f.skill2CT = 0;
+f.skill3CT = 0;
+
 f.selectOption = [];
 f.count = 0;
 
@@ -138,6 +142,15 @@ if(f.TempEnSPD < 0){
 if(f.EnStan > 0){
   f.EnStan--;
 }
+if(f.skill1CT>0){
+  f.skill1CT--;
+}
+if(f.skill2CT>0){
+  f.skill2CT--;
+}
+if(f.skill3CT>0){
+  f.skill3CT--;
+}
 [endscript]
 
 [showStatus]
@@ -209,7 +222,7 @@ if(f.EnStan>0){
 [jump target="組付判定"]
 [endif]
 
-*選択１
+*選択1
 [iscript]
 if(f.return==1){
   f.count--;
@@ -246,6 +259,7 @@ if(f.return==1){
 [glink target="*選択2" text="選択肢8" exp="f.selectOption[f.count]=f.TempOption[7]" color="red" size=15 x=150 y=280][endif]
 [if exp="f.TempOption[8].switch!=1"]
 [glink target="*選択2" text="選択肢9" exp="f.selectOption[f.count]=f.TempOption[8]" color="red" size=15 x=150 y=315][endif]
+[glink target="*スキル選択" text="技　能" color="blue" size=15 x=150 y=350]
 [s]
 
 
@@ -290,7 +304,7 @@ if(f.return==1){
 [glink target="*選択3" text="選択肢8" exp="f.selectOption[f.count]=f.TempOption[7]" color="red" size=15 x=150 y=280][endif]
 [if exp="f.TempOption[8].switch!=1"]
 [glink target="*選択3" text="選択肢9" exp="f.selectOption[f.count]=f.TempOption[8]" color="red" size=15 x=150 y=315][endif]
-[glink target="*選択１" text="戻る" exp="f.return=1" color="red" size=15 x=150 y=350]
+[glink target="*選択1" text="戻る" exp="f.return=1" color="red" size=15 x=150 y=350]
 [s]
 
 *選択3
@@ -598,7 +612,7 @@ if(f.TempSPD < f.TempEnSPD){
 [if exp="f.Clutch==0"]
 ;組み付き失敗
 くぬぎは敵の組付を回避した![l][cm]
-[jump target="*選択１"]
+[jump target="*選択1"]
 [endif]
 ;組み付き成功
 くぬぎ「きゃあっ！！」[l][cm]
@@ -652,6 +666,41 @@ if(tf.Damage<0){tf.Damage=0;}
 [if exp="f.TempHP <= 0"][jump target="*戦闘終了"][endif]
 
 [jump target="*ターン開始"]
+
+
+*スキル選択
+[if exp="f.skill1CT == 0"]
+[glink target="*スキル1使用" text="代わり身の術" color="red" size=15 x=150 y=35]
+[emb exp="f.skill1CT"][r]
+[endif]
+
+[if exp="f.skill2CT == 0"]
+[glink target="*スキル2使用" text="目眩ましの術" color="red" size=15 x=150 y=70]
+[emb exp="f.skill2CT"][r]
+[endif]
+
+[if exp="f.skill3CT == 0"]
+[glink target="*スキル3使用" text="魅了の術" color="red" size=15 x=150 y=105]
+[emb exp="f.skill3CT"][r]
+[endif]
+
+[glink target="*選択1" text="戻　る" color="red" size=15 x=150 y=140]
+[s]
+
+*スキル1使用
+スキル1使用[l][cm]
+[eval exp="f.skill1CT = 6"]
+[jump target="*選択1"]
+
+*スキル2使用
+スキル2使用[l][cm]
+[eval exp="f.skill1CT = 6"]
+[jump target="*選択1"]
+
+*スキル3使用
+スキル3使用[l][cm]
+[eval exp="f.skill1CT = 6"]
+[jump target="*選択1"]
 
 *戦闘終了
 [if exp="f.TempEnHP <= 0"]

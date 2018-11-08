@@ -12,9 +12,12 @@ if(tf.dice < 30){
   tf.enHand="パー";
 }
 [endscript]
-[glink text="グー" exp="tf.hand='グー'" target="*組付比較" color="red" size=15 x=0 y=50]
-[glink text="チョキ" exp="tf.hand='チョキ'" target="*組付比較" color="red" size=15 x=0 y=100]
-[glink text="パー" exp="tf.hand='パー'" target="*組付比較" color="red" size=15 x=0 y=150]
+[glink text="暴れる" exp="tf.hand='グー'" target="*組付比較" color="red" size=15 x=0 y=50]
+[glink text="頭突き" exp="tf.hand='チョキ'" target="*組付比較" color="red" size=15 x=0 y=100]
+[glink text="引っ掻く" exp="tf.hand='パー'" target="*組付比較" color="red" size=15 x=0 y=150]
+[glink text="振りほどく" exp="tf.hand='グー'" target="*組付比較" color="red" size=15 x=100 y=50]
+[glink text="噛み付く" exp="tf.hand='チョキ'" target="*組付比較" color="red" size=15 x=100 y=100]
+[glink text="身を捩る" exp="tf.hand='パー'" target="*組付比較" color="red" size=15 x=0 y=150]
 [s]
 
 *組付比較

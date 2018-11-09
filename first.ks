@@ -57,17 +57,17 @@ f.TempERO = f.BaseERO;
 f.TempARS = f.BaseARS;//arouse
 
 f.VBuff = 1.0;
+f.HPBonus = 1.0;
 
 f.TempOption = [];
 f.TempOption = JSON.stringify(f.BaseOption);
 f.TempOption = JSON.parse(f.TempOption);
-
-f.skill1CT = 0;
-f.skill2CT = 0;
-f.skill3CT = 0;
-
 f.selectOption = [];
 f.count = 0;
+
+f.skill1CT = 0, f.skill2CT = 0, f.skill3CT = 0;
+
+f.Pary = 0;
 
 [endscript]
 
@@ -480,10 +480,11 @@ tf.enHand = f.enSelectOption[f.N + (f.EnCount * 3)];
 [l][cm]
 [if exp="f.VP>0"]
   くぬぎの攻撃![l][cm]
+  [jump target="*ダメージ計算"]
 [else]
   敵の攻撃![l][cm]
+  [jump target="*敵ダメージ計算"]
 [endif]
-[jump target="*ダメージ計算"]
 
 *敵行動不能
 [iscript]
@@ -518,58 +519,60 @@ tf.hand = f.selectOption[f.H].hand;
 [jump target="*ダメージ計算"]
 
 *ダメージ計算
-[if exp="f.VP>=0"]
-  [iscript]
-  if(f.VB > 2){
-    f.VBonus = 1.3;
-  }else if(f.VB > 1){
-    f.VBonus = 1.2;
-  }else{
-    f.VBonus = 1.1;
-  }
+[iscript]
+if(f.VB > 2){
+  f.VBonus = 1.3;
+}else if(f.VB > 1){
+  f.VBonus = 1.2;
+}else{
+  f.VBonus = 1.1;
+}
 
-  tf.Min = 0, tf.Max = 50;
-  tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-  f.randomNum = (tf.dice / 1000) + 1;
+tf.Min = 0, tf.Max = 50;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+f.randomNum = (tf.dice / 1000) + 1;
 
-  tf.ATP = Math.floor(f.TempSTR * 1.8 * f.VBonus * f.VBuff * f.randomNum);
-  tf.EnDFP = Math.floor(f.TempEnDEF);
-  tf.Damage = tf.ATP - tf.EnDFP;
-  if(tf.Damage<0){tf.Damage=0;}
+tf.ATP = Math.floor(f.TempSTR * 1.8 * f.VBonus * f.VBuff * f.randomNum);
+tf.EnDFP = Math.floor(f.TempEnDEF);
+tf.Damage = tf.ATP - tf.EnDFP;
+if(tf.Damage<0){tf.Damage=0;}
 
-  f.VBuff = 1.0;
-  [endscript]
-  敵の体力が[emb exp="tf.Damage"]減少した。[l][cm]
-  [eval exp="f.TempEnHP = f.TempEnHP - tf.Damage"]
-  [eval exp="f.TempEnFP = f.TempEnFP + 20"]
-[else]
-  [iscript]
-  if(f.EnVB > 2){
-    f.EnVBonus = 1.3;
-  }else if(f.EnVB > 1){
-    f.EnVBonus = 1.2;
-  }else{
-    f.EnVBonus = 1.1;
-  }
-
-  tf.Min = 0, tf.Max = 50;
-  tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-  f.randomNum = (tf.dice / 1000) + 1;
-
-  tf.EnATP = Math.floor(f.TempEnSTR * 1.8 * f.EnVBonus * f.EnVBuff * f.randomNum);
-  tf.DFP = Math.floor(f.TempDEF);
-  tf.Damage = tf.EnATP - tf.DFP;
-  if(tf.Damage<0){tf.Damage=0;}
-
-  f.EnVBuff = 1.0;
-  [endscript]
-  くぬぎの体力が[emb exp="tf.Damage"]減少した。[l][cm]
-  [eval exp="f.TempHP = f.TempHP - tf.Damage"]
-  [eval exp="f.TempFP = f.TempFP + 20"]
-[endif]
+f.VBuff = 1.0;
+[endscript]
+敵の体力が[emb exp="tf.Damage"]減少した。[l][cm]
+[eval exp="f.TempEnHP = f.TempEnHP - tf.Damage"]
+[eval exp="f.TempEnFP = f.TempEnFP + 20"]
 
 [if exp="f.TempEnHP <= 0"][jump target="*戦闘終了"][endif]
+[jump target="*戦闘続行"]
+
+*敵ダメージ計算
+[iscript]
+if(f.EnVB > 2){
+  f.EnVBonus = 1.3;
+}else if(f.EnVB > 1){
+  f.EnVBonus = 1.2;
+}else{
+  f.EnVBonus = 1.1;
+}
+
+tf.Min = 0, tf.Max = 50;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+f.randomNum = (tf.dice / 1000) + 1;
+
+tf.EnATP = Math.floor(f.TempEnSTR * 1.8 * f.EnVBonus * f.EnVBuff * f.randomNum);
+tf.DFP = Math.floor(f.TempDEF);
+tf.Damage = tf.EnATP - tf.DFP;
+if(tf.Damage<0){tf.Damage=0;}
+
+f.EnVBuff = 1.0;
+[endscript]
+くぬぎの体力が[emb exp="tf.Damage"]減少した。[l][cm]
+[eval exp="f.TempHP = f.TempHP - tf.Damage"]
+[eval exp="f.TempFP = f.TempFP + 20"]
+
 [if exp="f.TempHP <= 0"][jump target="*戦闘終了"][endif]
+[jump target="*戦闘続行"]
 
 *戦闘続行
 [iscript]
@@ -641,6 +644,7 @@ tf.EnDFP = Math.floor(f.TempEnDEF);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
+[emb exp="tf.ATP"],[emb exp="f.randomNum"],[emb exp="tf.EnDFP"],[emb exp="f.HPBonus"][l]
 敵の体力が[emb exp="tf.Damage"]減少した。[l][cm]
 [eval exp="f.TempEnHP = f.TempEnHP - tf.Damage"]
 [eval exp="f.TempFP = 0"]
@@ -669,37 +673,68 @@ if(tf.Damage<0){tf.Damage=0;}
 
 
 *スキル選択
-[if exp="f.skill1CT == 0"]
-[glink target="*スキル1使用" text="代わり身の術" color="red" size=15 x=150 y=35]
 [emb exp="f.skill1CT"][r]
+[emb exp="f.skill2CT"][r]
+[emb exp="f.skill3CT"][r]
+
+[if exp="f.skill1CT == 0"]
+[glink target="*スキル1使用" text="代わり身の術" color="red" size=15 x=50 y=35]
 [endif]
+[glink text="代わり身の術" color="black" size=15 x=50 y=35]
 
 [if exp="f.skill2CT == 0"]
-[glink target="*スキル2使用" text="目眩ましの術" color="red" size=15 x=150 y=70]
-[emb exp="f.skill2CT"][r]
+[glink target="*スキル2使用" text="目眩ましの術" color="red" size=15 x=50 y=70]
 [endif]
+[glink text="目眩ましの術" color="black" size=15 x=50 y=70]
 
 [if exp="f.skill3CT == 0"]
-[glink target="*スキル3使用" text="魅了の術" color="red" size=15 x=150 y=105]
-[emb exp="f.skill3CT"][r]
+[glink target="*スキル3使用" text="魅了の術" color="red" size=15 x=50 y=105]
 [endif]
+[glink text="魅了の術" color="black" size=15 x=50 y=105]
 
-[glink target="*選択1" text="戻　る" color="red" size=15 x=150 y=140]
+[glink target="*選択1" text="戻　る" color="red" size=15 x=50 y=140]
 [s]
 
 *スキル1使用
 スキル1使用[l][cm]
+くぬぎは代わり身の術を使った[l][cm]
+１回だけ敵の攻撃を回避します[l][cm]
+[eval exp="f.Pary = 1"]
 [eval exp="f.skill1CT = 6"]
 [jump target="*選択1"]
 
 *スキル2使用
 スキル2使用[l][cm]
-[eval exp="f.skill1CT = 6"]
+くぬぎは目眩ましの術を使った[l][cm]
+敵「ぬうっ！」[l][cm]
+敵がひるんでいる間にくぬぎは体勢を整えた[l][cm]
+[iscript]
+for(i=0; i<f.selectOption.length; i++){
+  f.selectOption[i].switch=0
+}
+f.selectOption = [];
+f.count=0;
+[endscript]
+[eval exp="f.skill2CT = 6"]
 [jump target="*選択1"]
 
 *スキル3使用
 スキル3使用[l][cm]
-[eval exp="f.skill1CT = 6"]
+くぬぎは魅了の術を使った[l][cm]
+敵の興奮度が上がった[l][cm]
+
+[iscript]
+tf.Min = 0, tf.Max = 99;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+if(tf.dice > 60){
+  f.EnStan = 1;
+}
+[endscript]
+[if exp="f.EnStan==1"]
+敵は行動不能に陥った[l][cm]
+[endif]
+
+[eval exp="f.skill3CT = 6"]
 [jump target="*選択1"]
 
 *戦闘終了

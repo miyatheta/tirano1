@@ -100,7 +100,7 @@ if(tf.dice < 30){
   [endscript]
   [eval exp="f.TempHP = f.TempHP - tf.Damage"]
   くぬぎの体力が[emb exp="tf.Damage"]減少した[l][cm]
-  [if exp="f.TempEnHP <= 0"][jump storage="first.ks" target="*戦闘終了"][endif]
+  [if exp="f.TempEnHP <= 0"][jump storage="battle.ks" target="*戦闘終了"][endif]
 [endif]
 
 [if exp="f.enBindOption==3"]
@@ -114,22 +114,9 @@ if(tf.dice < 30){
 
 *組付終了
 [eval exp="f.Clutch = 0"]
-[jump storage="first.ks" target="*ターン開始"]
+[jump storage="battle.ks" target="*ターン開始"]
 
 *敵絶頂組付時
 敵「くそっ！もう堪らん！！」[l][cm]
-目を血走らせた敵は衣をはだけてイキリ立った怒張を取り出した[l][r]
-そして、そのまま押し倒したくぬぎに向けて精を放った[l][cm]
-くぬぎ「きゃあっ！？」[l][cm]
-びちゃ、びちゃと白濁した体液がくぬぎの肌を汚していく[l][cm]
-敵「ふううううう」[l][cm]
-自らの手でマラをしごいて最後の一滴まで出し尽くすと敵は満足気に息をついた[l][r]
-しかし、[l][cm]
-くぬぎ「隙ありっ！！」[l][cm]
-敵「ぐおっ！」[l][cm]
-くぬぎは敵の拘束を振りほどいた[l][cm]
-敵は行動不能に陥った[r]
-敵の興奮度が下がった[l][cm]
-[eval exp="f.TempEnERO = 0"]
-[eval exp="f.EnStan = 2"]
-[jump target="*組付終了"]
+敵はくぬぎ押し倒した[l][cm]
+[jump storage="bochu.ks" target="*房中開始"]

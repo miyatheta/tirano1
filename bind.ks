@@ -98,9 +98,9 @@ if(tf.dice < 30){
 
   tf.Damage = Math.floor(f.EnSTR * 0.3 * tf.randomNum);
   [endscript]
-  [eval exp="f.HP = f.HP - tf.Damage"]
+  [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
   くぬぎの体力が[emb exp="tf.Damage"]減少した[l][r][cm]
-  [if exp="f.EnHP <= 0"][jump storage="battle.ks" target="*戦闘終了"][endif]
+  [jump storage="battle.ks" target="*戦闘終了" cond="f.EnHP <= 0"]
 [endif]
 
 [if exp="f.EnBindOption==3"]

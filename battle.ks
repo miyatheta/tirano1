@@ -1,10 +1,58 @@
 *ターン開始
+[macro name="EnDamage"]
 [iscript]
-if(f.TempSPD < 0){
-  f.TempSPD = f.BaseSPD;
+if(f.EnVB > 2){
+  f.EnVBonus = 1.3;
+}else if(f.EnVB > 1){
+  f.EnVBonus = 1.2;
+}else{
+  f.EnVBonus = 1.1;
 }
-if(f.TempEnSPD < 0){
-  f.TempEnSPD = f.BaseEnSPD;
+
+tf.Min = 0, tf.Max = 50;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+tf.randomNum = (tf.dice / 1000) + 1;
+
+tf.Buff = f.EnVBonus * f.EnVBuff;
+tf.DeBuff = (100 - f.CharmBuff) / 100;
+if (tf.DeBuff < 0){tf.DeBuff = 0};
+
+alert('バフは' + tf.Buff + '、デバフは' +tf.DeBuff);
+
+tf.EnATP = Math.floor(f.EnSTR * 1.8 * tf.Buff * tf.DeBuff * tf.randomNum);
+tf.DFP = Math.floor(f.DEF);
+tf.Damage = tf.EnATP - tf.DFP;
+if(tf.Damage<0){tf.Damage=0;}
+
+f.EnVBuff = 1.0;
+[endscript]
+[endmacro]
+
+[macro name="EnSuperArts"]
+[iscript]
+tf.Min = 0, tf.Max = 50;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+tf.randomNum = (tf.dice / 1000) + 1;
+
+tf.Buff = f.EnVBonus * f.EnVBuff;
+tf.DeBuff = (100 - f.CharmBuff) / 100;
+if (tf.DeBuff < 0){tf.DeBuff = 0};
+
+alert('バフは' + tf.Buff + '、デバフは' +tf.DeBuff);
+
+tf.ATP = Math.floor(350 * tf.DeBuff * tf.randomNum);
+tf.EnDFP = Math.floor(f.EnDEF);
+tf.Damage = tf.ATP - tf.EnDFP;
+if(tf.Damage<0){tf.Damage=0;}
+[endscript]
+[endmacro]
+
+[iscript]
+if(f.SPD < 0){
+  f.SPD = f.BaseSPD;
+}
+if(f.EnSPD < 0){
+  f.EnSPD = f.BaseEnSPD;
 }
 if(f.EnStan > 0){
   f.EnStan--;
@@ -17,6 +65,11 @@ if(f.skill2CT>0){
 }
 if(f.skill3CT>0){
   f.skill3CT--;
+}
+if(f.CharmET > 0){
+  f.CharmET--;
+}else{
+  f.CharmBuff = 0;
 }
 [endscript]
 
@@ -36,32 +89,32 @@ if(f.EnCount==0){
   tf.Min = 0, tf.Max = 5;
   tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
   if(tf.dice == 0){
-    f.enSelectOption = ['グー','チョキ','チョキ','パー','パー','グー','グー','パー','チョキ'];
+    f.EnSelectOption = ['グー','チョキ','チョキ','パー','パー','グー','グー','パー','チョキ'];
   }else if(tf.dice == 1){
-    f.enSelectOption = ['グー','パー','グー','チョキ','パー','グー','チョキ','チョキ','パー'];
+    f.EnSelectOption = ['グー','パー','グー','チョキ','パー','グー','チョキ','チョキ','パー'];
   }else if(tf.dice == 2){
-    f.enSelectOption = ['パー','チョキ','グー','チョキ','パー','グー','パー','チョキ','グー'];
+    f.EnSelectOption = ['パー','チョキ','グー','チョキ','パー','グー','パー','チョキ','グー'];
   }else if(tf.dice == 3){
-    f.enSelectOption = ['チョキ','グー','グー','チョキ','パー','チョキ','パー','パー','グー'];
+    f.EnSelectOption = ['チョキ','グー','グー','チョキ','パー','チョキ','パー','パー','グー'];
   }else if(tf.dice == 4){
-    f.enSelectOption = ['チョキ','チョキ','グー','チョキ','パー','グー','グー','パー','パー'];
+    f.EnSelectOption = ['チョキ','チョキ','グー','チョキ','パー','グー','グー','パー','パー'];
   }else if(tf.dice == 5){
-    f.enSelectOption = ['チョキ','グー','チョキ','パー','パー','グー','グー','パー','チョキ'];
+    f.EnSelectOption = ['チョキ','グー','チョキ','パー','パー','グー','グー','パー','チョキ'];
   }
 }
 
 //１手目開示
-f.releaseNote = f.enSelectOption[f.EnCount * 3] + '→？→？';
+f.releaseNote = f.EnSelectOption[f.EnCount * 3] + '→？→？';
 //使用済み手札の表示
 f.usedNote = [];
 if(f.EnCount>0){
-  f.usedNote = f.enSelectOption.slice(0, f.EnCount*3);
+  f.usedNote = f.EnSelectOption.slice(0, f.EnCount*3);
 }
 
 //組付判定
 tf.Min = 0, tf.Max = 99;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-f.Rate = f.ClutchRate + f.TempEnERO/2  + f.ClutchTurn*5;
+f.Rate = f.ClutchRate + f.EnERO/2  + f.ClutchTurn*5;
 if(tf.dice < f.Rate && f.ClutchTurn != 0){
   f.Clutch = 1, f.ClutchTurn = 0;
 }else{
@@ -76,11 +129,11 @@ if(f.EnStan>0){
 [endscript]
 
 *超必殺技
-[if exp="f.TempFP >= 100"]
+[if exp="f.FP >= 100"]
 [glink target="*発動超必殺技" text="超必殺" color="red" size=30 x=150 y=35]
 [s]
 [endif]
-[if exp="f.TempEnFP >= 100"]
+[if exp="f.EnFP >= 100"]
 [jump target="*発動敵超必殺技"]
 [endif]
 
@@ -93,39 +146,39 @@ if(f.EnStan>0){
 [iscript]
 if(f.return==1){
   f.count--;
-  f.TempOption[f.selectOption[f.count].id].switch=0;
+  f.Option[f.selectOption[f.count].id].switch=0;
   f.selectOption.pop();
   f.return=0;
 }
 [endscript]
-[emb exp="f.TempOption[0].hand"][r]
-[emb exp="f.TempOption[1].hand"][r]
-[emb exp="f.TempOption[2].hand"][r]
-[emb exp="f.TempOption[3].hand"][r]
-[emb exp="f.TempOption[4].hand"][r]
-[emb exp="f.TempOption[5].hand"][r]
-[emb exp="f.TempOption[6].hand"][r]
-[emb exp="f.TempOption[7].hand"][r]
-[emb exp="f.TempOption[8].hand"][r][r]
+[emb exp="f.Option[0].hand"][r]
+[emb exp="f.Option[1].hand"][r]
+[emb exp="f.Option[2].hand"][r]
+[emb exp="f.Option[3].hand"][r]
+[emb exp="f.Option[4].hand"][r]
+[emb exp="f.Option[5].hand"][r]
+[emb exp="f.Option[6].hand"][r]
+[emb exp="f.Option[7].hand"][r]
+[emb exp="f.Option[8].hand"][r][r]
 敵行動：[emb exp="f.releaseNote"]/使用済み：[emb exp="f.usedNote"]
-[if exp="f.TempOption[0].switch!=1"]
-[glink target="*選択2" text="選択肢1" exp="f.selectOption[f.count]=f.TempOption[0]" color="red" size=15 x=150 y=35][endif]
-[if exp="f.TempOption[1].switch!=1"]
-[glink target="*選択2" text="選択肢2" exp="f.selectOption[f.count]=f.TempOption[1]" color="red" size=15 x=150 y=70][endif]
-[if exp="f.TempOption[2].switch!=1"]
-[glink target="*選択2" text="選択肢3" exp="f.selectOption[f.count]=f.TempOption[2]" color="red" size=15 x=150 y=105][endif]
-[if exp="f.TempOption[3].switch!=1"]
-[glink target="*選択2" text="選択肢4" exp="f.selectOption[f.count]=f.TempOption[3]" color="red" size=15 x=150 y=140][endif]
-[if exp="f.TempOption[4].switch!=1"]
-[glink target="*選択2" text="選択肢5" exp="f.selectOption[f.count]=f.TempOption[4]" color="red" size=15 x=150 y=175][endif]
-[if exp="f.TempOption[5].switch!=1"]
-[glink target="*選択2" text="選択肢6" exp="f.selectOption[f.count]=f.TempOption[5]" color="red" size=15 x=150 y=210][endif]
-[if exp="f.TempOption[6].switch!=1"]
-[glink target="*選択2" text="選択肢7" exp="f.selectOption[f.count]=f.TempOption[6]" color="red" size=15 x=150 y=245][endif]
-[if exp="f.TempOption[7].switch!=1"]
-[glink target="*選択2" text="選択肢8" exp="f.selectOption[f.count]=f.TempOption[7]" color="red" size=15 x=150 y=280][endif]
-[if exp="f.TempOption[8].switch!=1"]
-[glink target="*選択2" text="選択肢9" exp="f.selectOption[f.count]=f.TempOption[8]" color="red" size=15 x=150 y=315][endif]
+[if exp="f.Option[0].switch!=1"]
+[glink target="*選択2" text="選択肢1" exp="f.selectOption[f.count]=f.Option[0]" color="red" size=15 x=150 y=35][endif]
+[if exp="f.Option[1].switch!=1"]
+[glink target="*選択2" text="選択肢2" exp="f.selectOption[f.count]=f.Option[1]" color="red" size=15 x=150 y=70][endif]
+[if exp="f.Option[2].switch!=1"]
+[glink target="*選択2" text="選択肢3" exp="f.selectOption[f.count]=f.Option[2]" color="red" size=15 x=150 y=105][endif]
+[if exp="f.Option[3].switch!=1"]
+[glink target="*選択2" text="選択肢4" exp="f.selectOption[f.count]=f.Option[3]" color="red" size=15 x=150 y=140][endif]
+[if exp="f.Option[4].switch!=1"]
+[glink target="*選択2" text="選択肢5" exp="f.selectOption[f.count]=f.Option[4]" color="red" size=15 x=150 y=175][endif]
+[if exp="f.Option[5].switch!=1"]
+[glink target="*選択2" text="選択肢6" exp="f.selectOption[f.count]=f.Option[5]" color="red" size=15 x=150 y=210][endif]
+[if exp="f.Option[6].switch!=1"]
+[glink target="*選択2" text="選択肢7" exp="f.selectOption[f.count]=f.Option[6]" color="red" size=15 x=150 y=245][endif]
+[if exp="f.Option[7].switch!=1"]
+[glink target="*選択2" text="選択肢8" exp="f.selectOption[f.count]=f.Option[7]" color="red" size=15 x=150 y=280][endif]
+[if exp="f.Option[8].switch!=1"]
+[glink target="*選択2" text="選択肢9" exp="f.selectOption[f.count]=f.Option[8]" color="red" size=15 x=150 y=315][endif]
 [glink target="*スキル選択" text="技　能" color="blue" size=15 x=150 y=350]
 [s]
 
@@ -133,7 +186,7 @@ if(f.return==1){
 [iscript]
 if(f.return==1){
   f.count--;
-  f.TempOption[f.selectOption[f.count].id].switch=0;
+  f.Option[f.selectOption[f.count].id].switch=0;
   f.selectOption.pop();
   f.return=0;
 }else{
@@ -141,35 +194,35 @@ if(f.return==1){
   f.count++;
 }
 [endscript]
-[emb exp="f.TempOption[0].hand"][r]
-[emb exp="f.TempOption[1].hand"][r]
-[emb exp="f.TempOption[2].hand"][r]
-[emb exp="f.TempOption[3].hand"][r]
-[emb exp="f.TempOption[4].hand"][r]
-[emb exp="f.TempOption[5].hand"][r]
-[emb exp="f.TempOption[6].hand"][r]
-[emb exp="f.TempOption[7].hand"][r]
-[emb exp="f.TempOption[8].hand"][r][r]
-選択済：[emb exp="f.TempOption[f.selectOption[f.count-1].id].hand"][r]
+[emb exp="f.Option[0].hand"][r]
+[emb exp="f.Option[1].hand"][r]
+[emb exp="f.Option[2].hand"][r]
+[emb exp="f.Option[3].hand"][r]
+[emb exp="f.Option[4].hand"][r]
+[emb exp="f.Option[5].hand"][r]
+[emb exp="f.Option[6].hand"][r]
+[emb exp="f.Option[7].hand"][r]
+[emb exp="f.Option[8].hand"][r][r]
+選択済：[emb exp="f.Option[f.selectOption[f.count-1].id].hand"][r]
 敵行動：[emb exp="f.releaseNote"]/使用済み：[emb exp="f.usedNote"]
-[if exp="f.TempOption[0].switch!=1"]
-[glink target="*選択3" text="選択肢1" exp="f.selectOption[f.count]=f.TempOption[0]" color="red" size=15 x=150 y=35][endif]
-[if exp="f.TempOption[1].switch!=1"]
-[glink target="*選択3" text="選択肢2" exp="f.selectOption[f.count]=f.TempOption[1]" color="red" size=15 x=150 y=70][endif]
-[if exp="f.TempOption[2].switch!=1"]
-[glink target="*選択3" text="選択肢3" exp="f.selectOption[f.count]=f.TempOption[2]" color="red" size=15 x=150 y=105][endif]
-[if exp="f.TempOption[3].switch!=1"]
-[glink target="*選択3" text="選択肢4" exp="f.selectOption[f.count]=f.TempOption[3]" color="red" size=15 x=150 y=140][endif]
-[if exp="f.TempOption[4].switch!=1"]
-[glink target="*選択3" text="選択肢5" exp="f.selectOption[f.count]=f.TempOption[4]" color="red" size=15 x=150 y=175][endif]
-[if exp="f.TempOption[5].switch!=1"]
-[glink target="*選択3" text="選択肢6" exp="f.selectOption[f.count]=f.TempOption[5]" color="red" size=15 x=150 y=210][endif]
-[if exp="f.TempOption[6].switch!=1"]
-[glink target="*選択3" text="選択肢7" exp="f.selectOption[f.count]=f.TempOption[6]" color="red" size=15 x=150 y=245][endif]
-[if exp="f.TempOption[7].switch!=1"]
-[glink target="*選択3" text="選択肢8" exp="f.selectOption[f.count]=f.TempOption[7]" color="red" size=15 x=150 y=280][endif]
-[if exp="f.TempOption[8].switch!=1"]
-[glink target="*選択3" text="選択肢9" exp="f.selectOption[f.count]=f.TempOption[8]" color="red" size=15 x=150 y=315][endif]
+[if exp="f.Option[0].switch!=1"]
+[glink target="*選択3" text="選択肢1" exp="f.selectOption[f.count]=f.Option[0]" color="red" size=15 x=150 y=35][endif]
+[if exp="f.Option[1].switch!=1"]
+[glink target="*選択3" text="選択肢2" exp="f.selectOption[f.count]=f.Option[1]" color="red" size=15 x=150 y=70][endif]
+[if exp="f.Option[2].switch!=1"]
+[glink target="*選択3" text="選択肢3" exp="f.selectOption[f.count]=f.Option[2]" color="red" size=15 x=150 y=105][endif]
+[if exp="f.Option[3].switch!=1"]
+[glink target="*選択3" text="選択肢4" exp="f.selectOption[f.count]=f.Option[3]" color="red" size=15 x=150 y=140][endif]
+[if exp="f.Option[4].switch!=1"]
+[glink target="*選択3" text="選択肢5" exp="f.selectOption[f.count]=f.Option[4]" color="red" size=15 x=150 y=175][endif]
+[if exp="f.Option[5].switch!=1"]
+[glink target="*選択3" text="選択肢6" exp="f.selectOption[f.count]=f.Option[5]" color="red" size=15 x=150 y=210][endif]
+[if exp="f.Option[6].switch!=1"]
+[glink target="*選択3" text="選択肢7" exp="f.selectOption[f.count]=f.Option[6]" color="red" size=15 x=150 y=245][endif]
+[if exp="f.Option[7].switch!=1"]
+[glink target="*選択3" text="選択肢8" exp="f.selectOption[f.count]=f.Option[7]" color="red" size=15 x=150 y=280][endif]
+[if exp="f.Option[8].switch!=1"]
+[glink target="*選択3" text="選択肢9" exp="f.selectOption[f.count]=f.Option[8]" color="red" size=15 x=150 y=315][endif]
 [glink target="*選択1" text="戻る" exp="f.return=1" color="red" size=15 x=150 y=350]
 [s]
 
@@ -177,7 +230,7 @@ if(f.return==1){
 [iscript]
 if(f.return==1){
   f.count--;
-  f.TempOption[f.selectOption[f.count].id].switch=0;
+  f.Option[f.selectOption[f.count].id].switch=0;
   f.selectOption.pop();
   f.return=0;
 }else{
@@ -185,35 +238,35 @@ if(f.return==1){
   f.count++;
 }
 [endscript]
-[emb exp="f.TempOption[0].hand"][r]
-[emb exp="f.TempOption[1].hand"][r]
-[emb exp="f.TempOption[2].hand"][r]
-[emb exp="f.TempOption[3].hand"][r]
-[emb exp="f.TempOption[4].hand"][r]
-[emb exp="f.TempOption[5].hand"][r]
-[emb exp="f.TempOption[6].hand"][r]
-[emb exp="f.TempOption[7].hand"][r]
-[emb exp="f.TempOption[8].hand"][r][r]
-選択済：[emb exp="f.TempOption[f.selectOption[f.count-2].id].hand"]→[emb exp="f.TempOption[f.selectOption[f.count-1].id].hand"][r]
+[emb exp="f.Option[0].hand"][r]
+[emb exp="f.Option[1].hand"][r]
+[emb exp="f.Option[2].hand"][r]
+[emb exp="f.Option[3].hand"][r]
+[emb exp="f.Option[4].hand"][r]
+[emb exp="f.Option[5].hand"][r]
+[emb exp="f.Option[6].hand"][r]
+[emb exp="f.Option[7].hand"][r]
+[emb exp="f.Option[8].hand"][r][r]
+選択済：[emb exp="f.Option[f.selectOption[f.count-2].id].hand"]→[emb exp="f.Option[f.selectOption[f.count-1].id].hand"][r]
 敵行動：[emb exp="f.releaseNote"]/使用済み：[emb exp="f.usedNote"]
-[if exp="f.TempOption[0].switch!=1"]
-[glink target="*確認" text="選択肢1" exp="f.selectOption[f.count]=f.TempOption[0]" color="red" size=15 x=150 y=35][endif]
-[if exp="f.TempOption[1].switch!=1"]
-[glink target="確認" text="選択肢2" exp="f.selectOption[f.count]=f.TempOption[1]" color="red" size=15 x=150 y=70][endif]
-[if exp="f.TempOption[2].switch!=1"]
-[glink target="確認" text="選択肢3" exp="f.selectOption[f.count]=f.TempOption[2]" color="red" size=15 x=150 y=105][endif]
-[if exp="f.TempOption[3].switch!=1"]
-[glink target="確認" text="選択肢4" exp="f.selectOption[f.count]=f.TempOption[3]" color="red" size=15 x=150 y=140][endif]
-[if exp="f.TempOption[4].switch!=1"]
-[glink target="確認" text="選択肢5" exp="f.selectOption[f.count]=f.TempOption[4]" color="red" size=15 x=150 y=175][endif]
-[if exp="f.TempOption[5].switch!=1"]
-[glink target="確認" text="選択肢6" exp="f.selectOption[f.count]=f.TempOption[5]" color="red" size=15 x=150 y=210][endif]
-[if exp="f.TempOption[6].switch!=1"]
-[glink target="確認" text="選択肢7" exp="f.selectOption[f.count]=f.TempOption[6]" color="red" size=15 x=150 y=245][endif]
-[if exp="f.TempOption[7].switch!=1"]
-[glink target="確認" text="選択肢8" exp="f.selectOption[f.count]=f.TempOption[7]" color="red" size=15 x=150 y=280][endif]
-[if exp="f.TempOption[8].switch!=1"]
-[glink target="確認" text="選択肢9" exp="f.selectOption[f.count]=f.TempOption[8]" color="red" size=15 x=150 y=315][endif]
+[if exp="f.Option[0].switch!=1"]
+[glink target="*確認" text="選択肢1" exp="f.selectOption[f.count]=f.Option[0]" color="red" size=15 x=150 y=35][endif]
+[if exp="f.Option[1].switch!=1"]
+[glink target="確認" text="選択肢2" exp="f.selectOption[f.count]=f.Option[1]" color="red" size=15 x=150 y=70][endif]
+[if exp="f.Option[2].switch!=1"]
+[glink target="確認" text="選択肢3" exp="f.selectOption[f.count]=f.Option[2]" color="red" size=15 x=150 y=105][endif]
+[if exp="f.Option[3].switch!=1"]
+[glink target="確認" text="選択肢4" exp="f.selectOption[f.count]=f.Option[3]" color="red" size=15 x=150 y=140][endif]
+[if exp="f.Option[4].switch!=1"]
+[glink target="確認" text="選択肢5" exp="f.selectOption[f.count]=f.Option[4]" color="red" size=15 x=150 y=175][endif]
+[if exp="f.Option[5].switch!=1"]
+[glink target="確認" text="選択肢6" exp="f.selectOption[f.count]=f.Option[5]" color="red" size=15 x=150 y=210][endif]
+[if exp="f.Option[6].switch!=1"]
+[glink target="確認" text="選択肢7" exp="f.selectOption[f.count]=f.Option[6]" color="red" size=15 x=150 y=245][endif]
+[if exp="f.Option[7].switch!=1"]
+[glink target="確認" text="選択肢8" exp="f.selectOption[f.count]=f.Option[7]" color="red" size=15 x=150 y=280][endif]
+[if exp="f.Option[8].switch!=1"]
+[glink target="確認" text="選択肢9" exp="f.selectOption[f.count]=f.Option[8]" color="red" size=15 x=150 y=315][endif]
 [glink target="*選択2" text="戻る" exp="f.return=1" color="red" size=15 x=150 y=350]
 [s]
 
@@ -221,7 +274,7 @@ if(f.return==1){
 [iscript]
 if(f.return==1){
   f.count--;
-  f.TempOption[f.selectOption[f.count].id].switch=0;
+  f.Option[f.selectOption[f.count].id].switch=0;
   f.selectOption.pop();
   f.return=0;
 }else{
@@ -230,9 +283,9 @@ if(f.return==1){
 }
 [endscript]
 [cm]
-選択済:[emb exp="f.TempOption[f.selectOption[f.count-3].id].hand"]→
-[emb exp="f.TempOption[f.selectOption[f.count-2].id].hand"]→
-[emb exp="f.TempOption[f.selectOption[f.count-1].id].hand"][r]
+選択済:[emb exp="f.Option[f.selectOption[f.count-3].id].hand"]→
+[emb exp="f.Option[f.selectOption[f.count-2].id].hand"]→
+[emb exp="f.Option[f.selectOption[f.count-1].id].hand"][r]
 敵行動：[emb exp="f.releaseNote"]
 [glink target="*比較" text="決定" color="red" size=15 x=50 y=100]
 [glink target="*選択3" text="戻る" exp="f.return=1" color="red" size=15 x=150 y=100]
@@ -252,7 +305,7 @@ f.EnVB=0;
 [emb exp="f.selectOption[f.count-3].hand"]→
 [emb exp="f.selectOption[f.count-2].hand"]→
 [emb exp="f.selectOption[f.count-1].hand"][r][r]
-敵は行動不能に陥っている[r][l][cm]
+敵は行動不能に陥っている[l][r][cm]
 [jump target="*敵行動不能"]
 [endif]
 
@@ -261,81 +314,81 @@ f.EnVB=0;
 [emb exp="f.selectOption[f.count-2].hand"]→
 [emb exp="f.selectOption[f.count-1].hand"][r][r]
 敵の手札は[r]
-[emb exp="f.enSelectOption[0 + (f.EnCount * 3)]"]→
-[emb exp="f.enSelectOption[1 + (f.EnCount * 3)]"]→
-[emb exp="f.enSelectOption[2 + (f.EnCount * 3)]"][r][l][cm]
+[emb exp="f.EnSelectOption[0 + (f.EnCount * 3)]"]→
+[emb exp="f.EnSelectOption[1 + (f.EnCount * 3)]"]→
+[emb exp="f.EnSelectOption[2 + (f.EnCount * 3)]"][l][r][cm]
 
 *判定
 [iscript]
 tf.hand = f.selectOption[f.H].hand;
-tf.enHand = f.enSelectOption[f.N + (f.EnCount * 3)];
+tf.EnHand = f.EnSelectOption[f.N + (f.EnCount * 3)];
 [endscript]
 
-[if exp="tf.hand == 'グー' && tf.enHand == 'チョキ'"]
+[if exp="tf.hand == 'グー' && tf.EnHand == 'チョキ'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.VBuff = f.VBuff + 0.1"]
   勝利(VP+1)　くぬぎの攻撃力上昇[r]
 [endif]
-[if exp="tf.hand == 'チョキ' && tf.enHand == 'パー'"]
+[if exp="tf.hand == 'チョキ' && tf.EnHand == 'パー'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
-  [eval exp="f.TempFP = f.TempFP + 5"]
+  [eval exp="f.FP = f.FP + 5"]
   勝利(VP+1)　くぬぎの気力上昇[r]
 [endif]
-[if exp="tf.hand == 'パー' && tf.enHand == 'グー'"]
+[if exp="tf.hand == 'パー' && tf.EnHand == 'グー'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
-  [eval exp="f.TempSPD = f.TempSPD + 5"]
+  [eval exp="f.SPD = f.SPD + 5"]
   勝利(VP+1)　くぬぎのすばやさ上昇[r]
 [endif]
 
-[if exp="tf.hand == 'グー' && tf.enHand == 'パー'"]
+[if exp="tf.hand == 'グー' && tf.EnHand == 'パー'"]
   [eval exp="f.VP = f.VP - 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
-  [eval exp="f.EnVBuff = 1.1"]
-  敗北(VP-1)　敵の攻撃力上昇[r]
+  [eval exp="f.EnSPD = f.EnSPD + 5"]
+  敗北(VP-1)　敵のすばやさ上昇[r]
   [endif]
-[if exp="tf.hand == 'チョキ' && tf.enHand == 'グー'"]
+[if exp="tf.hand == 'チョキ' && tf.EnHand == 'グー'"]
   [eval exp="f.VP = f.VP - 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
-  [eval exp="f.TempEnFP = f.TempEnFP + 5"]
+  [eval exp="f.EnVBuff = f.EnVBuff + 0.1"]
+  敗北(VP-1)　敵の攻撃力上昇[r]
+[endif]
+[if exp="tf.hand == 'パー' && tf.EnHand == 'チョキ'"]
+  [eval exp="f.VP = f.VP - 1"]
+  [eval exp="f.EnVB = f.EnVB + 1"]
+  [eval exp="f.EnFP = f.EnFP + 5"]
   敗北(VP-1)　敵の気力上昇[r]
 [endif]
-[if exp="tf.hand == 'パー' && tf.enHand == 'チョキ'"]
-  [eval exp="f.VP = f.VP - 1"]
-  [eval exp="f.EnVB = f.EnVB + 1"]
-  [eval exp="f.TempEnSPD = f.TempEnSPD + 5"]
-  敗北(VP-1)　敵のすばやさ上昇[r]
-[endif]
 
-[if exp="tf.hand == 'グー' && tf.enHand == 'グー' && f.TempSPD >= f.TempEnSPD"]
+[if exp="tf.hand == 'グー' && tf.EnHand == 'グー' && f.SPD >= f.EnSPD"]
   [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.TempSPD = f.TempSPD -10"]
+  [eval exp="f.SPD = f.SPD -10"]
   相討(VP+1)　くぬぎのすばやさ低下[r]
-[elsif exp="tf.hand == 'グー' && tf.enHand == 'グー' && f.TempSPD < f.TempEnSPD"]
+[elsif exp="tf.hand == 'グー' && tf.EnHand == 'グー' && f.SPD < f.EnSPD"]
   [eval exp="f.VP = f.VP - 1"]
-  [eval exp="f.TempEnSPD = f.TempEnSPD - 10"]
+  [eval exp="f.EnSPD = f.EnSPD - 10"]
   相討(VP-1)　敵のすばやさ低下[r]
 [endif]
 
-[if exp="tf.hand == 'チョキ' && tf.enHand == 'チョキ' && f.TempSPD >= f.TempEnSPD"]
+[if exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.SPD >= f.EnSPD"]
   [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.TempSPD = f.TempSPD - 10"]
+  [eval exp="f.SPD = f.SPD - 10"]
   相討(VP+1)　くぬぎのすばやさ低下[r]
-[elsif exp="tf.hand == 'チョキ' && tf.enHand == 'チョキ' && f.TempSPD < f.TempEnSPD"]
+[elsif exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.SPD < f.EnSPD"]
   [eval exp="f.VP = f.VP - 1"]
-  [eval exp="f.TempEnSPD = f.TempEnSPD - 10"]
+  [eval exp="f.EnSPD = f.EnSPD - 10"]
   相討(VP-1)　敵のすばやさ低下[r]
 [endif]
 
-[if exp="tf.hand == 'パー' && tf.enHand == 'パー' && f.TempSPD >= f.TempEnSPD"]
+[if exp="tf.hand == 'パー' && tf.EnHand == 'パー' && f.SPD >= f.EnSPD"]
   [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.TempSPD = f.TempSPD - 10"]
+  [eval exp="f.SPD = f.SPD - 10"]
   相討(VP+1)　くぬぎのすばやさ低下[r]
-[elsif exp="tf.hand == 'パー' && tf.enHand == 'パー' && f.TempSPD < f.TempEnSPD"]
+[elsif exp="tf.hand == 'パー' && tf.EnHand == 'パー' && f.SPD < f.EnSPD"]
   [eval exp="f.VP = f.VP - 1"]
-  [eval exp="f.TempEnSPD = f.TempEnSPD - 10"]
+  [eval exp="f.EnSPD = f.EnSPD - 10"]
   相討(VP-1)　敵のすばやさ低下[r]
 [endif]
 
@@ -343,12 +396,12 @@ tf.enHand = f.enSelectOption[f.N + (f.EnCount * 3)];
   [eval exp="f.N=f.N+1,f.H=f.H+1"][jump target="*判定"]
 [endif]
 
-[l][cm]
+[l][r][cm]
 [if exp="f.VP>0"]
-  くぬぎの攻撃![l][cm]
+  くぬぎの攻撃![l][r][cm]
   [jump target="*コマンド判定"]
 [else]
-  敵の攻撃![l][cm]
+  敵の攻撃![l][r][cm]
   [jump target="*敵ダメージ計算"]
 [endif]
 
@@ -366,13 +419,13 @@ tf.hand = f.selectOption[f.H].hand;
 [if exp="tf.hand == 'チョキ'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
-  [eval exp="f.TempFP = f.TempFP + 5"]
+  [eval exp="f.FP = f.FP + 5"]
   勝利(VP+1)　くぬぎの気力上昇[r]
 [endif]
 [if exp="tf.hand == 'パー'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
-  [eval exp="f.TempSPD = f.TempSPD + 5"]
+  [eval exp="f.SPD = f.SPD + 5"]
   勝利(VP+1)　くぬぎのすばやさ上昇[r]
 [endif]
 
@@ -380,137 +433,103 @@ tf.hand = f.selectOption[f.H].hand;
   [eval exp="f.N=f.N+1,f.H=f.H+1"][jump target="*敵行動不能"]
 [endif]
 
-[l][cm]
-くぬぎの攻撃![l][cm]
+[l][r][cm]
+くぬぎの攻撃![l][r][cm]
 [jump target="*コマンド判定"]
 
 *コマンド判定
-a
 [iscript]
 f.Comand = 0;
-if(f.selectOption[0].hand == "グー" && f.selectOption[1].hand == "チョキ" && f.selectOption[2].hand == "パー"){
+if(f.selectOption[f.count-3].hand == "グー" && f.selectOption[f.count-2].hand == "チョキ" && f.selectOption[f.count-1].hand == "パー"){
   f.Comand = 1;
 }
-if(f.selectOption[0].hand == "パー" && f.selectOption[1].hand == "グー" && f.selectOption[2].hand == "チョキ"){
+if(f.selectOption[f.count-3].hand == "パー" && f.selectOption[f.count-2].hand == "グー" && f.selectOption[f.count-1].hand == "チョキ"){
   f.Comand = 2;
 }
-if(f.selectOption[0].hand == "チョキ" && f.selectOption[1].hand == "パー" && f.selectOption[2].hand == "グー"){
+if(f.selectOption[f.count-3].hand == "チョキ" && f.selectOption[f.count-2].hand == "パー" && f.selectOption[f.count-1].hand == "グー"){
   f.Comand = 3;
 }
 [endscript]
-b
 [if exp="f.Comand == 1"]
 [iscript]
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-f.randomNum = (tf.dice / 1000) + 1;
+tf.randomNum = (tf.dice / 1000) + 1;
 
-tf.ATP = Math.floor(f.TempSTR * 3.3 * f.VBuff  * f.randomNum);
-tf.EnDFP = Math.floor(f.TempEnDEF);
+tf.ATP = Math.floor(f.STR * 3.5 * tf.randomNum);
+tf.EnDFP = Math.floor(f.EnDEF);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
-「忍法・旋風」[l][cm]
+「忍法・旋風！」[l][r][cm]
+敵の体力が[emb exp="tf.Damage"]減少した。[l][r][cm]
+[eval exp="f.EnHP = f.EnHP - tf.Damage"]
+[eval exp="f.EnFP = f.EnFP + 20"]
+[jump target="*戦闘終了" cond="f.EnHP <= 0"]
+[jump target="*戦闘続行" cond="f.EnHP > 0"]
 
 [elsif exp="f.Comand == 2"]
 [iscript]
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-f.randomNum = (tf.dice / 1000) + 1;
+tf.randomNum = (tf.dice / 1000) + 1;
 
-tf.ATP = Math.floor(f.TempSTR * 3.3 * f.VBuff  * f.randomNum);
-tf.EnDFP = Math.floor(f.TempEnDEF);
+tf.ATP = Math.floor(f.STR * 3.5 * tf.randomNum);
+tf.EnDFP = Math.floor(f.EnDEF);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
-「忍法・陽炎」[l][cm]
+「忍法・陽炎！」[l][r][cm]
+敵の体力が[emb exp="tf.Damage"]減少した。[l][r][cm]
+[eval exp="f.EnHP = f.EnHP - tf.Damage"]
+[eval exp="f.EnFP = f.EnFP + 20"]
+[jump target="*戦闘終了" cond="f.EnHP <= 0"]
+[jump target="*戦闘続行" cond="f.EnHP > 0"]
 
 [elsif exp="f.Comand == 3"]
 [iscript]
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-f.randomNum = (tf.dice / 1000) + 1;
+tf.randomNum = (tf.dice / 1000) + 1;
 
-tf.ATP = Math.floor(f.TempSTR * 3.3 * f.VBuff  * f.randomNum);
-tf.EnDFP = Math.floor(f.TempEnDEF);
+tf.ATP = Math.floor(f.STR * 3.5 * tf.randomNum);
+tf.EnDFP = Math.floor(f.EnDEF);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
-「忍法・五月雨」[l][cm]
+「忍法・五月雨！」[l][r][cm]
+敵の体力が[emb exp="tf.Damage"]減少した。[l][r][cm]
+[eval exp="f.EnHP = f.EnHP - tf.Damage"]
+[eval exp="f.EnFP = f.EnFP + 20"]
+[jump target="*戦闘終了" cond="f.EnHP <= 0"]
+[jump target="*戦闘続行" cond="f.EnHP > 0"]
 
-[else]
-[jump target="*ダメージ計算"]
 [endif]
 
-敵の体力が[emb exp="tf.Damage"]減少した。[l][cm]
-[eval exp="f.TempEnHP = f.TempEnHP - tf.Damage"]
-[eval exp="f.TempEnFP = f.TempEnFP + 20"]
-[if exp="f.TempEnHP <= 0"][jump target="*戦闘終了"][endif]
-[jump target="*戦闘続行"]
-
 *ダメージ計算
-[iscript]
-if(f.VB > 2){
-  f.VBonus = 1.3;
-}else if(f.VB > 1){
-  f.VBonus = 1.2;
-}else{
-  f.VBonus = 1.1;
-}
+[Damage]
+敵の体力が[emb exp="tf.Damage"]減少した。[l][r][cm]
+[eval exp="f.EnHP = f.EnHP - tf.Damage"]
+[eval exp="f.EnFP = f.EnFP + 20"]
 
-tf.Min = 0, tf.Max = 50;
-tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-f.randomNum = (tf.dice / 1000) + 1;
-
-tf.ATP = Math.floor(f.TempSTR * 1.8 * f.VBonus * f.VBuff * f.randomNum);
-tf.EnDFP = Math.floor(f.TempEnDEF);
-tf.Damage = tf.ATP - tf.EnDFP;
-if(tf.Damage<0){tf.Damage=0;}
-
-f.VBuff = 1.0;
-[endscript]
-[emb exp="f.randomNum"][r]
-敵の体力が[emb exp="tf.Damage"]減少した。[l][cm]
-[eval exp="f.TempEnHP = f.TempEnHP - tf.Damage"]
-[eval exp="f.TempEnFP = f.TempEnFP + 20"]
-
-[if exp="f.TempEnHP <= 0"][jump target="*戦闘終了"][endif]
-[jump target="*戦闘続行"]
+[jump target="*戦闘終了" cond="f.EnHP <= 0"]
+[jump target="*戦闘続行" cond="f.EnHP > 0"]
 
 *敵ダメージ計算
-[iscript]
-if(f.EnVB > 2){
-  f.EnVBonus = 1.3;
-}else if(f.EnVB > 1){
-  f.EnVBonus = 1.2;
-}else{
-  f.EnVBonus = 1.1;
-}
-
-tf.Min = 0, tf.Max = 50;
-tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-f.randomNum = (tf.dice / 1000) + 1;
-
-tf.EnATP = Math.floor(f.TempEnSTR * 1.8 * f.EnVBonus * f.EnVBuff * f.randomNum);
-tf.DFP = Math.floor(f.TempDEF);
-tf.Damage = tf.EnATP - tf.DFP;
-if(tf.Damage<0){tf.Damage=0;}
-
-f.EnVBuff = 1.0;
-[endscript]
+[EnDamage]
 
 [if exp="f.Pary > 0"]
-くぬぎは敵の攻撃を回避した[l][cm]
+くぬぎは敵の攻撃を回避した[l][r][cm]
 [eval exp="f.Pary = 0 , f.Undress = 1"]
 [else]
 
-くぬぎの体力が[emb exp="tf.Damage"]減少した。[l][cm]
-[eval exp="f.TempHP = f.TempHP - tf.Damage"]
-[eval exp="f.TempFP = f.TempFP + 20"]
+くぬぎの体力が[emb exp="tf.Damage"]減少した。[l][r][cm]
+[eval exp="f.HP = f.HP - tf.Damage"]
+[eval exp="f.FP = f.FP + 20"]
 [endif]
 
-[if exp="f.TempHP <= 0"][jump target="*戦闘終了"][endif]
-[jump target="*戦闘続行"]
+[jump target="*戦闘終了" cond="f.HP <= 0"]
+[jump target="*戦闘続行" cond="f.HP > 0"]
 
 *戦闘続行
 [iscript]
@@ -526,24 +545,24 @@ if(f.EnCount>2){
   f.EnCount=0;
 }
 [endscript]
-[eval exp="f.TempSPD = f.TempSPD - 10"]
-[eval exp="f.TempEnSPD = f.TempEnSPD - 10"]
+[eval exp="f.SPD = f.SPD - 10"]
+[eval exp="f.EnSPD = f.EnSPD - 10"]
 
 [if exp="f.EnStan == 1"]
-敵は行動不能から復帰した[l][cm]
+敵は行動不能から復帰した[l][r][cm]
 [eval exp="f.EnStan=0"]
 [endif]
 
 [jump target="*ターン開始"]
 
 *組付判定
-敵が組み付いてきた！[l][cm]
+敵が組み付いてきた！[l][r][cm]
 [iscript]
 tf.Min = 0, tf.Max = 99;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-if(f.TempSPD < f.TempEnSPD){
+if(f.SPD < f.EnSPD){
   f.Clutch = 1;
-}else if(tf.dice > f.TempSPD - f.TempEnSPD){
+}else if(tf.dice > f.SPD - f.EnSPD){
   f.Clutch = 1;
 }else{
   f.Clutch = 0;
@@ -552,69 +571,49 @@ if(f.TempSPD < f.TempEnSPD){
 
 [if exp="f.Clutch==0"]
 ;組み付き失敗
-くぬぎは敵の組付を回避した![l][cm]
+くぬぎは敵の組付を回避した![l][r][cm]
 [jump target="*選択1"]
 [endif]
 ;組み付き成功
-くぬぎ「きゃあっ！！」[l][cm]
-くぬぎは敵に押し倒された[l][cm]
+くぬぎ「きゃあっ！！」[l][r][cm]
+くぬぎは敵に押し倒された[l][r][cm]
 
 [iscript]
 f.BindCount++;
-f.TempBindPower = Math.floor(f.BaseBindPower * (f.BindCount/100 + 1));
+f.BindPower = Math.floor(f.BaseBindPower * (f.BindCount/100 + 1));
 [endscript]
 [jump storage="bind.ks" target="*組付選択"]
 
 
 *発動超必殺技
 くぬぎ「受けてみなさい！必殺・鳴神の舞」[l][r]
-[iscript]
-tf.Min = 0, tf.Max = 50;
-tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-f.randomNum = (tf.dice / 1000) + 1;
-//残HPボーナス
-if(f.TempHP < f.TempEnHP){
-  f.HPBonus = (f.TempEnHP - f.TempHP)/f.TempEnHP + 1;
-}
+[SuperArts]
+[emb exp="f.HPBonus"][l][r][cm]
+敵の体力が[emb exp="tf.Damage"]減少した。[l][r][cm]
+[eval exp="f.EnHP = f.EnHP - tf.Damage"]
+[eval exp="f.FP = 0"]
 
-tf.ATP = Math.floor(300 * f.HPBonus * f.randomNum);
-tf.EnDFP = Math.floor(f.TempEnDEF);
-tf.Damage = tf.ATP - tf.EnDFP;
-if(tf.Damage<0){tf.Damage=0;}
-[endscript]
-敵の体力が[emb exp="tf.Damage"]減少した。[l][cm]
-[eval exp="f.TempEnHP = f.TempEnHP - tf.Damage"]
-[eval exp="f.TempFP = 0"]
-[if exp="f.TempEnHP <= 0"][jump target="*戦闘終了"][endif]
-
-[jump target="*ターン開始"]
+[jump target="*戦闘終了" cond="f.EnHP <= 0"]
+[jump target="*戦闘続行" cond="f.EnHP > 0"]
 
 *発動敵超必殺技
 敵「散れい！小娘！！」[l][r]
-[iscript]
-tf.Min = 0, tf.Max = 50;
-tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-f.randomNum = (tf.dice / 1000) + 1;
-
-tf.ATP = Math.floor(350 * f.randomNum);
-tf.EnDFP = Math.floor(f.TempEnDEF);
-tf.Damage = tf.ATP - tf.EnDFP;
-if(tf.Damage<0){tf.Damage=0;}
-[endscript]
+[EnSuperArts]
 
 [if exp="f.Pary > 0"]
-くぬぎは敵の攻撃を回避した[l][cm]
-くぬぎは脱衣状態になった[l][cm]
+くぬぎは敵の攻撃を回避した[l][r][cm]
+くぬぎは脱衣状態になった[l][r][cm]
 [eval exp="f.Pary = 0 , f.Undress = 1"]
 [else]
 
-くぬぎの体力が[emb exp="tf.Damage"]減少した。[l][cm]
-[eval exp="f.TempHP = f.TempHP - tf.Damage"]
+くぬぎの体力が[emb exp="tf.Damage"]減少した。[l][r][cm]
+[eval exp="f.HP = f.HP - tf.Damage"]
 [endif]
 
-[eval exp="f.TempEnFP = 0"]
-[if exp="f.TempHP <= 0"][jump target="*戦闘終了"][endif]
-[jump target="*戦闘続行"]
+[eval exp="f.EnFP = 0"]
+[jump target="*戦闘終了" cond="f.HP <= 0"]
+[jump target="*戦闘続行" cond="f.HP > 0"]
+
 
 *スキル選択
 [emb exp="f.skill1CT"][r]
@@ -640,18 +639,18 @@ if(tf.Damage<0){tf.Damage=0;}
 [s]
 
 *スキル1使用
-スキル1使用[l][cm]
-くぬぎは代わり身の術を使った[l][cm]
-１回だけ敵の攻撃を回避します[l][cm]
+スキル1使用[l][r][cm]
+くぬぎは代わり身の術を使った[l][r][cm]
+１回だけ敵の攻撃を回避します[l][r][cm]
 [eval exp="f.Pary = 1"]
 [eval exp="f.skill1CT = 6"]
 [jump target="*選択1"]
 
 *スキル2使用
-スキル2使用[l][cm]
-くぬぎは目眩ましの術を使った[l][cm]
-敵「ぬうっ！」[l][cm]
-敵がひるんでいる間にくぬぎは体勢を整えた[l][cm]
+スキル2使用[l][r][cm]
+くぬぎは目眩ましの術を使った[l][r][cm]
+敵「ぬうっ！」[l][r][cm]
+敵がひるんでいる間にくぬぎは体勢を整えた[l][r][cm]
 [iscript]
 for(i=0; i<f.selectOption.length; i++){
   f.selectOption[i].switch=0
@@ -663,28 +662,32 @@ f.count=0;
 [jump target="*選択1"]
 
 *スキル3使用
-スキル3使用[l][cm]
-くぬぎは魅了の術を使った[l][cm]
-敵の興奮度が上がった[l][cm]
-
+スキル3使用[l][r][cm]
+くぬぎは魅了の術を使った[l][r][cm]
 [iscript]
-tf.Min = 0, tf.Max = 99;
+tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-if(tf.dice > 60){
-  f.EnStan = 1;
-}
+tf.randomNum = (tf.dice / 1000) + 1;
+
+tf.ATP = Math.floor(10 * f.ARS * f.EnARS * tf.randomNum);
+tf.EnDFP = (100 - f.EnEND) / 100;
+tf.Damage = Math.floor(tf.ATP * tf.EnDFP);
+if(tf.Damage<0){tf.Damage=0;}
 [endscript]
-[if exp="f.EnStan==1"]
-敵は行動不能に陥った[l][cm]
+[eval exp="f.EnERO = f.EnERO + tf.Damage"]
+[eval exp="f.CharmBuff = 25 , f.CharmET = 3"]
+敵の興奮度が[emb exp="tf.Damage"]上がった[l][r][cm]
+敵の攻撃力が低下した[l][r][cm]
 [endif]
 
 [eval exp="f.skill3CT = 6"]
 [jump target="*選択1"]
 
 *戦闘終了
-[if exp="f.TempEnHP <= 0"]
-  敵を倒した！！[l][cm]
+[if exp="f.EnHP <= 0"]
+  敵を倒した！！[l][r][cm]
 [else]
-  くぬぎは敗北した...[l][cm]
+  くぬぎは敗北した...[l][r][cm]
 [endif]
+  [showStatus]
 [jump storage="first.ks" target="*スタート"]

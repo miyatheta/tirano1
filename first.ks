@@ -10,6 +10,7 @@ f.originERO = 0;//快感
 f.originARS = 1;//arouse
 f.originSTM = 100;//房中体力
 f.originMND = 100;//精神力
+f.originTIR = 0;//疲労度
 
 f.originOption=[
 {id:0, hand:'グー', name:'力', switch:0},
@@ -35,6 +36,7 @@ f.BaseERO = f.originERO;
 f.BaseARS = f.originARS;//arouse
 f.BaseSTM = f.originSTM;
 f.BaseMND = f.originMND;
+f.BaseTIR = f.originTIR;
 
 f.BaseOption = [];
 f.BaseOption = JSON.stringify(f.originOption);
@@ -54,6 +56,7 @@ f.ERO = f.BaseERO;
 f.ARS = f.BaseARS;//arouse
 f.STM  = f.BaseSTM;
 f.MND = f.BaseMND;
+f.TIR = f.BaseTIR;
 
 f.VBuff = 1.0;
 f.HPBonus = 1.0;
@@ -69,7 +72,7 @@ f.Comand = 0;
 f.Pary = 0;//回避
 f.Undress = 0;//脱衣
 f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
-
+f.stage = 1;
 [endscript]
 
 [iscript]
@@ -131,12 +134,6 @@ f.EnVBuff = 1.0;
 f.EnStan = 0;
 [endscript]
 
-[iscript]
-//環境変数
-f.turn = 0;
-f.BindCount = 0;
-f.ClutchTurn = 0
-[endscript]
 
 [macro name="showStatus"]
 [freeimage layer=1]
@@ -160,6 +157,8 @@ f.SPDdigit=[];
 calcStatus(f.SPDdigit,f.SPD);
 f.EROdigit=[];
 calcStatus(f.EROdigit,f.ERO);
+f.TIRdigit=[];
+calcStatus(f.TIRdigit,f.TIR);
 
 f.EnHPdigit=[];
 calcStatus(f.EnHPdigit,f.EnHP);
@@ -195,6 +194,12 @@ calcStatus(f.EnEROdigit,f.EnERO);
 [image layer=1 storage="&f.EROdigit[2]" width="25" top="575" left="100" visible="true"]
 [image layer=1 storage="&f.EROdigit[3]" width="25" top="575" left="125" visible="true"]
 [image layer=1 storage="&f.EROdigit[4]" width="25" top="575" left="150" visible="true"]
+
+[image layer=1 storage="number/疲労.png" width="100" top="500" left="200" visible="true"]
+[image layer=1 storage="&f.TIRdigit[1]" width="25" top="500" left="250" visible="true"]
+[image layer=1 storage="&f.TIRdigit[2]" width="25" top="500" left="270" visible="true"]
+[image layer=1 storage="&f.TIRdigit[3]" width="25" top="500" left="300" visible="true"]
+[image layer=1 storage="&f.TIRdigit[4]" width="25" top="500" left="325" visible="true"]
 
 [image layer=1 storage="number/敵名.png" width="100" top="475" left="480" visible="true"]
 
@@ -273,4 +278,4 @@ if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 [endmacro]
 
-[jump storage="battle.ks" target="*ターン開始"]
+[jump storage="selectStage.ks" target="*ステージセレクト"]

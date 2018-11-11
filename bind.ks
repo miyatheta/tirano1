@@ -86,7 +86,9 @@ if(tf.dice < 30){
   くぬぎの快感度が上昇した[r]
   敵の興奮度が上昇した[l][r][cm]
   [eval exp="f.ERO=f.ERO+10"]
-  [eval exp="f.EnERO=f.EnERO + 5 * f.EnARS"]
+  [iscript]
+  f.EnERO = f.EnERO + Math.floor(5 * f.EnARS);
+  [endscript]
 [endif]
 
 [if exp="f.EnBindOption==2"]
@@ -107,7 +109,9 @@ if(tf.dice < 30){
   敵はくぬぎの尻に股間を押し付けてきた[l][r][cm]
   くぬぎ「ひっ！」[l][r][cm]
   敵の興奮度が上昇した[l][r][cm]
-  [eval exp="f.EnERO=f.EnERO + 10 * f.EnARS"]
+  [iscript]
+  f.EnERO = f.EnERO + Math.floor(10 * f.EnARS);
+  [endscript]
 [endif]
 [if exp="f.EnERO >= 100"][jump target="*敵絶頂組付時"][endif]
 [jump target="*組付選択"]

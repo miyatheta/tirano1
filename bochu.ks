@@ -18,7 +18,7 @@
 くぬぎ「はぁ・・・・はぁ・・・・」[l][r][cm]
 くぬぎ「もう、だめぇ・・・・」[l][r][cm]
 激しい快楽に焼かれ白く染まった意識をくぬぎは手放した[l][r][cm]
-[jump storage="first.ks" target="*戦闘終了"]
+[jump storage="selectStage.ks" target="*エネミー選択"]
 
 
 *房中勝利
@@ -43,4 +43,5 @@
 装束を整え立ち上がったくぬぎは敵を一瞥した[l][r][cm]
 くぬぎ「極楽浄土。見えたかしら？」[l][r][cm]
 くぬぎの疲労度が回復した[r]
-[jump storage="first.ks" target="*戦闘終了"]
+[eval exp="f.TIR = f.TIR - 20"][eval exp="f.TIR = 0" cond="f.TIR < 0"]
+[jump storage="selectStage.ks" target="*エネミー選択"]

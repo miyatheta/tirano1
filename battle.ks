@@ -1,4 +1,33 @@
 *ターン開始
+[macro name="showStatusG"]
+[iscript]
+
+x = "number/white/x.png"
+f.HPdigit=[];
+str = "x" + f.HP;
+len = str.length;
+for(i=len; i<5; i++){str = "x" + str;}
+for(i=4; i>0; i--){
+  num = str.substr(i,1);
+  f.HPdigit[i]="number/white/" + num + ".png";
+}
+[endscript]
+[image layer=1 storage="number/体力.png" width="100" top="500" left="0" visible="true"]
+[image layer=1 storage="&f.HPdigit[1]" width="25" top="500" left="75" visible="true"]
+[image layer=1 storage="&f.HPdigit[2]" width="25" top="500" left="100" visible="true"]
+[image layer=1 storage="&f.HPdigit[3]" width="25" top="500" left="125" visible="true"]
+[image layer=1 storage="&f.HPdigit[4]" width="25" top="500" left="150" visible="true"]
+
+[image layer=1 storage="number/気力.png" width="100" top="525" left="0" visible="true"]
+[image layer=1 storage="number/white/1.png" width="25" top="525" left="150" visible="true"]
+
+[image layer=1 storage="number/敏捷.png" width="100" top="550" left="0" visible="true"]
+[image layer=1 storage="number/white/1.png" width="25" top="550" left="150" visible="true"]
+
+[image layer=1 storage="number/快感.png" width="100" top="575" left="0" visible="true"]
+[image layer=1 storage="number/white/1.png" width="25" top="575" left="150" visible="true"]
+[endmacro]
+
 [macro name="EnDamage"]
 [iscript]
 if(f.EnVB > 2){
@@ -73,7 +102,7 @@ if(f.CharmET > 0){
 }
 [endscript]
 
-[showStatus]
+[showStatusG]
 
 [iscript]
 //ターン数

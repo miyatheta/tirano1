@@ -1,7 +1,7 @@
 *スタート
 [iscript]
 //PL初期設定
-f.originHP = 1000;
+f.originHP = 234;
 f.originSTR = 70;
 f.originDEF = 70;
 f.originSPD = 100;

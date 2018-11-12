@@ -1,5 +1,9 @@
-
 *組付選択
+[if exp="f.StanOrga==1"]
+くぬぎは絶頂の余韻から復帰した[lrcm]
+[eval exp="f.StanOrga=0"][showStatus]
+[endif]
+
 [showStatus]
 [iscript]
 tf.Min = 0, tf.Max = 89;
@@ -22,7 +26,7 @@ if(tf.dice < 30){
 
 *組付比較
 くぬぎ「このっ!離しなさいよ！」[l][r]
-くぬぎは抵抗した！！[l][r][cm]
+くぬぎは抵抗した！！[lrcm]
 [eval exp="f.FP = f.FP + 8"]
 
 [if exp="tf.hand == 'グー' && tf.EnHand == 'チョキ'"][eval exp="f.resist=2"][endif]
@@ -35,16 +39,12 @@ if(tf.dice < 30){
 [if exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ'"][eval exp="f.resist=1"][endif]
 [if exp="tf.hand == 'パー' && tf.EnHand == 'パー'"][eval exp="f.resist=1"][endif]
 
-[if exp="f.resist == 0"]
-[jump target="*抵抗失敗"]
-[endif]
+[jump target="*抵抗失敗" cond="f.resist == 0"]
 
-[if exp="f.resist > 0"]
-[jump target="*抵抗成功"]
-[endif]
+[jump target="*抵抗成功" cond="f.resist > 0"]
 
 *抵抗失敗
-しかし、敵の拘束は緩まなかった[l][r][cm]
+しかし、敵の拘束は緩まなかった[lrcm]
 [jump target="*組付攻撃"]
 
 *抵抗成功
@@ -58,14 +58,14 @@ if(f.BindPower < 0){f.BindPower = 0;}
 [endscript]
 
 [if exp="f.BindPower <= 0"]
-くぬぎは敵の拘束を振りほどいた[l][r][cm]
+くぬぎは敵の拘束を振りほどいた[lrcm]
 [jump target="*組付終了"]
 [endif]
 
 [if exp="f.resist > 1"]
-敵の拘束が大きく緩んだ。[l][r][cm]
+敵の拘束が大きく緩んだ。[lrcm]
 [else]
-敵の拘束が少し緩んだ。[l][r][cm]
+敵の拘束が少し緩んだ。[lrcm]
 [endif]
 
 *組付攻撃
@@ -82,45 +82,65 @@ if(tf.dice < 30){
 [endscript]
 
 [if exp="f.EnBindOption==1"]
-  敵はくぬぎの胸を揉みしだいた[l][r][cm]
-  くぬぎの快感度が上昇した[r]
-  敵の興奮度が上昇した[l][r][cm]
-  [eval exp="f.ERO=f.ERO+10"]
   [iscript]
+  f.ERO = f.ERO + Math.floor(10 * f.ARS);
   f.EnERO = f.EnERO + Math.floor(5 * f.EnARS);
   [endscript]
+  敵はくぬぎの胸を揉みしだいた[lrcm]
+  くぬぎの快感度が上昇した[r]
+  敵の興奮度が上昇した[lrcm]
+  [showStatus]
+  [jump target="*拘束絶頂" cond="f.ERO >= 100"]
 [endif]
 
 [if exp="f.EnBindOption==2"]
-  敵はくぬぎを締め上げた[l][r][cm]
   [iscript]
   tf.Min = 0, tf.Max = 50;
   tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
   tf.randomNum = (tf.dice / 1000) + 1;
-
   tf.Damage = Math.floor(f.EnSTR * 0.3 * tf.randomNum);
   [endscript]
+  敵はくぬぎを締め上げた[lrcm]
   [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-  くぬぎの体力が[emb exp="tf.Damage"]減少した[l][r][cm]
+  くぬぎの体力が[emb exp="tf.Damage"]減少した[lrcm]
+  [showStatus]
   [jump storage="battle.ks" target="*戦闘終了" cond="f.EnHP <= 0"]
 [endif]
 
 [if exp="f.EnBindOption==3"]
-  敵はくぬぎの尻に股間を押し付けてきた[l][r][cm]
-  くぬぎ「ひっ！」[l][r][cm]
-  敵の興奮度が上昇した[l][r][cm]
   [iscript]
   f.EnERO = f.EnERO + Math.floor(10 * f.EnARS);
   [endscript]
+  敵はくぬぎの尻に股間を押し付けてきた[lrcm]
+  くぬぎ「ひっ！」[lrcm]
+  敵の興奮度が上昇した[lrcm]
+  [showStatus]
 [endif]
-[if exp="f.EnERO >= 100"][jump target="*敵絶頂組付時"][endif]
+[jump target="*敵絶頂組付時" cond="f.EnERO >= 100"]
 [jump target="*組付選択"]
+
+*拘束絶頂
+[cm]
+くぬぎ「あっ・・・・！」[lrcm]
+くぬぎ（嫌っ・・・こんな、ところで・・・・！！）[lrcm]
+くぬぎ（でも、もう我慢出来ない・・・・！！）[lrcm]
+くぬぎ「イクッ・・・・！！」[lrcm]
+くぬぎは絶頂を迎えた。[lrcm]
+[eval exp="f.ERO = 0"][showStatus]
+くぬぎの感度が上昇した。[lrcm]
+[eval exp="f.ARS = f.ARS + 0.1"][showStatus]
+[wait time=500]
+;組付選択等割愛
+くぬぎ「はぁ・・・・はぁ・・・・」[lrcm]
+絶頂の余韻でくぬぎは動けない！！[lrcm]
+[eval exp="f.StanOrga=1"][showStatus]
+[jump target="*組付攻撃"]
 
 *組付終了
 [eval exp="f.Clutch = 0"]
 [jump storage="battle.ks" target="*ターン開始"]
 
 *敵絶頂組付時
-敵「くそっ！もう堪らん！！」[l][r][cm]
-敵はくぬぎ押し倒した[l][r][cm]
+敵「くそっ！もう堪らん！！」[lrcm]
+敵はくぬぎ押し倒した[lrcm]
 [jump storage="bochu.ks" target="*房中開始"]

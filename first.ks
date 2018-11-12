@@ -72,6 +72,7 @@ f.Comand = 0;
 f.Pary = 0;//回避
 f.Undress = 0;//脱衣
 f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
+f.StanOrga = 0;//絶頂時のスタン
 f.stage = 1;
 [endscript]
 
@@ -134,6 +135,9 @@ f.EnVBuff = 1.0;
 f.EnStan = 0;
 [endscript]
 
+[macro name="lrcm"]
+[l][r][cm]
+[endmacro]
 
 [macro name="showStatus"]
 [freeimage layer=1]

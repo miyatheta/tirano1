@@ -66,7 +66,7 @@ if(f.STM < 0){f.STM = 0;}
 [iscript]
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-f.EnDamage = Math.floor(5 * f.EnARS * tf.dice);
+tf.EnDamage = Math.floor(5 * f.EnARS * tf.dice);
 f.EnERO = f.EnERO + tf.EnDamage;
 if(f.ERO > 100){f.ERO = 100;}
 [endscript]

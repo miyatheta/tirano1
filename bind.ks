@@ -25,34 +25,30 @@ if(tf.dice < 30){
 [s]
 
 *組付比較
+くぬぎは的に拘束されている！[lrcm]
+くぬぎの疲労度が上昇した[lrcm]
+[eval exp="f.TIR = f.TIR + 1"]
+[showStatus]
 くぬぎ「このっ!離しなさいよ！」[l][r]
 くぬぎは抵抗した！！[lrcm]
-[eval exp="f.FP = f.FP + 8"]
 
-[if exp="tf.hand == 'グー' && tf.EnHand == 'チョキ'"][eval exp="f.resist=2"][endif]
-[if exp="tf.hand == 'チョキ' && tf.EnHand == 'パー'"][eval exp="f.resist=2"][endif]
-[if exp="tf.hand == 'パー' && tf.EnHand == 'グー'"][eval exp="f.resist=2"][endif]
-[if exp="tf.hand == 'グー' && tf.EnHand == 'パー'"][eval exp="f.resist=0"][endif]
-[if exp="tf.hand == 'チョキ' && tf.EnHand == 'グー'"][eval exp="f.resist=0"][endif]
-[if exp="tf.hand == 'パー' && tf.EnHand == 'チョキ'"][eval exp="f.resist=0"][endif]
-[if exp="tf.hand == 'グー' && tf.EnHand == 'グー'"][eval exp="f.resist=1"][endif]
-[if exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ'"][eval exp="f.resist=1"][endif]
-[if exp="tf.hand == 'パー' && tf.EnHand == 'パー'"][eval exp="f.resist=1"][endif]
+[if exp="tf.hand == 'グー' && tf.EnHand == 'チョキ'"][eval exp="f.resist=5"][endif]
+[if exp="tf.hand == 'チョキ' && tf.EnHand == 'パー'"][eval exp="f.resist=5"][endif]
+[if exp="tf.hand == 'パー' && tf.EnHand == 'グー'"][eval exp="f.resist=5"][endif]
+[if exp="tf.hand == 'グー' && tf.EnHand == 'パー'"][eval exp="f.resist=1"][endif]
+[if exp="tf.hand == 'チョキ' && tf.EnHand == 'グー'"][eval exp="f.resist=1"][endif]
+[if exp="tf.hand == 'パー' && tf.EnHand == 'チョキ'"][eval exp="f.resist=1"][endif]
+[if exp="tf.hand == 'グー' && tf.EnHand == 'グー'"][eval exp="f.resist=2"][endif]
+[if exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ'"][eval exp="f.resist=2"][endif]
+[if exp="tf.hand == 'パー' && tf.EnHand == 'パー'"][eval exp="f.resist=2"][endif]
 
-[jump target="*抵抗失敗" cond="f.resist == 0"]
-
-[jump target="*抵抗成功" cond="f.resist > 0"]
-
-*抵抗失敗
-しかし、敵の拘束は緩まなかった[lrcm]
-[jump target="*組付攻撃"]
 
 *抵抗成功
 [iscript]
 tf.Min = 1, tf.Max = 20;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 tf.randomNum = (tf.dice / 100) + 1;
-f.resistPower = Math.floor(22 * f.resist * tf.randomNum);
+f.resistPower = Math.floor(9 * f.resist * tf.randomNum);
 f.BindPower = f.BindPower - f.resistPower;
 if(f.BindPower < 0){f.BindPower = 0;}
 [endscript]
@@ -62,10 +58,12 @@ if(f.BindPower < 0){f.BindPower = 0;}
 [jump target="*組付終了"]
 [endif]
 
-[if exp="f.resist > 1"]
+[if exp="f.resist > 2"]
 敵の拘束が大きく緩んだ。[lrcm]
-[else]
+[elsif exp="f.resist > 1"]
 敵の拘束が少し緩んだ。[lrcm]
+[else]
+しかし、敵の拘束は緩まなかった[lrcm]
 [endif]
 
 *組付攻撃
@@ -103,6 +101,7 @@ if(tf.dice < 30){
   敵はくぬぎを締め上げた[lrcm]
   [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
   くぬぎの体力が[emb exp="tf.Damage"]減少した[lrcm]
+  [eval exp="f.FP = f.FP + 10"]
   [showStatus]
   [jump storage="battle.ks" target="*戦闘終了" cond="f.EnHP <= 0"]
 [endif]

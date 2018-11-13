@@ -99,6 +99,7 @@ f.BaseEnFP = f.originEnFP;
 f.BaseEnERO = f.originEnERO;
 f.BaseEnARS = f.originEnARS;//arouse
 f.BaseEnEROAP = f.originEnEROAP;
+f.BaseEnTEC = f.originEnTEC;
 f.BaseEnEND = f.originEnEND;
 f.BaseBindPower = f.originBindPower;
 
@@ -110,6 +111,7 @@ f.EnFP = f.BaseEnFP;
 f.EnERO = f.BaseEnERO;
 f.EnARS = f.BaseEnARS;//arouse
 f.EnEROAP = f.BaseEnEROAP;
+f.EnTEC = f.BaseEnTEC;
 f.EnEND = f.BaseEnEND;
 f.BindPower = f.BaseBindPower;
 

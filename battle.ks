@@ -725,6 +725,7 @@ tf.ATP = Math.floor(10 * f.ARS * f.EnARS * tf.randomNum);
 tf.EnDFP = (100 - f.EnEND) / 100;
 tf.Damage = Math.floor(tf.ATP * tf.EnDFP);
 if(tf.Damage<0){tf.Damage=0;}
+f.ARS = f.ARS + 0.1;
 [endscript]
 [eval exp="f.EnERO = f.EnERO + tf.Damage"]
 [eval exp="f.CharmBuff = 25 , f.CharmET = 3"]
@@ -742,7 +743,7 @@ if(tf.Damage<0){tf.Damage=0;}
 [else]
   敵を倒した！！[lrcm]
   疲労度が上昇した[lrcm]
-  [eval exp="f.TIR = f.TIR + f.turn"]
+  [eval exp="f.TIR = f.TIR + 5 + f.turn"]
 [endif]
 [showStatus]
 ;戦闘終了処理

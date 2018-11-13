@@ -1,23 +1,156 @@
 *房中開始
 房中です[l][r][cm]
+[iscript]
+tf.React = 0;
+f.ERO = 0;
+[endscript]
 
-第一段階です[l][r][cm]
+*導入
+敵は装束を脱ぎ捨ててマラを取り出すと[r]くぬぎの腰を掴み、その秘所に荒々しく挿入した[lrcm]
+くぬぎ「あうっ！！」[lrcm]
 
-[eval exp="f.TempERO = f.TempERO + tf.Damage"]
+*会話
+敵「フハハハ！！どうだ我が愚息の味は！！たまらんだろう！？」[lrcm]
 
-[if exp="f.TempSTM <= 0"][jump target="房中敗北"][endif]
-[if exp="f.TempEnERO >= 100"][jump target="房中勝利"][endif]
+*行動選択通常
+[jump target="*行動選択屈服" cond="f.MND<=0"]
+くぬぎは・・・[lrcm]
+[glink target="*敵反応" text="選択肢1(強気・反抗的)" exp="" x=100 y=50]
+[glink target="*敵反応" text="選択肢2（挑発）" exp="" x=100 y=100]
+[glink target="*敵反応" text="選択肢3（弱気・従順）" exp="" x=100 y=150]
+[glink target="*敵反応" text="選択肢4（無反応）" exp="" x=100 y=200]
+[s]
 
+*行動選択屈服
+くぬぎ「はいっ！！あんっ！！太くてぇっ！！[wait time=100]
+たくましくてぇ！んあっ！！[wait time=100]
+たまらないですっ！！！」[lrcm]
+反抗心を失ったくぬぎは敵の言葉を肯定してしまう[lrcm]
+[eval exp="tf.React=1"]
+[jump target="*敵攻撃"]
 
+*敵反応
+[iscript]
+tf.Min = 0, tf.Max = 99;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+if(tf.dice < 50){
+  tf.React = 0;//ネガティブ
+} else{
+  tf.React = 1;//ポジティブ
+}
+[endscript]
 
-[if exp="f.TempSTM <= 0"][jump target="房中敗北"][endif]
-[if exp="f.TempEnERO >= 100"][jump target="房中勝利"][endif]
+[if exp="tf.React==0"]
+敵はくぬぎの反応に幻滅したようだ[lrcm]
+[jump target="*敵攻撃"]
+[endif]
 
+[if exp="tf.React==1"]
+敵はくぬぎの反応に興奮したようだ[lrcm]
+敵の好感度上昇[lrcm]
+[eval exp="f.EnARS = f.EnARS + 0.1"]
+[jump target="*敵攻撃"]
+[endif]
 
-*房中敗北
-くぬぎ「はぁ・・・・はぁ・・・・」[l][r][cm]
-くぬぎ「もう、だめぇ・・・・」[l][r][cm]
+*敵攻撃
+[iscript]
+tf.Min = 0, tf.Max = 50;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+tf.Damage = Math.floor(f.EnTEC * f.ARS * tf.dice / 100);
+f.ERO = f.ERO + tf.Damage;
+if(f.ERO > 100){f.ERO = 100;}
+f.STM = f.STM - 10;
+if(f.STM < 0){f.STM = 0;}
+[endscript]
+
+[iscript]
+tf.Min = 0, tf.Max = 50;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+f.EnDamage = Math.floor(5 * f.EnARS * tf.dice);
+f.EnERO = f.EnERO + tf.EnDamage;
+if(f.ERO > 100){f.ERO = 100;}
+[endscript]
+敵は激しく腰を前後した[lrcm]
+くぬぎ「あんっ！ああっ！！」[lrcm]
+くぬぎの快感度が[emb exp="tf.Damage"]上昇した[lrcm]
+敵の興奮度が[emb exp="tf.EnDamage"]上昇した[lrcm]
+[showStatus]
+
+[jump target="絶頂" cond="f.ERO >= 100"]
+[jump target="房中敗北B" cond="f.EnERO >= 100 && f.MND <= 0"]
+[jump target="房中敗北B" cond="f.STM <= 0 && f.MND <= 0"]
+[jump target="房中敗北A" cond="f.STM <= 0"]
+[jump target="房中勝利" cond="f.EnERO >= 100"]
+
+*絶頂
+くぬぎ「だめっ！！イクっ！！イクっ！！ああああああああっ！！」[lrcm]
+くぬぎは絶頂を迎えた[lrcm]
+[iscript]
+f.ERO = 0;
+f.STM = f.STM - 30;
+f.MND = f.MND - (f.ARS * 10);
+[endscript]
+[showStatus]
+[jump target="房中敗北A" cond="f.STM <= 0"]
+[jump target="房中敗北B" cond="f.EnERO >= 100 && f.MND <= 0"]
+[jump target="房中敗北B" cond="f.STM <= 0 && f.MND <= 0"]
+
+*房中敗北A
+;スタミナ切れ
+敗北A[lrcm]
+くぬぎ「はぁ・・・・はぁ・・・・」[lrcm]
+くぬぎ「もう、だめぇ・・・・」[lrcm]
+敵の激しい責めにくぬぎは音を上げた[lrcm]
+くぬぎ「あ、待って・・・少し・・・休ませてぇ」[lrcm]
+思わず情けない声で哀願してしまうが、敵がそれを聞き入れるはずもない[lrcm]
+敵「何をこの程度で弱音を吐くとは！くのいちの風上にもおけぬな！！」[lrcm]
+敵はぐったりとしたくぬぎをうつ伏せにひっくり返すと背後から激しく突き立てた[lrcm]
+くぬぎ「ああん！！あうん！！」[lrcm]
+くぬぎの嬌声と腰を打ちつける音だけが響き続ける[lrcm]
+それは完全に一方的な陵辱だった[lrcm]
+敵「くっ！！出すぞ！！」[lrcm]
+挿入を繰り返していた敵もいよいよ辛抱たまらなくなったらしい[lrcm]
+一際激しく腰を前後させてから、一気にくぬぎの最奥まで貫くとそこで精を解き放った[lrcm]
+くぬぎ「ああああああああああっ！！！」
 激しい快楽に焼かれ白く染まった意識をくぬぎは手放した[l][r][cm]
+[iscript]
+f.ERO = 0;
+f.STM = f.BaseSTM;
+f.MND = f.BaseMND;
+[endscript]
+[showStatus]
+くぬぎは敗北した[lrcm][wait time=1000]
+[jump storage="selectStage.ks" target="*エネミー選択"]
+
+*房中敗北B
+;抵抗力切れ & スタミナ切れ OR 敵興奮度MAX
+敗北B[lrcm]
+くぬぎ「あんっ！！あんっ！！」[lrcm]
+敵「フハハハ！！どうだ小娘が！！」[lrcm]
+抵抗する気力を失ったくぬぎは敵のなすがままに犯されていた[lrcm]
+くぬぎ「も、もう、やめてぇ・・・・」[lrcm]
+敵の激しい責めにくぬぎは音を上げた[lrcm]
+思わず情けない声で哀願してしまうが、敵がそれを聞き入れるはずもない[lrcm]
+敵「ぬかせ！これからが本番よ！！」[lrcm]
+敵はぐったりとしたくぬぎをうつ伏せにひっくり返すと背後から激しく突き立てた[lrcm]
+くぬぎ「ああん！！あうん！！」[lrcm]
+さらにそのまま両腕を捻り上げむりやりくぬぎの上体を引き起こす。[r]
+のけぞるような格好になったくぬぎの中を抉るように敵の剛直が抜き差しされる[lrcm]
+くぬぎ「あぐぅん！！ぃんっ！！」
+くぬぎの嬌声・・・というよりもはや悲鳴と腰を打ちつける音だけが響き続ける[lrcm]
+それは完全に一方的な陵辱だった[lrcm]
+敵「くっ！！出すぞ！！！」[lrcm]
+挿入を繰り返していた敵もいよいよ辛抱たまらなくなったらしい[lrcm]
+一際激しく腰を前後させてから、一気にくぬぎの最奥まで貫くとそこで精を解き放った[lrcm]
+くぬぎ「うああああああああああっ！！！」
+激しい快楽に焼かれ白く染まった意識をくぬぎは手放した[l][r][cm]
+[iscript]
+f.ERO = 0;
+f.STM = f.BaseSTM;
+f.MND = f.BaseMND;
+[endscript]
+[showStatus]
+くぬぎは敗北した[lrcm][wait time=1000]
 [jump storage="selectStage.ks" target="*エネミー選択"]
 
 
@@ -44,4 +177,11 @@
 くぬぎ「極楽浄土。見えたかしら？」[l][r][cm]
 くぬぎの疲労度が回復した[r]
 [eval exp="f.TIR = f.TIR - 20"][eval exp="f.TIR = 0" cond="f.TIR < 0"]
+[iscript]
+f.ERO = 0;
+f.STM = f.BaseSTM;
+f.MND = f.BaseMND;
+[endscript]
+[showStatus]
+くぬぎは勝利した[lrcm][wait time=1000]
 [jump storage="selectStage.ks" target="*エネミー選択"]

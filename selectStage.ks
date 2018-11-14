@@ -41,7 +41,7 @@ f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 [iscript]
 //敵の設定
 f.originEnHP = 1000;
-f.originEnSTR = 80;
+f.originEnSTR = 85;
 f.originEnDEF = 50;
 f.originEnSPD = 60;
 f.originEnFP = 0;
@@ -51,16 +51,12 @@ f.originEnTEC = 50;//技術力
 f.originEnEND = 20;//忍耐力
 f.originBindPower = 100;
 
-f.originEnOption=[
-{id:0, hand:'グー', name:'力', switch:0},
-{id:1, hand:'グー', name:'力', switch:0},
-{id:2, hand:'グー', name:'力', switch:0},
-{id:3, hand:'チョキ', name:'技', switch:0},
-{id:4, hand:'チョキ', name:'技', switch:0},
-{id:5, hand:'チョキ', name:'技', switch:0},
-{id:6, hand:'パー', name:'速', switch:0},
-{id:7, hand:'パー', name:'速', switch:0},
-{id:8, hand:'パー', name:'速', switch:0}];
+f.originEnOption[0] = ['グー','チョキ','チョキ','パー','パー','グー','グー','パー','チョキ'];
+f.originEnOption[1] = ['グー','パー','グー','チョキ','パー','グー','チョキ','チョキ','パー'];
+f.originEnOption[2] = ['パー','チョキ','グー','チョキ','パー','グー','パー','チョキ','グー'];
+f.originEnOption[3] = ['チョキ','グー','グー','チョキ','パー','チョキ','パー','パー','グー'];
+f.originEnOption[4] = ['チョキ','チョキ','グー','チョキ','パー','グー','グー','パー','パー'];
+f.originEnOption[5] = ['チョキ','グー','チョキ','パー','パー','グー','グー','パー','チョキ'];
 
 f.ClutchRate = 20;//組付初期値
 [endscript]
@@ -70,7 +66,7 @@ f.ClutchRate = 20;//組付初期値
 [iscript]
 //敵の設定
 f.originEnHP = 1000;
-f.originEnSTR = 85;
+f.originEnSTR = 90;
 f.originEnDEF = 70;
 f.originEnSPD = 30;
 f.originEnFP = 0;
@@ -92,6 +88,7 @@ f.originEnOption=[
 {id:8, hand:'パー', name:'速', switch:0}];
 
 f.ClutchRate = 0;//組付初期値
+
 [endscript]
 [jump target="*敵設定読込"]
 
@@ -99,7 +96,7 @@ f.ClutchRate = 0;//組付初期値
 [iscript]
 //敵の設定
 f.originEnHP = 1000;
-f.originEnSTR = 75;
+f.originEnSTR = 80;
 f.originEnDEF = 80;
 f.originEnSPD = 40;
 f.originEnFP = 0;

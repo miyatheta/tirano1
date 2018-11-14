@@ -245,7 +245,7 @@ alert("くぬぎ　\n体力：" + f.HP + "　すばやさ：" + f.SPD + "　気�
 [macro name="Damage"]
 [iscript]
 if(f.VB > 2){
-  f.VBonus = 1.3;
+  f.VBonus = 1.4;
 }else if(f.VB > 1){
   f.VBonus = 1.2;
 }else{
@@ -259,7 +259,7 @@ tf.randomNum= (tf.dice / 1000) + 1;
 tf.Buff = f.VBonus * f.VBuff;
 
 tf.ATP = Math.floor(f.STR * 1.8 * tf.Buff * tf.randomNum);
-tf.EnDFP = Math.floor(f.EnDEF);
+tf.EnDFP = Math.floor(f.EnDEF * 1.2);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 
@@ -277,8 +277,8 @@ if(f.HP < f.EnHP){
   f.HPBonus = (f.EnHP - f.HP)/f.EnHP + 1;
 }
 
-tf.ATP = Math.floor(300 * f.HPBonus * tf.randomNum);
-tf.EnDFP = Math.floor(f.EnDEF);
+tf.ATP = Math.floor(f.STR * 4.5  * f.HPBonus * tf.randomNum);
+tf.EnDFP = Math.floor(f.EnDEF * 1.2);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]

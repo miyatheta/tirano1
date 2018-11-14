@@ -25,7 +25,7 @@ if(tf.dice < 30){
 [s]
 
 *組付比較
-くぬぎは的に拘束されている！[lrcm]
+くぬぎは敵に拘束されている！[lrcm]
 くぬぎの疲労度が上昇した[lrcm]
 [eval exp="f.TIR = f.TIR + 1"]
 [showStatus]

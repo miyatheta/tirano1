@@ -2,16 +2,15 @@
 [iscript]
 //環境変数
 f.turn = 0;
+f.Priority = 0;
 f.BindCount = 0;
 f.ClutchTurn = 0
 [endscript]
 
-*ターン開始
-[position width=960 height=480 top=0 left=0]
 [macro name="EnDamage"]
 [iscript]
 if(f.EnVB > 2){
-  f.EnVBonus = 1.3;
+  f.EnVBonus = 1.4;
 }else if(f.EnVB > 1){
   f.EnVBonus = 1.2;
 }else{
@@ -29,7 +28,7 @@ if (tf.DeBuff < 0){tf.DeBuff = 0};
 //alert('バフは' + tf.Buff + '、デバフは' +tf.DeBuff);
 
 tf.EnATP = Math.floor(f.EnSTR * 1.8 * tf.Buff * tf.DeBuff * tf.randomNum);
-tf.DFP = Math.floor(f.DEF);
+tf.DFP = Math.floor(f.DEF * 1.2);
 tf.Damage = tf.EnATP - tf.DFP;
 if(tf.Damage<0){tf.Damage=0;}
 
@@ -55,6 +54,10 @@ tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 [endmacro]
+
+
+*ターン開始
+[position width=960 height=480 top=0 left=0]
 
 [iscript]
 if(f.SPD < 0){
@@ -291,15 +294,14 @@ if(f.return==1){
 f.selectOption[f.count-3].switch=2;//配列の参照型を利用して選択肢をオンに
 f.selectOption[f.count-2].switch=2;
 f.selectOption[f.count-1].switch=2;
-[endscript]
-[iscript]
+
 f.N=0;
 f.H=f.count-3;
 f.VP=0;
 f.VB=0;
 f.EnVB=0;
-[endscript]
-[iscript]
+if(f.SPD > f.EnSPD){f.Priority = 1;} else {f.Priority = 0;}
+
 f.PictHand1 = "hand/PL" + f.selectOption[f.count-3].hand + ".png";
 f.PictHand2 = "hand/PL" + f.selectOption[f.count-2].hand + ".png";
 f.PictHand3 = "hand/PL" + f.selectOption[f.count-1].hand + ".png";
@@ -355,7 +357,7 @@ tf.Hight =  f.N * 150 + 50;
   ;勝利(VP+1)　くぬぎのすばやさ上昇[r]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
-  [eval exp="f.SPD = f.SPD + 5"]
+  [eval exp="f.SPD = f.SPD + 5" cond="f.SPD < f.BaseSPD"]
   [image layer=0 storage="hand/マル.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
   [image layer=0 storage="buff/SPDup.png" width="100" top="&tf.Hight" left="280" visible="true"]
@@ -365,7 +367,7 @@ tf.Hight =  f.N * 150 + 50;
   ;敗北(VP-1)　敵のすばやさ上昇[r]
   [eval exp="f.VP = f.VP - 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
-  [eval exp="f.EnSPD = f.EnSPD + 5"]
+  [eval exp="f.EnSPD = f.EnSPD + 5" cond="f.EnSPD < f.BaseEnSPD"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/マル.png" width="100" top="&tf.Hight" left="480" visible="true"]
   [image layer=0 storage="buff/SPDup.png" width="100" top="&tf.Hight" left="580" visible="true"]
@@ -377,7 +379,7 @@ tf.Hight =  f.N * 150 + 50;
   [eval exp="f.EnVBuff = f.EnVBuff + 0.1"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/マル.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=0 storage="buff/SPDup.png" width="100" top="&tf.Hight" left="580" visible="true"]
+  [image layer=0 storage="buff/STRup.png" width="100" top="&tf.Hight" left="580" visible="true"]
 [endif]
 [if exp="tf.hand == 'パー' && tf.EnHand == 'チョキ'"]
   ;敗北(VP-1)　敵の気力上昇[r]
@@ -389,49 +391,49 @@ tf.Hight =  f.N * 150 + 50;
   [image layer=0 storage="buff/FPup.png" width="100" top="&tf.Hight" left="580" visible="true"]
 [endif]
 
-[if exp="tf.hand == 'グー' && tf.EnHand == 'グー' && f.SPD >= f.EnSPD"]
+[if exp="tf.hand == 'グー' && tf.EnHand == 'グー' && f.Priority == 1"]
   ;相討(VP+1)　くぬぎのすばやさ低下[r]
   [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.SPD = f.SPD -10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+  [eval exp="f.SPD = f.SPD - 20"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
   [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
-[elsif exp="tf.hand == 'グー' && tf.EnHand == 'グー' && f.SPD < f.EnSPD"]
+[elsif exp="tf.hand == 'グー' && tf.EnHand == 'グー' && f.Priority != 1"]
   ;相討(VP-1)　敵のすばやさ低下[r]
   [eval exp="f.VP = f.VP - 1"]
-  [eval exp="f.EnSPD = f.EnSPD - 10"][eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
+  [eval exp="f.EnSPD = f.EnSPD - 20"][eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
   [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
 [endif]
 
-[if exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.SPD >= f.EnSPD"]
+[if exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.Priority == 1"]
   ;相討(VP+1)　くぬぎのすばやさ低下[r]
   [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+  [eval exp="f.SPD = f.SPD - 20"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
   [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
-[elsif exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.SPD < f.EnSPD"]
+[elsif exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.Priority != 1"]
   ;相討(VP-1)　敵のすばやさ低下[r]
   [eval exp="f.VP = f.VP - 1"]
-  [eval exp="f.EnSPD = f.EnSPD - 10"][eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
+  [eval exp="f.EnSPD = f.EnSPD - 20"][eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
   [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
 [endif]
 
-[if exp="tf.hand == 'パー' && tf.EnHand == 'パー' && f.SPD >= f.EnSPD"]
+[if exp="tf.hand == 'パー' && tf.EnHand == 'パー' && f.Priority == 1"]
   ;相討(VP+1)　くぬぎのすばやさ低下[r]
   [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+  [eval exp="f.SPD = f.SPD - 20"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
   [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
-[elsif exp="tf.hand == 'パー' && tf.EnHand == 'パー' && f.SPD < f.EnSPD"]
+[elsif exp="tf.hand == 'パー' && tf.EnHand == 'パー' && f.Priority != 1"]
   ;相討(VP-1)　敵のすばやさ低下[r]
   [eval exp="f.VP = f.VP - 1"]
-  [eval exp="f.EnSPD = f.EnSPD - 10"][eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
+  [eval exp="f.EnSPD = f.EnSPD - 20"][eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
   [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
@@ -510,8 +512,8 @@ tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 tf.randomNum = (tf.dice / 1000) + 1;
 
-tf.ATP = Math.floor(f.STR * 3.5 * tf.randomNum);
-tf.EnDFP = Math.floor(f.EnDEF);
+tf.ATP = Math.floor(f.STR * 3.3 * tf.randomNum);
+tf.EnDFP = Math.floor(f.EnDEF * 1.2);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
@@ -531,8 +533,8 @@ tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 tf.randomNum = (tf.dice / 1000) + 1;
 
-tf.ATP = Math.floor(f.STR * 3.5 * tf.randomNum);
-tf.EnDFP = Math.floor(f.EnDEF);
+tf.ATP = Math.floor(f.STR * 3.3 * tf.randomNum);
+tf.EnDFP = Math.floor(f.EnDEF * 1.2);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
@@ -552,8 +554,8 @@ tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 tf.randomNum = (tf.dice / 1000) + 1;
 
-tf.ATP = Math.floor(f.STR * 3.5 * tf.randomNum);
-tf.EnDFP = Math.floor(f.EnDEF);
+tf.ATP = Math.floor(f.STR * 3.3 * tf.randomNum);
+tf.EnDFP = Math.floor(f.EnDEF * 1.2);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
@@ -609,8 +611,6 @@ if(f.EnCount>2){
   f.EnCount=0;
 }
 [endscript]
-[eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
-[eval exp="f.EnSPD = f.EnSPD - 10"][eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
 
 [if exp="f.EnStan == 1"]
 敵は行動不能から復帰した[lrcm]

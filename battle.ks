@@ -97,21 +97,11 @@ f.turn++;
 [iscript]
 //敵の行動パターン抽選
 if(f.EnCount==0){
-  tf.Min = 0, tf.Max = 5;
+  tf.Min = 1, tf.Max = 6;
   tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-  if(tf.dice == 0){
-    f.EnSelectOption = ['グー','チョキ','チョキ','パー','パー','グー','グー','パー','チョキ'];
-  }else if(tf.dice == 1){
-    f.EnSelectOption = ['グー','パー','グー','チョキ','パー','グー','チョキ','チョキ','パー'];
-  }else if(tf.dice == 2){
-    f.EnSelectOption = ['パー','チョキ','グー','チョキ','パー','グー','パー','チョキ','グー'];
-  }else if(tf.dice == 3){
-    f.EnSelectOption = ['チョキ','グー','グー','チョキ','パー','チョキ','パー','パー','グー'];
-  }else if(tf.dice == 4){
-    f.EnSelectOption = ['チョキ','チョキ','グー','チョキ','パー','グー','グー','パー','パー'];
-  }else if(tf.dice == 5){
-    f.EnSelectOption = ['チョキ','グー','チョキ','パー','パー','グー','グー','パー','チョキ'];
-  }
+  f.EnSelectOption = [];
+  f.EnSelectOption = JSON.stringify(f.originEnOption[tf.dice]);
+  f.EnSelectOption = JSON.parse(f.EnSelectOption);
 }
 
 //１手目開示
@@ -394,14 +384,14 @@ tf.Hight =  f.N * 150 + 50;
 [if exp="tf.hand == 'グー' && tf.EnHand == 'グー' && f.Priority == 1"]
   ;相討(VP+1)　くぬぎのすばやさ低下[r]
   [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.SPD = f.SPD - 20"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+  [eval exp="f.SPD = f.SPD - 20"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
   [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
 [elsif exp="tf.hand == 'グー' && tf.EnHand == 'グー' && f.Priority != 1"]
   ;相討(VP-1)　敵のすばやさ低下[r]
   [eval exp="f.VP = f.VP - 1"]
-  [eval exp="f.EnSPD = f.EnSPD - 20"][eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
+  [eval exp="f.EnSPD = f.EnSPD - 20"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
   [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
@@ -410,14 +400,14 @@ tf.Hight =  f.N * 150 + 50;
 [if exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.Priority == 1"]
   ;相討(VP+1)　くぬぎのすばやさ低下[r]
   [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.SPD = f.SPD - 20"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+  [eval exp="f.SPD = f.SPD - 20"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
   [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
 [elsif exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.Priority != 1"]
   ;相討(VP-1)　敵のすばやさ低下[r]
   [eval exp="f.VP = f.VP - 1"]
-  [eval exp="f.EnSPD = f.EnSPD - 20"][eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
+  [eval exp="f.EnSPD = f.EnSPD - 20"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
   [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
@@ -426,14 +416,14 @@ tf.Hight =  f.N * 150 + 50;
 [if exp="tf.hand == 'パー' && tf.EnHand == 'パー' && f.Priority == 1"]
   ;相討(VP+1)　くぬぎのすばやさ低下[r]
   [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.SPD = f.SPD - 20"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+  [eval exp="f.SPD = f.SPD - 20"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
   [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
 [elsif exp="tf.hand == 'パー' && tf.EnHand == 'パー' && f.Priority != 1"]
   ;相討(VP-1)　敵のすばやさ低下[r]
   [eval exp="f.VP = f.VP - 1"]
-  [eval exp="f.EnSPD = f.EnSPD - 20"][eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
+  [eval exp="f.EnSPD = f.EnSPD - 20"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
   [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
@@ -444,6 +434,8 @@ tf.Hight =  f.N * 150 + 50;
   [jump target="*判定"]
 [endif]
 
+[eval exp="f.SPD = 0" cond="f.SPD < 0"]
+[eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
 [lrcm][wait time="500"]
 [showStatus]
 [if exp="f.VP>0"]

@@ -2,7 +2,7 @@
 房中です[l][r][cm]
 [iscript]
 tf.React = 0;
-f.ERO = 0;
+f.EnERO = 0;
 [endscript]
 
 *導入
@@ -56,7 +56,8 @@ if(tf.dice < 50){
 [iscript]
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-tf.Damage = Math.floor(f.EnTEC * f.ARS * tf.dice / 100);
+tf.randomNum = (tf.dice / 1000) + 1;
+tf.Damage = Math.floor(f.EnTEC/10 * f.ARS * tf.randomNum);
 f.ERO = f.ERO + tf.Damage;
 if(f.ERO > 100){f.ERO = 100;}
 f.STM = f.STM - 10;
@@ -66,7 +67,8 @@ if(f.STM < 0){f.STM = 0;}
 [iscript]
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-tf.EnDamage = Math.floor(5 * f.EnARS * tf.dice);
+tf.randomNum = (tf.dice / 1000) + 1;
+tf.EnDamage = Math.floor(5 * f.EnARS * tf.randomNum);
 f.EnERO = f.EnERO + tf.EnDamage;
 if(f.ERO > 100){f.ERO = 100;}
 [endscript]

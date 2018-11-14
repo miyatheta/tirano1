@@ -51,12 +51,13 @@ f.originEnTEC = 50;//技術力
 f.originEnEND = 20;//忍耐力
 f.originBindPower = 100;
 
-f.originEnOption[0] = ['グー','チョキ','チョキ','パー','パー','グー','グー','パー','チョキ'];
-f.originEnOption[1] = ['グー','パー','グー','チョキ','パー','グー','チョキ','チョキ','パー'];
-f.originEnOption[2] = ['パー','チョキ','グー','チョキ','パー','グー','パー','チョキ','グー'];
-f.originEnOption[3] = ['チョキ','グー','グー','チョキ','パー','チョキ','パー','パー','グー'];
-f.originEnOption[4] = ['チョキ','チョキ','グー','チョキ','パー','グー','グー','パー','パー'];
-f.originEnOption[5] = ['チョキ','グー','チョキ','パー','パー','グー','グー','パー','チョキ'];
+f.originEnOption[0] = ['グー','グー','グー','チョキ','チョキ','チョキ','チョキ','パー','パー'];
+f.originEnOption[1] = ['グー','チョキ','チョキ','パー','チョキ','グー','グー','パー','チョキ'];
+f.originEnOption[2] = ['グー','パー','グー','チョキ','チョキ','グー','チョキ','チョキ','パー'];
+f.originEnOption[3] = ['パー','チョキ','グー','チョキ','パー','グー','パー','チョキ','グー'];
+f.originEnOption[4] = ['チョキ','グー','グー','チョキ','パー','チョキ','パー','チョキ','グー'];
+f.originEnOption[5] = ['チョキ','チョキ','グー','チョキ','パー','グー','グー','チョキ','パー'];
+f.originEnOption[6] = ['チョキ','グー','チョキ','パー','チョキ','グー','グー','パー','チョキ'];
 
 f.ClutchRate = 20;//組付初期値
 [endscript]
@@ -76,16 +77,13 @@ f.originEnTEC = 50;//技術力
 f.originEnEND = 50;//忍耐力
 f.originBindPower = 80;
 
-f.originEnOption=[
-{id:0, hand:'グー', name:'力', switch:0},
-{id:1, hand:'グー', name:'力', switch:0},
-{id:2, hand:'グー', name:'力', switch:0},
-{id:3, hand:'チョキ', name:'技', switch:0},
-{id:4, hand:'チョキ', name:'技', switch:0},
-{id:5, hand:'チョキ', name:'技', switch:0},
-{id:6, hand:'パー', name:'速', switch:0},
-{id:7, hand:'パー', name:'速', switch:0},
-{id:8, hand:'パー', name:'速', switch:0}];
+f.originEnOption[0] = ['グー','グー','グー','グー','チョキ','チョキ','チョキ','パー','パー'];
+f.originEnOption[1] = ['グー','チョキ','チョキ','パー','グー','グー','グー','パー','チョキ'];
+f.originEnOption[2] = ['グー','グー','グー','チョキ','パー','グー','チョキ','チョキ','パー'];
+f.originEnOption[3] = ['パー','チョキ','グー','チョキ','パー','グー','グー','チョキ','グー'];
+f.originEnOption[4] = ['チョキ','グー','グー','チョキ','パー','チョキ','パー','グー','グー'];
+f.originEnOption[5] = ['チョキ','チョキ','グー','チョキ','パー','グー','グー','グー','パー'];
+f.originEnOption[6] = ['チョキ','グー','チョキ','パー','グー','グー','グー','パー','チョキ'];
 
 f.ClutchRate = 0;//組付初期値
 
@@ -106,16 +104,13 @@ f.originEnTEC = 50;//技術力
 f.originEnEND = 10;//忍耐力
 f.originBindPower = 120;
 
-f.originEnOption=[
-{id:0, hand:'グー', name:'力', switch:0},
-{id:1, hand:'グー', name:'力', switch:0},
-{id:2, hand:'グー', name:'力', switch:0},
-{id:3, hand:'チョキ', name:'技', switch:0},
-{id:4, hand:'チョキ', name:'技', switch:0},
-{id:5, hand:'チョキ', name:'技', switch:0},
-{id:6, hand:'パー', name:'速', switch:0},
-{id:7, hand:'パー', name:'速', switch:0},
-{id:8, hand:'パー', name:'速', switch:0}];
+f.originEnOption[0] = ['グー','グー','チョキ','チョキ','チョキ','チョキ','パー','パー','パー'];
+f.originEnOption[1] = ['グー','チョキ','チョキ','パー','パー','チョキ','グー','パー','チョキ'];
+f.originEnOption[2] = ['グー','パー','チョキ','チョキ','パー','グー','チョキ','チョキ','パー'];
+f.originEnOption[3] = ['パー','チョキ','グー','チョキ','パー','チョキ','パー','チョキ','グー'];
+f.originEnOption[4] = ['チョキ','グー','チョキ','チョキ','パー','チョキ','パー','パー','グー'];
+f.originEnOption[5] = ['チョキ','チョキ','グー','チョキ','パー','チョキ','グー','パー','パー'];
+f.originEnOption[6] = ['チョキ','グー','チョキ','パー','パー','チョキ','グー','パー','チョキ'];
 
 f.ClutchRate = 50;//組付初期値
 [endscript]

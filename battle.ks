@@ -4,7 +4,9 @@
 f.turn = 0;
 f.Priority = 0;
 f.BindCount = 0;
-f.ClutchTurn = 0
+f.ClutchTurn = 0;
+f.SPD = f.SPD - f.TIR;
+if(f.SPD<0){f.SPD=0};
 [endscript]
 
 [macro name="EnDamage"]
@@ -344,7 +346,7 @@ tf.Hight =  f.N * 150 + 50;
   [image layer=0 storage="buff/FPup.png" width="100" top="&tf.Hight" left="280" visible="true"]
 [endif]
 [if exp="tf.hand == 'パー' && tf.EnHand == 'グー'"]
-  ;勝利(VP+1)　くぬぎのすばやさ上昇[r]
+  ;勝利(VP+1)　くぬぎの敏捷上昇[r]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.SPD = f.SPD + 5" cond="f.SPD < f.BaseSPD"]
@@ -354,7 +356,7 @@ tf.Hight =  f.N * 150 + 50;
 [endif]
 
 [if exp="tf.hand == 'グー' && tf.EnHand == 'パー'"]
-  ;敗北(VP-1)　敵のすばやさ上昇[r]
+  ;敗北(VP-1)　敵の敏捷上昇[r]
   [eval exp="f.VP = f.VP - 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
   [eval exp="f.EnSPD = f.EnSPD + 5" cond="f.EnSPD < f.BaseEnSPD"]
@@ -382,51 +384,51 @@ tf.Hight =  f.N * 150 + 50;
 [endif]
 
 [if exp="tf.hand == 'グー' && tf.EnHand == 'グー' && f.Priority == 1"]
-  ;相討(VP+1)　くぬぎのすばやさ低下[r]
+  ;相討(VP+1)　くぬぎの敏捷低下[r]
   [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.SPD = f.SPD - 20"]
+  ;[eval exp="f.SPD = f.SPD - 20"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  ;[image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
 [elsif exp="tf.hand == 'グー' && tf.EnHand == 'グー' && f.Priority != 1"]
-  ;相討(VP-1)　敵のすばやさ低下[r]
+  ;相討(VP-1)　敵の敏捷低下[r]
   [eval exp="f.VP = f.VP - 1"]
-  [eval exp="f.EnSPD = f.EnSPD - 20"]
+  ;[eval exp="f.EnSPD = f.EnSPD - 20"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
+  ;[image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
 [endif]
 
 [if exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.Priority == 1"]
-  ;相討(VP+1)　くぬぎのすばやさ低下[r]
+  ;相討(VP+1)　くぬぎの敏捷低下[r]
   [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.SPD = f.SPD - 20"]
+  ;[eval exp="f.SPD = f.SPD - 20"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  ;[image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
 [elsif exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.Priority != 1"]
-  ;相討(VP-1)　敵のすばやさ低下[r]
+  ;相討(VP-1)　敵の敏捷低下[r]
   [eval exp="f.VP = f.VP - 1"]
-  [eval exp="f.EnSPD = f.EnSPD - 20"]
+  ;[eval exp="f.EnSPD = f.EnSPD - 20"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
+  ;[image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
 [endif]
 
 [if exp="tf.hand == 'パー' && tf.EnHand == 'パー' && f.Priority == 1"]
-  ;相討(VP+1)　くぬぎのすばやさ低下[r]
+  ;相討(VP+1)　くぬぎの敏捷低下[r]
   [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.SPD = f.SPD - 20"]
+  ;[eval exp="f.SPD = f.SPD - 20"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  ;[image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
 [elsif exp="tf.hand == 'パー' && tf.EnHand == 'パー' && f.Priority != 1"]
-  ;相討(VP-1)　敵のすばやさ低下[r]
+  ;相討(VP-1)　敵の敏捷低下[r]
   [eval exp="f.VP = f.VP - 1"]
-  [eval exp="f.EnSPD = f.EnSPD - 20"]
+  ;[eval exp="f.EnSPD = f.EnSPD - 20"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
+  ;[image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
 [endif]
 
 [if exp="f.N<2"]
@@ -445,7 +447,7 @@ tf.Hight =  f.N * 150 + 50;
 [else]
   [freeimage layer=0]
   敵の攻撃![lrcm]
-  [jump target="*敵ダメージ計算"]
+  [jump target="*敵通常攻撃"]
 [endif]
 
 *敵行動不能
@@ -472,7 +474,7 @@ tf.hand = f.selectOption[f.H].hand;
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.SPD = f.SPD + 5"]
   [image layer=0 storage="buff/SPDup.png" width="100" top="&tf.Hight" left="280" visible="true"]
-  ;勝利(VP+1)　くぬぎのすばやさ上昇[r]
+  ;勝利(VP+1)　くぬぎの敏捷上昇[r]
 [endif]
 
 [if exp="f.N<2"]
@@ -499,6 +501,7 @@ if(f.selectOption[f.count-3].hand == "チョキ" && f.selectOption[f.count-2].ha
 }
 [endscript]
 [if exp="f.Comand == 1"]
+[jump target="*通常攻撃" cond="f.SPD < 10"]
 [iscript]
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
@@ -511,15 +514,17 @@ if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 「忍法・旋風！」[lrcm]
 敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
-くぬぎの疲労度が上昇した[lrcm]
+くぬぎの敏捷が減少した[lrcm]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
+[eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+;[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
 [eval exp="f.EnFP = f.EnFP + 20"]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
 [jump target="*戦闘続行" cond="f.EnHP > 0"]
 
 [elsif exp="f.Comand == 2"]
+[jump target="*通常攻撃" cond="f.SPD < 10"]
 [iscript]
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
@@ -532,15 +537,17 @@ if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 「忍法・陽炎！」[lrcm]
 敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
-くぬぎの疲労度が上昇した[lrcm]
+くぬぎの敏捷が減少した[lrcm]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
+[eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+;[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
 [eval exp="f.EnFP = f.EnFP + 20"]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
 [jump target="*戦闘続行" cond="f.EnHP > 0"]
 
 [elsif exp="f.Comand == 3"]
+[jump target="*通常攻撃" cond="f.SPD < 10"]
 [iscript]
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
@@ -553,9 +560,10 @@ if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 「忍法・五月雨！」[lrcm]
 敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
-くぬぎの疲労度が上昇した[lrcm]
+くぬぎの敏捷が減少した[lrcm]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
+[eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+;[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
 [eval exp="f.EnFP = f.EnFP + 20"]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
@@ -563,7 +571,7 @@ if(tf.Damage<0){tf.Damage=0;}
 
 [endif]
 
-*ダメージ計算
+*通常攻撃
 [Damage]
 敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
@@ -572,7 +580,7 @@ if(tf.Damage<0){tf.Damage=0;}
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
 [jump target="*戦闘続行" cond="f.EnHP > 0"]
 
-*敵ダメージ計算
+*敵通常攻撃
 [EnDamage]
 
 [if exp="f.Pary > 0"]
@@ -739,14 +747,11 @@ f.ARS = f.ARS + 0.1;
 [else]
   敵を倒した！！[lrcm]
   疲労度が上昇した[lrcm]
-  [eval exp="f.TIR = f.TIR + f.turn"][eval exp="f.TIR = 100" cond="f.TIR > 100 "]
+  [eval exp="f.TIR = f.TIR + (f.turn * 3)"][eval exp="f.TIR = 100" cond="f.TIR > 100 "]
 [endif]
 [showStatus]
 ;戦闘終了処理
 [iscript]
-f.BaseSPD = f.originSPD - f.TIR;
-if(f.BaseSPD<0){f.BaseSPD=0};
-
 for(i=0; i<f.selectOption.length; i++){
   f.selectOption[i].switch=0
 }

@@ -26,8 +26,8 @@ if(tf.dice < 30){
 
 *組付比較
 くぬぎは敵に拘束されている！[lrcm]
-くぬぎの疲労度が上昇した[lrcm]
-[eval exp="f.TIR = f.TIR + 1"]
+くぬぎの敏捷が減少した[lrcm]
+[eval exp="f.SPD = f.SPD - 1"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
 [showStatus]
 くぬぎ「このっ!離しなさいよ！」[l][r]
 くぬぎは抵抗した！！[lrcm]

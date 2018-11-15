@@ -46,7 +46,7 @@ f.GBuff=1.0;
 [endscript]
 
 [iscript]
-//PL一時設定
+//PL初期化設定
 f.HP = f.BaseHP;
 f.STR = f.BaseSTR;
 f.DEF = f.BaseDEF;

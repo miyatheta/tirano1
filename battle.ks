@@ -585,12 +585,23 @@ if(tf.Damage<0){tf.Damage=0;}
 
 [if exp="f.Pary > 0"]
 くぬぎは敵の攻撃を回避した[lrcm]
-[eval exp="f.Pary = 0 , f.Undress = 1"]
-[else]
+くぬぎは脱衣状態になった[lrcm]
+[eval exp="f.Pary = 0, f.Undress = 1, f.EnARS = f.EnARS + 0.1"]
+[jump target="*戦闘続行" cond="f.HP > 0"]
+[endif]
 
 くぬぎの体力が[emb exp="tf.Damage"]減少した。[lrcm]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
 [eval exp="f.FP = f.FP + 20"]
+[showStatus]
+
+[if exp="f.Maso > 0"]
+くぬぎは快感を感じた[lrcm]
+[iscript]
+amp = f.Ampl + 1;
+tf.Damage = Math.floor(2 * f.ARS * amp);
+[endscript]
+[eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
 [showStatus]
 [endif]
 
@@ -615,6 +626,17 @@ if(f.EnCount>2){
 [if exp="f.EnStan == 1"]
 敵は行動不能から復帰した[lrcm]
 [eval exp="f.EnStan=0"]
+[endif]
+
+[if exp="f.Estr > 0"]
+くぬぎ「はぁ・・・、はぁ・・・・」[lrcm]
+発情しているくぬぎは快感を覚えた[lrcm]
+[iscript]
+amp = f.Ampl + 1;
+tf.Damage = Math.floor(2 * f.ARS * amp);
+[endscript]
+[eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
+[showStatus]
 [endif]
 
 [jump target="*ターン開始"]
@@ -667,11 +689,23 @@ f.BindPower = Math.floor(f.BaseBindPower * (f.BindCount/100 + 1));
 [if exp="f.Pary > 0"]
 くぬぎは敵の攻撃を回避した[lrcm]
 くぬぎは脱衣状態になった[lrcm]
-[eval exp="f.Pary = 0 , f.Undress = 1"]
-[else]
+[eval exp="f.Pary = 0, f.Undress = 1, f.EnARS = f.EnARS + 0.1"]
+[jump target="*戦闘続行" cond="f.HP > 0"]
+[endif]
 
 くぬぎの体力が[emb exp="tf.Damage"]減少した。[lrcm]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
+
+[if exp="f.Maso > 0"]
+くぬぎは快感を感じた[lrcm]
+[iscript]
+a = f.Ampl + 1;
+tf.Damage = Math.floor(2 * f.ARS * amp);
+[endscript]
+[eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
+[showStatus]
+[endif]
+
 [showStatus]
 [endif]
 

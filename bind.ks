@@ -81,7 +81,8 @@ if(tf.dice < 30){
 
 [if exp="f.EnBindOption==1"]
   [iscript]
-  f.ERO = f.ERO + Math.floor(10 * f.ARS);
+  amp = f.Ampl + 1;
+  f.ERO = f.ERO + Math.floor(10 * f.ARS * amp);
   f.EnERO = f.EnERO + Math.floor(5 * f.EnARS);
   [endscript]
   敵はくぬぎの胸を揉みしだいた[lrcm]
@@ -104,6 +105,7 @@ if(tf.dice < 30){
   [eval exp="f.FP = f.FP + 10"]
   [showStatus]
   [jump storage="battle.ks" target="*戦闘終了" cond="f.EnHP <= 0"]
+  [jump target="*被虐趣味" cond="f.Maso > 0"]
 [endif]
 
 [if exp="f.EnBindOption==3"]
@@ -115,8 +117,36 @@ if(tf.dice < 30){
   敵の興奮度が上昇した[lrcm]
   [showStatus]
 [endif]
+
+[jump target="*組付継続"]
+
+*被虐趣味
+くぬぎは快感を感じた[lrcm]
+[iscript]
+amp = f.Ampl + 1;
+tf.Damage = Math.floor(2 * f.ARS * amp);
+[endscript]
+[eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
+[showStatus]
+[jump target="*拘束絶頂" cond="f.ERO >= 100"]
+[jump target="*組付継続"]
+
+*組付継続
+[if exp="f.Estr > 0"]
+発情しているくぬぎは快感を覚えた[lrcm]
+[iscript]
+amp = f.Ampl + 1;
+tf.Damage = Math.floor(2 * f.ARS * amp);
+[endscript]
+[eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
+[endif]
+[jump target="*拘束絶頂" cond="f.ERO >= 100"]
 [jump target="*敵絶頂組付時" cond="f.EnERO >= 100"]
 [jump target="*組付選択"]
+
+*組付終了
+[eval exp="f.Clutch = 0"]
+[jump storage="battle.ks" target="*ターン開始"]
 
 *拘束絶頂
 [cm]
@@ -135,9 +165,6 @@ if(tf.dice < 30){
 [eval exp="f.StanOrga=1"][showStatus]
 [jump target="*組付攻撃"]
 
-*組付終了
-[eval exp="f.Clutch = 0"]
-[jump storage="battle.ks" target="*ターン開始"]
 
 *敵絶頂組付時
 敵「くそっ！もう堪らん！！」[lrcm]

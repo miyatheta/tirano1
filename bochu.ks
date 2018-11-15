@@ -3,7 +3,9 @@
 [iscript]
 tf.React = 0;
 f.EnERO = 0;
+f.HP = 100;
 [endscript]
+[showStatus]
 
 *導入
 敵は装束を脱ぎ捨ててマラを取り出すと[r]くぬぎの腰を掴み、その秘所に荒々しく挿入した[lrcm]
@@ -60,8 +62,8 @@ tf.randomNum = (tf.dice / 1000) + 1;
 tf.Damage = Math.floor(f.EnTEC/10 * f.ARS * tf.randomNum);
 f.ERO = f.ERO + tf.Damage;
 if(f.ERO > 100){f.ERO = 100;}
-f.STM = f.STM - 10;
-if(f.STM < 0){f.STM = 0;}
+f.HP = f.HP - 10;
+if(f.HP < 0){f.HP = 0;}
 [endscript]
 
 [iscript]
@@ -80,8 +82,8 @@ if(f.ERO > 100){f.ERO = 100;}
 
 [jump target="絶頂" cond="f.ERO >= 100"]
 [jump target="房中敗北B" cond="f.EnERO >= 100 && f.MND <= 0"]
-[jump target="房中敗北B" cond="f.STM <= 0 && f.MND <= 0"]
-[jump target="房中敗北A" cond="f.STM <= 0"]
+[jump target="房中敗北B" cond="f.HP <= 0 && f.MND <= 0"]
+[jump target="房中敗北A" cond="f.HP <= 0"]
 [jump target="房中勝利" cond="f.EnERO >= 100"]
 
 *絶頂
@@ -89,13 +91,13 @@ if(f.ERO > 100){f.ERO = 100;}
 くぬぎは絶頂を迎えた[lrcm]
 [iscript]
 f.ERO = 0;
-f.STM = f.STM - 30;
+f.HP = f.HP - 30;
 f.MND = f.MND - (f.ARS * 10);
 [endscript]
 [showStatus]
-[jump target="房中敗北A" cond="f.STM <= 0"]
+[jump target="房中敗北A" cond="f.HP <= 0"]
 [jump target="房中敗北B" cond="f.EnERO >= 100 && f.MND <= 0"]
-[jump target="房中敗北B" cond="f.STM <= 0 && f.MND <= 0"]
+[jump target="房中敗北B" cond="f.HP <= 0 && f.MND <= 0"]
 
 *房中敗北A
 ;スタミナ切れ
@@ -117,7 +119,7 @@ f.MND = f.MND - (f.ARS * 10);
 激しい快楽に焼かれ白く染まった意識をくぬぎは手放した[l][r][cm]
 [iscript]
 f.ERO = 0;
-f.STM = f.BaseSTM;
+f.HP = f.BaseSTM;
 f.MND = f.BaseMND;
 [endscript]
 [showStatus]
@@ -148,7 +150,7 @@ f.MND = f.BaseMND;
 激しい快楽に焼かれ白く染まった意識をくぬぎは手放した[l][r][cm]
 [iscript]
 f.ERO = 0;
-f.STM = f.BaseSTM;
+f.HP = f.BaseSTM;
 f.MND = f.BaseMND;
 [endscript]
 [showStatus]
@@ -181,8 +183,9 @@ f.MND = f.BaseMND;
 [eval exp="f.TIR = f.TIR - 20"][eval exp="f.TIR = 0" cond="f.TIR < 0"]
 [iscript]
 f.ERO = 0;
-f.STM = f.BaseSTM;
+f.HP = f.BaseSTM;
 f.MND = f.BaseMND;
+
 [endscript]
 [showStatus]
 くぬぎは勝利した[lrcm][wait time=1000]

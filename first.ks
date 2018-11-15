@@ -73,6 +73,11 @@ f.Pary = 0;//回避
 f.Undress = 0;//脱衣
 f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 f.StanOrga = 0;//絶頂時のスタン
+
+f.Ampl = 1;//感度増幅
+f.Estr = 1;//発情
+f.Maso = 1;//被虐
+
 f.stage = 1;
 [endscript]
 
@@ -165,6 +170,8 @@ f.EROdigit=[];
 calcStatus(f.EROdigit,f.ERO);
 f.TIRdigit=[];
 calcStatus(f.TIRdigit,f.TIR);
+f.MNDdigit=[];
+calcStatus(f.MNDdigit,f.MND);
 
 f.EnHPdigit=[];
 calcStatus(f.EnHPdigit,f.EnHP);
@@ -206,6 +213,12 @@ calcStatus(f.EnEROdigit,f.EnERO);
 [image layer=1 storage="&f.TIRdigit[2]" width="25" top="500" left="270" visible="true"]
 [image layer=1 storage="&f.TIRdigit[3]" width="25" top="500" left="300" visible="true"]
 [image layer=1 storage="&f.TIRdigit[4]" width="25" top="500" left="325" visible="true"]
+
+[image layer=1 storage="number/精神.png" width="100" top="550" left="200" visible="true"]
+[image layer=1 storage="&f.MNDdigit[1]" width="25" top="550" left="250" visible="true"]
+[image layer=1 storage="&f.MNDdigit[2]" width="25" top="550" left="270" visible="true"]
+[image layer=1 storage="&f.MNDdigit[3]" width="25" top="550" left="300" visible="true"]
+[image layer=1 storage="&f.MNDdigit[4]" width="25" top="550" left="325" visible="true"]
 
 [image layer=1 storage="number/敵名.png" width="100" top="475" left="480" visible="true"]
 

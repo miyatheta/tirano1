@@ -42,7 +42,7 @@ f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 //敵の設定
 f.originEnHP = 1000;
 f.originEnSTR = 85;
-f.originEnDEF = 50;
+f.originEnDEF = 70;
 f.originEnSPD = 60;
 f.originEnFP = 0;
 f.originEnERO = 0;
@@ -95,7 +95,7 @@ f.ClutchRate = 0;//組付初期値
 //敵の設定
 f.originEnHP = 1000;
 f.originEnSTR = 80;
-f.originEnDEF = 80;
+f.originEnDEF = 70;
 f.originEnSPD = 40;
 f.originEnFP = 0;
 f.originEnERO = 0;

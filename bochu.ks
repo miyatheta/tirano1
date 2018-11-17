@@ -85,6 +85,7 @@ if(f.ERO > 100){f.ERO = 100;}
 [jump target="房中敗北B" cond="f.HP <= 0 && f.MND <= 0"]
 [jump target="房中敗北A" cond="f.HP <= 0"]
 [jump target="房中勝利" cond="f.EnERO >= 100"]
+[jump target="*会話"]
 
 *絶頂
 くぬぎ「だめっ！！イクっ！！イクっ！！ああああああああっ！！」[lrcm]

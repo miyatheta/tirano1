@@ -3,7 +3,7 @@
 //PL初期設定
 f.originHP = 1000;
 f.originSTR = 70;
-f.originDEF = 70;
+f.originDEF = 60;
 f.originSPD = 100;
 f.originFP = 0;//force
 f.originERO = 0;//快感
@@ -271,7 +271,7 @@ tf.randomNum= (tf.dice / 1000) + 1;
 
 tf.Buff = f.VBonus * f.VBuff;
 
-tf.ATP = Math.floor(f.STR * 1.8 * tf.Buff * tf.randomNum);
+tf.ATP = Math.floor(f.STR * 2 * tf.Buff * tf.randomNum);
 tf.EnDFP = Math.floor(f.EnDEF * 1.2);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
@@ -290,7 +290,7 @@ if(f.HP < f.EnHP){
   f.HPBonus = (f.EnHP - f.HP)/f.EnHP + 1;
 }
 
-tf.ATP = Math.floor(f.STR * 4.5  * f.HPBonus * tf.randomNum);
+tf.ATP = Math.floor(f.STR * 5  * f.HPBonus * tf.randomNum);
 tf.EnDFP = Math.floor(f.EnDEF * 1.2);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}

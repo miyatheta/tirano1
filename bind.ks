@@ -68,7 +68,7 @@ if(f.BindPower < 0){f.BindPower = 0;}
 
 [elsif exp="tf.Select==4"]
   くぬぎ「ああんっ！・・・」[l][r]
-  くぬぎは痛がるように甘い声を上げてみせた[lrcm]
+  くぬぎは甘い声を上げてみせた[lrcm]
   敵♡[lrcm]
   [eval exp="f.EnARS = f.EnARS + 0.05"]
 
@@ -160,12 +160,13 @@ tf.Damage = Math.floor(2 * f.ARS * amp);
 
 *組付継続
 [if exp="f.Estr > 0"]
-  発情しているくぬぎは快感を覚えた[lrcm]
+  発情しているくぬぎは快感度が上昇した[lrcm]
   [iscript]
   amp = f.Ampl + 1;
   tf.Damage = Math.floor(2 * f.ARS * amp);
   [endscript]
   [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
+  [showStatus]
 [endif]
 [jump target="*拘束絶頂" cond="f.ERO >= 100"]
 [jump target="*敵絶頂組付時" cond="f.EnERO >= 100"]
@@ -173,6 +174,9 @@ tf.Damage = Math.floor(2 * f.ARS * amp);
 
 
 *組付終了
+[if exp="tf.Select >= 4"]
+  敵は思わずくぬぎを掴む手を緩めた[r]その隙を突いて
+[endif]
 くぬぎは敵の拘束を振りほどいた[lrcm]
 [eval exp="f.Clutch = 0"]
 [jump storage="battle.ks" target="*ターン開始"]

@@ -29,7 +29,7 @@ if (tf.DeBuff < 0){tf.DeBuff = 0};
 
 //alert('バフは' + tf.Buff + '、デバフは' +tf.DeBuff);
 
-tf.EnATP = Math.floor(f.EnSTR * 1.8 * tf.Buff * tf.DeBuff * tf.randomNum);
+tf.EnATP = Math.floor(f.EnSTR * 2.0 * tf.Buff * tf.DeBuff * tf.randomNum);
 tf.DFP = Math.floor(f.DEF * 1.2);
 tf.Damage = tf.EnATP - tf.DFP;
 if(tf.Damage<0){tf.Damage=0;}

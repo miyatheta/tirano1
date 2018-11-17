@@ -7,12 +7,15 @@ f.HP = 100;
 [endscript]
 [showStatus]
 
+
 *導入
 敵は装束を脱ぎ捨ててマラを取り出すと[r]くぬぎの腰を掴み、その秘所に荒々しく挿入した[lrcm]
 くぬぎ「あうっ！！」[lrcm]
 
+
 *会話
 敵「フハハハ！！どうだ我が愚息の味は！！たまらんだろう！？」[lrcm]
+
 
 *行動選択通常
 [jump target="*行動選択屈服" cond="f.MND<=0"]
@@ -23,6 +26,7 @@ f.HP = 100;
 [glink target="*敵反応" text="選択肢4（無反応）" exp="" x=100 y=200]
 [s]
 
+
 *行動選択屈服
 くぬぎ「はいっ！！あんっ！！太くてぇっ！！[wait time=100]
 たくましくてぇ！んあっ！！[wait time=100]
@@ -30,6 +34,8 @@ f.HP = 100;
 反抗心を失ったくぬぎは敵の言葉を肯定してしまう[lrcm]
 [eval exp="tf.React=1"]
 [jump target="*敵攻撃"]
+エラー[s]
+
 
 *敵反応
 [iscript]
@@ -53,6 +59,8 @@ if(tf.dice < 50){
 [eval exp="f.EnARS = f.EnARS + 0.1"]
 [jump target="*敵攻撃"]
 [endif]
+エラー[s]
+
 
 *敵攻撃
 [iscript]
@@ -86,6 +94,8 @@ if(f.ERO > 100){f.ERO = 100;}
 [jump target="房中敗北A" cond="f.HP <= 0"]
 [jump target="房中勝利" cond="f.EnERO >= 100"]
 [jump target="*会話"]
+エラー[s]
+
 
 *絶頂
 くぬぎ「だめっ！！イクっ！！イクっ！！ああああああああっ！！」[lrcm]
@@ -99,6 +109,9 @@ f.MND = f.MND - (f.ARS * 10);
 [jump target="房中敗北A" cond="f.HP <= 0"]
 [jump target="房中敗北B" cond="f.EnERO >= 100 && f.MND <= 0"]
 [jump target="房中敗北B" cond="f.HP <= 0 && f.MND <= 0"]
+[jump target="*会話"]
+エラー[s]
+
 
 *房中敗北A
 ;スタミナ切れ
@@ -126,6 +139,8 @@ f.MND = f.BaseMND;
 [showStatus]
 くぬぎは敗北した[lrcm][wait time=1000]
 [jump storage="selectStage.ks" target="*エネミー選択"]
+エラー[s]
+
 
 *房中敗北B
 ;抵抗力切れ & スタミナ切れ OR 敵興奮度MAX
@@ -157,6 +172,7 @@ f.MND = f.BaseMND;
 [showStatus]
 くぬぎは敗北した[lrcm][wait time=1000]
 [jump storage="selectStage.ks" target="*エネミー選択"]
+エラー[s]
 
 
 *房中勝利
@@ -191,3 +207,4 @@ f.MND = f.BaseMND;
 [showStatus]
 くぬぎは勝利した[lrcm][wait time=1000]
 [jump storage="selectStage.ks" target="*エネミー選択"]
+エラー[s]

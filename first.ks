@@ -255,46 +255,4 @@ alert("くぬぎ　\n体力：" + f.HP + "　すばやさ：" + f.SPD + "　気�
 [endscript]
 [endmacro]
 
-[macro name="Damage"]
-[iscript]
-if(f.VB > 2){
-  f.VBonus = 1.4;
-}else if(f.VB > 1){
-  f.VBonus = 1.2;
-}else{
-  f.VBonus = 1.1;
-}
-
-tf.Min = 0, tf.Max = 50;
-tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-tf.randomNum= (tf.dice / 1000) + 1;
-
-tf.Buff = f.VBonus * f.VBuff;
-
-tf.ATP = Math.floor(f.STR * 2 * tf.Buff * tf.randomNum);
-tf.EnDFP = Math.floor(f.EnDEF * 1.2);
-tf.Damage = tf.ATP - tf.EnDFP;
-if(tf.Damage<0){tf.Damage=0;}
-
-f.VBuff = 1.0;
-[endscript]
-[endmacro]
-
-[macro name="SuperArts"]
-[iscript]
-tf.Min = 0, tf.Max = 50;
-tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-tf.randomNum = (tf.dice / 1000) + 1;
-//残HPボーナス
-if(f.HP < f.EnHP){
-  f.HPBonus = (f.EnHP - f.HP)/f.EnHP + 1;
-}
-
-tf.ATP = Math.floor(f.STR * 5  * f.HPBonus * tf.randomNum);
-tf.EnDFP = Math.floor(f.EnDEF * 1.2);
-tf.Damage = tf.ATP - tf.EnDFP;
-if(tf.Damage<0){tf.Damage=0;}
-[endscript]
-[endmacro]
-
 [jump storage="selectStage.ks" target="*ステージセレクト"]

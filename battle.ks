@@ -9,10 +9,35 @@ f.SPD = f.SPD - f.TIR;
 if(f.SPD<0){f.SPD=0};
 [endscript]
 
+[macro name="Damage"]
+[iscript]
+if(f.VB > 2){
+  f.VBonus = 1.5;
+}else if(f.VB > 1){
+  f.VBonus = 1.2;
+}else{
+  f.VBonus = 1.1;
+}
+
+tf.Min = 0, tf.Max = 50;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+tf.randomNum= (tf.dice / 1000) + 1;
+
+tf.Buff = f.VBonus * f.VBuff;
+
+tf.ATP = Math.floor(f.STR * 2 * tf.Buff * tf.randomNum);
+tf.EnDFP = Math.floor(f.EnDEF * 1.2);
+tf.Damage = tf.ATP - tf.EnDFP;
+if(tf.Damage<0){tf.Damage=0;}
+
+f.VBuff = 1.0;
+[endscript]
+[endmacro]
+
 [macro name="EnDamage"]
 [iscript]
 if(f.EnVB > 2){
-  f.EnVBonus = 1.4;
+  f.EnVBonus = 1.5;
 }else if(f.EnVB > 1){
   f.EnVBonus = 1.2;
 }else{
@@ -38,25 +63,6 @@ f.EnVBuff = 1.0;
 [endscript]
 [endmacro]
 
-[macro name="EnSuperArts"]
-[iscript]
-tf.Min = 0, tf.Max = 50;
-tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-tf.randomNum = (tf.dice / 1000) + 1;
-
-tf.Buff = f.EnVBonus * f.EnVBuff;
-tf.DeBuff = (100 - f.CharmBuff) / 100;
-if (tf.DeBuff < 0){tf.DeBuff = 0};
-
-//alert('バフは' + tf.Buff + '、デバフは' +tf.DeBuff);
-
-tf.ATP = Math.floor(f.EnSTR * 4.5 * tf.DeBuff * tf.randomNum);
-tf.EnDFP = Math.floor(f.EnDEF);
-tf.Damage = tf.ATP - tf.EnDFP;
-if(tf.Damage<0){tf.Damage=0;}
-[endscript]
-[endmacro]
-
 
 *ターン開始
 [position width=960 height=480 top=0 left=0]
@@ -77,15 +83,12 @@ if(f.EnStan > 0){
   f.EnStan--;
 }
 [endscript]
+
 [iscript]
 //ターン数
 f.turn++;
 [endscript]
 
-[showStatus]
-[emb exp="f.turn"]合目[lrcm]
-
-*敵抽選
 [cm]
 [iscript]
 //敵の行動パターン抽選
@@ -121,23 +124,29 @@ if(f.EnStan>0){
   f.releaseNote = '行動不能に陥っている';
 }
 [endscript]
+
+[showStatus]
+[emb exp="f.turn"]合目[lrcm]
+
 [if exp="f.StanOrga > 0"]
   くぬぎ「ん・・・ぁう・・・・」[lrcm]
   くぬぎは絶頂の余韻で行動ができない！！[lrcm]
   [jump target="*比較"]
 [endif]
 
-*超必殺技
+
+*特殊行動
+;超必殺技
 [if exp="f.FP >= 100"]
-  [glink target="*発動超必殺技" text="超必殺" color="red" size=30 x=150 y=35]
+  [glink storage="SuperArts.ks" target="*発動超必殺技" text="超必殺" color="red" size=30 x=150 y=35]
   [s]
 [endif]
   [if exp="f.EnFP >= 100"]
-  [jump target="*発動敵超必殺技"]
+  [jump storage="SuperArts.ks" target="*発動敵超必殺技"]
 [endif]
+;組付
+[jump target="*組付判定" cond="f.Clutch == 1"]
 
-*組付
-[jump target="組付判定" cond="f.Clutch == 1"]
 
 *選択1
 [iscript]
@@ -326,7 +335,8 @@ f.PictHand6 = "hand/EN" + f.EnSelectOption[2 + (f.EnCount * 3)] + ".png";
 [image layer=0 storage="&f.PictHand6" width="100" top="350" left="480" visible="true"]
 [lrcm]
 
-*判定
+
+*勝敗判定
 [iscript]
 tf.hand = f.selectOption[f.H].hand;
 tf.EnHand = f.EnSelectOption[f.N + (f.EnCount * 3)];
@@ -439,7 +449,7 @@ tf.Hight =  f.N * 150 + 50;
 
 [if exp="f.N<2"]
   [eval exp="f.N=f.N+1,f.H=f.H+1"]
-  [jump target="*判定"]
+  [jump target="*勝敗判定"]
 [endif]
 
 [eval exp="f.SPD = 0" cond="f.SPD < 0"]
@@ -457,83 +467,6 @@ tf.Hight =  f.N * 150 + 50;
 [endif]
 
 
-*行動不能
-[iscript]
-tf.EnHand = f.EnSelectOption[f.N + (f.EnCount * 3)];
-tf.Hight =  f.N * 150 + 50;
-[endscript]
-
-[if exp="tf.EnHand == 'グー'"]
-  [eval exp="f.EnVP = f.EnVP + 1"]
-  [eval exp="f.EnVB = f.EnVB + 1"]
-  [eval exp="f.EnVBuff = f.EnVBuff + 0.1"]
-  [image layer=0 storage="buff/STRup.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  ;勝利(VP+1)　くぬぎの攻撃力上昇[r]
-[endif]
-[if exp="tf.EnHand == 'チョキ'"]
-  [eval exp="f.EnVP = f.EnVP + 1"]
-  [eval exp="f.EnVB = f.EnVB + 1"]
-  [eval exp="f.EnFP = f.EnFP + 5"]
-  [image layer=0 storage="buff/FPup.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  ;勝利(VP+1)　くぬぎの気力上昇[r]
-[endif]
-[if exp="tf.EnHand == 'パー'"]
-  [eval exp="f.EnVP = f.EnVP + 1"]
-  [eval exp="f.EnVB = f.EnVB + 1"]
-  [eval exp="f.EnSPD = f.EnSPD + 5"]
-  [image layer=0 storage="buff/SPDup.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  ;勝利(VP+1)　くぬぎの敏捷上昇[r]
-[endif]
-
-[if exp="f.N<2"]
-  [eval exp="f.N=f.N+1,f.H=f.H+1"][jump target="*行動不能"]
-[endif]
-
-[lrcm][wait time="500"]
-[showStatus]
-[freeimage layer=0]
-敵の攻撃![lrcm]
-[jump target="*敵通常攻撃"]
-
-
-*敵行動不能
-[iscript]
-tf.hand = f.selectOption[f.H].hand;
-[endscript]
-
-[if exp="tf.hand == 'グー'"]
-  [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.VB = f.VB + 1"]
-  [eval exp="f.VBuff = f.VBuff + 0.1"]
-  [image layer=0 storage="buff/STRup.png" width="100" top="&tf.Hight" left="280" visible="true"]
-  ;勝利(VP+1)　くぬぎの攻撃力上昇[r]
-[endif]
-[if exp="tf.hand == 'チョキ'"]
-  [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.VB = f.VB + 1"]
-  [eval exp="f.FP = f.FP + 5"]
-  [image layer=0 storage="buff/FPup.png" width="100" top="&tf.Hight" left="280" visible="true"]
-  ;勝利(VP+1)　くぬぎの気力上昇[r]
-[endif]
-[if exp="tf.hand == 'パー'"]
-  [eval exp="f.VP = f.VP + 1"]
-  [eval exp="f.VB = f.VB + 1"]
-  [eval exp="f.SPD = f.SPD + 5"]
-  [image layer=0 storage="buff/SPDup.png" width="100" top="&tf.Hight" left="280" visible="true"]
-  ;勝利(VP+1)　くぬぎの敏捷上昇[r]
-[endif]
-
-[if exp="f.N<2"]
-  [eval exp="f.N=f.N+1,f.H=f.H+1"][jump target="*敵行動不能"]
-[endif]
-
-[lrcm][wait time="500"]
-[showStatus]
-[freeimage layer=0]
-くぬぎの攻撃![lrcm]
-[jump target="*コマンド判定"]
-
-
 *コマンド判定
 [iscript]
 f.Comand = 0;
@@ -547,75 +480,12 @@ if(f.selectOption[f.count-3].hand == "チョキ" && f.selectOption[f.count-2].ha
   f.Comand = 3;
 }
 [endscript]
-[if exp="f.Comand == 1"]
-  [jump target="*通常攻撃" cond="f.SPD < 10"]
-  [iscript]
-  tf.Min = 0, tf.Max = 50;
-  tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-  tf.randomNum = (tf.dice / 1000) + 1;
-
-  tf.ATP = Math.floor(f.STR * 3.3 * tf.randomNum);
-  tf.EnDFP = Math.floor(f.EnDEF * 1.2);
-  tf.Damage = tf.ATP - tf.EnDFP;
-  if(tf.Damage<0){tf.Damage=0;}
-  [endscript]
-  「忍法・旋風！」[lrcm]
-  敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
-  くぬぎの敏捷が減少した[lrcm]
-  [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-  [eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
-  ;[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
-  [eval exp="f.EnFP = f.EnFP + 20"]
-  [showStatus]
-  [jump target="*戦闘終了" cond="f.EnHP <= 0"]
-  [jump target="*戦闘続行" cond="f.EnHP > 0"]
-
-[elsif exp="f.Comand == 2"]
-  [jump target="*通常攻撃" cond="f.SPD < 10"]
-  [iscript]
-  tf.Min = 0, tf.Max = 50;
-  tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-  tf.randomNum = (tf.dice / 1000) + 1;
-
-  tf.ATP = Math.floor(f.STR * 3.3 * tf.randomNum);
-  tf.EnDFP = Math.floor(f.EnDEF * 1.2);
-  tf.Damage = tf.ATP - tf.EnDFP;
-  if(tf.Damage<0){tf.Damage=0;}
-  [endscript]
-  「忍法・陽炎！」[lrcm]
-  敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
-  くぬぎの敏捷が減少した[lrcm]
-  [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-  [eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
-  ;[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
-  [eval exp="f.EnFP = f.EnFP + 20"]
-  [showStatus]
-  [jump target="*戦闘終了" cond="f.EnHP <= 0"]
-  [jump target="*戦闘続行" cond="f.EnHP > 0"]
-
-[elsif exp="f.Comand == 3"]
-  [jump target="*通常攻撃" cond="f.SPD < 10"]
-  [iscript]
-  tf.Min = 0, tf.Max = 50;
-  tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-  tf.randomNum = (tf.dice / 1000) + 1;
-
-  tf.ATP = Math.floor(f.STR * 3.3 * tf.randomNum);
-  tf.EnDFP = Math.floor(f.EnDEF * 1.2);
-  tf.Damage = tf.ATP - tf.EnDFP;
-  if(tf.Damage<0){tf.Damage=0;}
-  [endscript]
-  「忍法・五月雨！」[lrcm]
-  敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
-  くぬぎの敏捷が減少した[lrcm]
-  [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-  [eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
-  ;[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
-  [eval exp="f.EnFP = f.EnFP + 20"]
-  [showStatus]
-  [jump target="*戦闘終了" cond="f.EnHP <= 0"]
-  [jump target="*戦闘続行" cond="f.EnHP > 0"]
-[endif]
+[jump target="*通常攻撃" cond="f.SPD < 10"]
+[jump target="*コマンド技1" cond="f.Comand == 1"]
+[jump target="*コマンド技2" cond="f.Comand == 2"]
+[jump target="*コマンド技3" cond="f.Comand == 3"]
+[jump target="*通常攻撃"]
+error[s]
 
 
 *通常攻撃
@@ -635,6 +505,8 @@ if(f.selectOption[f.count-3].hand == "チョキ" && f.selectOption[f.count-2].ha
   「身代わりの術」[lrcm]
   くぬぎは敵の攻撃を回避した[lrcm]
   くぬぎは脱衣状態になった[lrcm]
+  敵♡[lrcm]
+  [eval exp="f.EnARS = f.EnARS + 0.05"]
   [eval exp="f.Pary = 0, f.Undress = 1, f.EnARS = f.EnARS + 0.1"]
   [jump target="*戦闘続行" cond="f.HP > 0"]
 [endif]
@@ -737,47 +609,73 @@ f.BindPower = Math.floor(f.BaseBindPower * (f.BindCount/100 + 1));
 [jump storage="bind.ks" target="*組付開始"]
 
 
-*発動超必殺技
-くぬぎ「受けてみなさい！必殺・鳴神の舞」[l][r]
-[SuperArts]
+*コマンド技1
+[iscript]
+tf.Min = 0, tf.Max = 50;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+tf.randomNum = (tf.dice / 1000) + 1;
 
+tf.ATP = Math.floor(f.STR * 3.0 * tf.randomNum);
+tf.EnDFP = Math.floor(f.EnDEF * 1.2);
+tf.Damage = tf.ATP - tf.EnDFP;
+if(tf.Damage<0){tf.Damage=0;}
+[endscript]
+「忍法・旋風！」[lrcm]
 敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
+くぬぎの敏捷が減少した[lrcm]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-[eval exp="f.FP = 0"]
+[eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+;[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
+[eval exp="f.EnFP = f.EnFP + 20"]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
 [jump target="*戦闘続行" cond="f.EnHP > 0"]
 
 
-*発動敵超必殺技
-敵「散れい！小娘！！」[l][r]
-[EnSuperArts]
+*コマンド技2
+[iscript]
+tf.Min = 0, tf.Max = 50;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+tf.randomNum = (tf.dice / 1000) + 1;
 
-[if exp="f.Pary > 0"]
-  「身代わりの術」[lrcm]
-  くぬぎは敵の攻撃を回避した[lrcm]
-  くぬぎは脱衣状態になった[lrcm]
-  [eval exp="f.Pary = 0, f.Undress = 1, f.EnARS = f.EnARS + 0.1"]
-  [jump target="*戦闘続行" cond="f.HP > 0"]
-[endif]
-
-くぬぎの体力が[emb exp="tf.Damage"]減少した。[lrcm]
-[eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
+tf.ATP = Math.floor(f.STR * 3.0 * tf.randomNum);
+tf.EnDFP = Math.floor(f.EnDEF * 1.2);
+tf.Damage = tf.ATP - tf.EnDFP;
+if(tf.Damage<0){tf.Damage=0;}
+[endscript]
+「忍法・陽炎！」[lrcm]
+敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
+くぬぎの敏捷が減少した[lrcm]
+[eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
+[eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+;[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
+[eval exp="f.EnFP = f.EnFP + 20"]
 [showStatus]
+[jump target="*戦闘終了" cond="f.EnHP <= 0"]
+[jump target="*戦闘続行" cond="f.EnHP > 0"]
 
-[if exp="f.Maso > 0"]
-  くぬぎは痛みに快感を感じた[lrcm]
-  [iscript]
-  a = f.Ampl + 1;
-  tf.Damage = Math.floor(2 * f.ARS * amp);
-  [endscript]
-  [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
-  [showStatus]
-[endif]
 
-[eval exp="f.EnFP = 0"]
-[jump target="*戦闘終了" cond="f.HP <= 0"]
-[jump target="*戦闘続行" cond="f.HP > 0"]
+*コマンド技3
+[iscript]
+tf.Min = 0, tf.Max = 50;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+tf.randomNum = (tf.dice / 1000) + 1;
+
+tf.ATP = Math.floor(f.STR * 3.0 * tf.randomNum);
+tf.EnDFP = Math.floor(f.EnDEF * 1.2);
+tf.Damage = tf.ATP - tf.EnDFP;
+if(tf.Damage<0){tf.Damage=0;}
+[endscript]
+「忍法・五月雨！」[lrcm]
+敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
+くぬぎの敏捷が減少した[lrcm]
+[eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
+[eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+;[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
+[eval exp="f.EnFP = f.EnFP + 20"]
+[showStatus]
+[jump target="*戦闘終了" cond="f.EnHP <= 0"]
+[jump target="*戦闘続行" cond="f.EnHP > 0"]
 
 
 *スキル選択
@@ -844,6 +742,83 @@ f.ARS = f.ARS + 0.1;
 
 [eval exp="f.skill3CT = 6"]
 [jump target="*選択1"]
+
+
+*行動不能
+[iscript]
+tf.EnHand = f.EnSelectOption[f.N + (f.EnCount * 3)];
+tf.Hight =  f.N * 150 + 50;
+[endscript]
+
+[if exp="tf.EnHand == 'グー'"]
+  [eval exp="f.EnVP = f.EnVP + 1"]
+  [eval exp="f.EnVB = f.EnVB + 1"]
+  [eval exp="f.EnVBuff = f.EnVBuff + 0.1"]
+  [image layer=0 storage="buff/STRup.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  ;勝利(VP+1)　くぬぎの攻撃力上昇[r]
+[endif]
+[if exp="tf.EnHand == 'チョキ'"]
+  [eval exp="f.EnVP = f.EnVP + 1"]
+  [eval exp="f.EnVB = f.EnVB + 1"]
+  [eval exp="f.EnFP = f.EnFP + 5"]
+  [image layer=0 storage="buff/FPup.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  ;勝利(VP+1)　くぬぎの気力上昇[r]
+[endif]
+[if exp="tf.EnHand == 'パー'"]
+  [eval exp="f.EnVP = f.EnVP + 1"]
+  [eval exp="f.EnVB = f.EnVB + 1"]
+  [eval exp="f.EnSPD = f.EnSPD + 5"]
+  [image layer=0 storage="buff/SPDup.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  ;勝利(VP+1)　くぬぎの敏捷上昇[r]
+[endif]
+
+[if exp="f.N<2"]
+  [eval exp="f.N=f.N+1,f.H=f.H+1"][jump target="*行動不能"]
+[endif]
+
+[lrcm][wait time="500"]
+[showStatus]
+[freeimage layer=0]
+敵の攻撃![lrcm]
+[jump target="*敵通常攻撃"]
+
+
+*敵行動不能
+[iscript]
+tf.hand = f.selectOption[f.H].hand;
+[endscript]
+
+[if exp="tf.hand == 'グー'"]
+  [eval exp="f.VP = f.VP + 1"]
+  [eval exp="f.VB = f.VB + 1"]
+  [eval exp="f.VBuff = f.VBuff + 0.1"]
+  [image layer=0 storage="buff/STRup.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  ;勝利(VP+1)　くぬぎの攻撃力上昇[r]
+[endif]
+[if exp="tf.hand == 'チョキ'"]
+  [eval exp="f.VP = f.VP + 1"]
+  [eval exp="f.VB = f.VB + 1"]
+  [eval exp="f.FP = f.FP + 5"]
+  [image layer=0 storage="buff/FPup.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  ;勝利(VP+1)　くぬぎの気力上昇[r]
+[endif]
+[if exp="tf.hand == 'パー'"]
+  [eval exp="f.VP = f.VP + 1"]
+  [eval exp="f.VB = f.VB + 1"]
+  [eval exp="f.SPD = f.SPD + 5"]
+  [image layer=0 storage="buff/SPDup.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  ;勝利(VP+1)　くぬぎの敏捷上昇[r]
+[endif]
+
+[if exp="f.N<2"]
+  [eval exp="f.N=f.N+1,f.H=f.H+1"][jump target="*敵行動不能"]
+[endif]
+
+[lrcm][wait time="500"]
+[showStatus]
+[freeimage layer=0]
+くぬぎの攻撃![lrcm]
+[jump target="*コマンド判定"]
 
 
 *戦闘絶頂

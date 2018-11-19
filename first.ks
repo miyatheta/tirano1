@@ -67,7 +67,7 @@ f.Option = JSON.parse(f.Option);
 f.selectOption = [];
 f.count = 0;
 
-f.skill1CT = 0, f.skill2CT = 0, f.skill3CT = 0;
+f.skill1CT = 0, f.skill2CT = 0, f.skill3CT = 0, f.skill4CT = 0;
 f.Comand = 0;
 f.Pary = 0;//回避
 f.Undress = 0;//脱衣
@@ -90,7 +90,7 @@ f.originEnSPD = 30;
 f.originEnFP = 0;
 f.originEnERO = 0;
 f.originEnARS = 1;//arouse
-f.originEnTEC = 50;//技術力
+f.originEnTEC = 40;//技術力
 f.originEnEND = 20;//忍耐力
 f.originBindPower = 100;
 

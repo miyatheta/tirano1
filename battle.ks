@@ -25,7 +25,7 @@ tf.randomNum= (tf.dice / 1000) + 1;
 
 tf.Buff = f.VBonus * f.VBuff;
 
-tf.ATP = Math.floor(f.STR * 2 * tf.Buff * tf.randomNum);
+tf.ATP = Math.floor(f.STR * 2.0 * tf.Buff * tf.randomNum);
 tf.EnDFP = Math.floor(f.EnDEF * 1.2);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
@@ -63,14 +63,29 @@ f.EnVBuff = 1.0;
 [endscript]
 [endmacro]
 
+[macro name="HDamage"]
+[iscript]
+tf.Min = 0, tf.Max = 50;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+tf.randomNum = (tf.dice / 1000) + 1;
+naked = (f.Undress/10) + 1
+tf.ATP = Math.floor(f.value * f.ARS * f.EnARS * naked * tf.randomNum);
+tf.EnDFP = (100 - f.EnEND) / 100;
+tf.HDamage = Math.floor(tf.ATP * tf.EnDFP);
+if(tf.Damage<0){tf.Damage=0;}
+f.ARS = f.ARS + 0.1;
+[endscript]
+[endmacro]
+
 
 *ターン開始
 [position width=960 height=480 top=0 left=0]
 
 [iscript]
-if(f.skill1CT>0){f.skill1CT--;}
-if(f.skill2CT>0){f.skill2CT--;}
-if(f.skill3CT>0){f.skill3CT--;}
+if(f.skill1CT > 0){f.skill1CT--;}
+if(f.skill2CT > 0){f.skill2CT--;}
+if(f.skill3CT > 0){f.skill3CT--;}
+if(f.skill4CT > 0){f.skill4CT--;}
 if(f.CharmET > 0){
   f.CharmET--;
 }else{
@@ -111,7 +126,9 @@ if(f.EnCount>0){
 //組付判定
 tf.Min = 0, tf.Max = 99;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-f.Rate = f.ClutchRate + f.EnERO/2  + f.ClutchTurn*5;
+f.Lead = 0;
+if(f.SPD > f.EnSPD){f.Lead = f.SPD - f.EnSPD;}
+f.Rate = f.ClutchRate + f.Lead + f.ClutchTurn*5;
 if(tf.dice < f.Rate && f.ClutchTurn != 0){
   f.Clutch = 1, f.ClutchTurn = 0;
 }else{
@@ -456,35 +473,35 @@ tf.Hight =  f.N * 150 + 50;
 [eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
 [lrcm][wait time="500"]
 [showStatus]
-[if exp="f.VP>0"]
-  [freeimage layer=0]
-  くぬぎの攻撃![lrcm]
-  [jump target="*コマンド判定"]
-[else]
-  [freeimage layer=0]
-  敵の攻撃![lrcm]
-  [jump target="*敵通常攻撃"]
-[endif]
+[jump target="*コマンド判定"]
+[s]
 
 
 *コマンド判定
 [iscript]
 f.Comand = 0;
-if(f.selectOption[f.count-3].hand == "グー" && f.selectOption[f.count-2].hand == "チョキ" && f.selectOption[f.count-1].hand == "パー"){
+if(f.selectOption[f.count-3].hand == "グー" && f.selectOption[f.count-2].hand == "グー" && f.selectOption[f.count-1].hand == "グー"){
   f.Comand = 1;
 }
-if(f.selectOption[f.count-3].hand == "パー" && f.selectOption[f.count-2].hand == "グー" && f.selectOption[f.count-1].hand == "チョキ"){
+if(f.selectOption[f.count-3].hand == "チョキ" && f.selectOption[f.count-2].hand == "チョキ" && f.selectOption[f.count-1].hand == "チョキ"){
   f.Comand = 2;
 }
-if(f.selectOption[f.count-3].hand == "チョキ" && f.selectOption[f.count-2].hand == "パー" && f.selectOption[f.count-1].hand == "グー"){
+if(f.selectOption[f.count-3].hand == "パー" && f.selectOption[f.count-2].hand == "パー" && f.selectOption[f.count-1].hand == "パー"){
   f.Comand = 3;
 }
 [endscript]
-[jump target="*通常攻撃" cond="f.SPD < 10"]
-[jump target="*コマンド技1" cond="f.Comand == 1"]
-[jump target="*コマンド技2" cond="f.Comand == 2"]
-[jump target="*コマンド技3" cond="f.Comand == 3"]
-[jump target="*通常攻撃"]
+[if exp="f.VP>0"]
+  [freeimage layer=0]
+  くぬぎの攻撃![lrcm]
+  [jump target="*コマンド技1" cond="f.Comand == 1"]
+  [jump target="*コマンド技2" cond="f.Comand == 2"]
+  [jump target="*通常攻撃"]
+[else]
+  [freeimage layer=0]
+  敵の攻撃![lrcm]
+  [jump target="*コマンド技3" cond="f.Comand == 3"]
+  [jump target="*敵通常攻撃"]
+[endif]
 error[s]
 
 
@@ -502,7 +519,7 @@ error[s]
 [EnDamage]
 
 [if exp="f.Pary > 0"]
-  「身代わりの術」[lrcm]
+  「代わり身の術」[lrcm]
   くぬぎは敵の攻撃を回避した[lrcm]
   くぬぎは脱衣状態になった[lrcm]
   敵♡[lrcm]
@@ -569,87 +586,50 @@ if(f.EnCount>2){
 [jump target="*ターン開始"]
 
 
-*組付判定
-敵が組み付いてきた！[lrcm]
-[iscript]
-tf.Min = 0, tf.Max = 99;
-tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-if(f.SPD < f.EnSPD){
-  f.Clutch = 1;
-}else if(tf.dice > f.SPD - f.EnSPD){
-  f.Clutch = 1;
-}else{
-  f.Clutch = 0;
-}
-[endscript]
-
-[if exp="f.Clutch==0"]
-  ;組み付き失敗
-  くぬぎは敵の組付を回避した![lrcm]
-  [jump target="*選択1"]
-[endif]
-
-[if exp="f.Pary > 0"]
-  ;組付を身代わりで回避
-  「身代わりの術」[lrcm]
-  くぬぎは敵の攻撃を回避した[lrcm]
-  くぬぎは脱衣状態になった[lrcm]
-  [eval exp="f.Pary = 0, f.Undress = 1, f.EnARS = f.EnARS + 0.1"]
-  [jump target="*戦闘続行" cond="f.HP > 0"]
-[endif]
-
-;組み付き成功
-くぬぎ「きゃあっ！！」[lrcm]
-くぬぎは敵に押し倒された[lrcm]
-
-[iscript]
-f.BindCount++;
-f.BindPower = Math.floor(f.BaseBindPower * (f.BindCount/100 + 1));
-[endscript]
-[jump storage="bind.ks" target="*組付開始"]
-
-
 *コマンド技1
+;グーX３、単純物理
 [iscript]
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 tf.randomNum = (tf.dice / 1000) + 1;
 
-tf.ATP = Math.floor(f.STR * 3.0 * tf.randomNum);
+tf.ATP = Math.floor(f.STR * 1.8 * tf.randomNum);
 tf.EnDFP = Math.floor(f.EnDEF * 1.2);
-tf.Damage = tf.ATP - tf.EnDFP;
+tf.Damage = tf.ATP - (tf.EnDFP * 0);
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
-「忍法・旋風！」[lrcm]
+[eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
+;[eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+[eval exp="f.EnFP = f.EnFP + 20"]
+「忍法・すずめ刺し！」[lrcm]
 敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
 くぬぎの敏捷が減少した[lrcm]
-[eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-[eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
-;[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
-[eval exp="f.EnFP = f.EnFP + 20"]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
 [jump target="*戦闘続行" cond="f.EnHP > 0"]
 
 
 *コマンド技2
+;チョキX3、興奮度上昇
 [iscript]
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 tf.randomNum = (tf.dice / 1000) + 1;
 
-tf.ATP = Math.floor(f.STR * 3.0 * tf.randomNum);
+tf.ATP = Math.floor(f.STR * 2.5 * tf.randomNum);
 tf.EnDFP = Math.floor(f.EnDEF * 1.2);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
-「忍法・陽炎！」[lrcm]
-敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
-くぬぎの敏捷が減少した[lrcm]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-[eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
-;[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
 [eval exp="f.EnFP = f.EnFP + 20"]
+[eval exp="f.value = 15"][HDamage]
+[eval exp="f.EnERO = f.EnERO + tf.HDamage"][eval exp="f.EnERO = 100" cond="f.EnERO >= 100"]
+[eval exp="f.ARS = f.ARS + 0.1"]
+「忍法・よだか落とし！」[lrcm]
+敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
+敵の興奮度が上昇した[lrcm]敵♡[lrcm]
+
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
 [jump target="*戦闘続行" cond="f.EnHP > 0"]
@@ -661,30 +641,37 @@ tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 tf.randomNum = (tf.dice / 1000) + 1;
 
-tf.ATP = Math.floor(f.STR * 3.0 * tf.randomNum);
+tf.ATP = Math.floor(f.STR * 2.5 * tf.randomNum);
 tf.EnDFP = Math.floor(f.EnDEF * 1.2);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
-「忍法・五月雨！」[lrcm]
-敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
-くぬぎの敏捷が減少した[lrcm]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-[eval exp="f.SPD = f.SPD - 10"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+[eval exp="f.EnSPD = f.EnSPD - 10"][eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
 ;[eval exp="f.TIR = f.TIR + 3"][eval exp="f.TIR = 100" cond="f.TIR > 100"]
 [eval exp="f.EnFP = f.EnFP + 20"]
+くぬぎ「甘い！」[lrcm]
+「忍法・つばめ返り！」[lrcm]
+敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
+敵の敏捷が減少した[lrcm]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
 [jump target="*戦闘続行" cond="f.EnHP > 0"]
 
 
 *スキル選択
+[if exp="f.Undress == 0"]
 [emb exp="f.skill1CT"][r]
+[else]
+[emb exp="f.skill4CT"][r]
+[endif]
 [emb exp="f.skill2CT"][r]
 [emb exp="f.skill3CT"][r]
 
-[glink target="*スキル1使用" text="代わり身の術" color="red" size=15 x=50 y=35 cond="f.skill1CT == 0"]
-[glink target="*スキル選択" text="代わり身の術" color="black" size=15 x=50 y=35 cond="f.skill1CT != 0"]
+[glink target="*スキル1使用" text="代わり身の術" color="red" size=15 x=50 y=35 cond="f.skill1CT == 0 && f.Undress == 0"]
+[glink target="*スキル選択" text="代わり身の術" color="black" size=15 x=50 y=35 cond="f.skill1CT != 0 && f.Undress == 0"]
+[glink target="*スキル4使用" text="変わり身の術" color="red" size=15 x=50 y=35 cond="f.skill4CT == 0 && f.Undress == 1"]
+[glink target="*スキル選択" text="変わり身の術" color="black" size=15 x=50 y=35 cond="f.skill4CT != 0 && f.Undress == 1"]
 [glink target="*スキル2使用" text="目眩ましの術" color="red" size=15 x=50 y=70 cond="f.skill2CT == 0"]
 [glink target="*スキル選択" text="目眩ましの術" color="black" size=15 x=50 y=70 cond="f.skill2CT != 0"]
 [glink target="*スキル3使用" text="魅了の術" color="red" size=15 x=50 y=105 exp="f.skill3CT == 0"]
@@ -699,8 +686,17 @@ if(tf.Damage<0){tf.Damage=0;}
 １回だけ敵の攻撃を回避します[lrcm]
 [eval exp="f.Pary = 1"]
 [eval exp="f.skill1CT = 6"]
+[eval exp="f.EnARS = f.EnARS + 0.1"]
 [jump target="*選択1"]
 
+*スキル4使用
+スキル4使用[lrcm]
+くぬぎは変わり身の術を使った[lrcm]
+くぬぎは目にも留まらぬ速さで忍装束を纏った[lrcm]
+[eval exp="f.Undress = 0"]
+[eval exp="f.skill4CT = 6"]
+[eval exp="f.EnARS = f.EnARS + 0.1"]
+[jump target="*選択1"]
 
 *スキル2使用
 スキル2使用[lrcm]
@@ -717,24 +713,13 @@ f.count=0;
 [eval exp="f.skill2CT = 6"]
 [jump target="*選択1"]
 
-
 *スキル3使用
+[eval exp="f.value = 30"][HDamage]
+[eval exp="f.EnERO = f.EnERO + tf.HDamage"][eval exp="f.EnERO = 100" cond="f.EnERO >= 100"]
+[eval exp="f.CharmBuff = 25 , f.CharmET = 3"]
 スキル3使用[lrcm]
 くぬぎは魅了の術を使った[lrcm]
-[iscript]
-tf.Min = 0, tf.Max = 50;
-tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-tf.randomNum = (tf.dice / 1000) + 1;
-
-tf.ATP = Math.floor(20 * f.ARS * f.EnARS * tf.randomNum);
-tf.EnDFP = (100 - f.EnEND) / 100;
-tf.Damage = Math.floor(tf.ATP * tf.EnDFP);
-if(tf.Damage<0){tf.Damage=0;}
-f.ARS = f.ARS + 0.1;
-[endscript]
-[eval exp="f.EnERO = f.EnERO + tf.Damage"][eval exp="f.EnERO = 100" cond="f.EnERO >= 100"]
-[eval exp="f.CharmBuff = 25 , f.CharmET = 3"]
-敵の興奮度が[emb exp="tf.Damage"]上がった[lrcm]
+敵の興奮度が[emb exp="tf.Damage"]上がった[lrcm]敵♡[lrcm]
 敵の攻撃力が低下した[lrcm]
 [showStatus]
 [jump target="*敵絶頂戦闘時" cond="f.EnERO >= 100"]
@@ -742,6 +727,46 @@ f.ARS = f.ARS + 0.1;
 
 [eval exp="f.skill3CT = 6"]
 [jump target="*選択1"]
+
+
+*組付判定
+敵が組み付いてきた！[lrcm]
+[iscript]
+tf.Min = 0, tf.Max = 99;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+if(f.SPD < f.EnSPD){
+  f.Clutch = 1;
+}else if(tf.dice > f.SPD - f.EnSPD){
+  f.Clutch = 1;
+}else{
+  f.Clutch = 0;
+}
+[endscript]
+
+[if exp="f.Clutch==0"]
+  ;組み付き失敗
+  くぬぎは敵の組付を回避した[lrcm]
+  [jump target="*選択1"]
+[endif]
+
+[if exp="f.Pary > 0"]
+  ;組付を代わり身で回避
+  「代わり身の術」[lrcm]
+  くぬぎは敵の攻撃を回避した[lrcm]
+  くぬぎは脱衣状態になった[lrcm]
+  [eval exp="f.Pary = 0, f.Undress = 1, f.EnARS = f.EnARS + 0.1"]
+  [jump target="*戦闘続行" cond="f.HP > 0"]
+[endif]
+
+;組み付き成功
+くぬぎ「きゃあっ！！」[lrcm]
+くぬぎは敵に押し倒された[lrcm]
+
+[iscript]
+f.BindCount++;
+f.BindPower = Math.floor(f.BaseBindPower * (f.BindCount/100 + 1));
+[endscript]
+[jump storage="bind.ks" target="*組付開始"]
 
 
 *行動不能

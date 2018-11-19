@@ -67,7 +67,8 @@ if(tf.dice < 50){
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 tf.randomNum = (tf.dice / 1000) + 1;
-tf.Damage = Math.floor(f.EnTEC/10 * f.ARS * tf.randomNum);
+amp = f.Ampl + 1;
+tf.Damage = Math.floor(f.EnTEC/3 * f.ARS * amp * tf.randomNum);
 f.ERO = f.ERO + tf.Damage;
 if(f.ERO > 100){f.ERO = 100;}
 f.HP = f.HP - 10;
@@ -78,10 +79,12 @@ if(f.HP < 0){f.HP = 0;}
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 tf.randomNum = (tf.dice / 1000) + 1;
-tf.EnDamage = Math.floor(5 * f.EnARS * tf.randomNum);
+tf.EnDamage = Math.floor((100 - f.EnEND) * f.EnARS * tf.randomNum);
+if(tf.EnDamage < 0){tf.EnDamage = 0;}
 f.EnERO = f.EnERO + tf.EnDamage;
 if(f.ERO > 100){f.ERO = 100;}
 [endscript]
+
 敵は激しく腰を前後した[lrcm]
 くぬぎ「あんっ！ああっ！！」[lrcm]
 くぬぎの快感度が[emb exp="tf.Damage"]上昇した[lrcm]
@@ -94,7 +97,7 @@ if(f.ERO > 100){f.ERO = 100;}
 [jump target="房中敗北A" cond="f.HP <= 0"]
 [jump target="房中勝利" cond="f.EnERO >= 100"]
 [jump target="*会話"]
-エラー[s]
+error[s]
 
 
 *絶頂

@@ -47,8 +47,8 @@ f.originEnSPD = 60;
 f.originEnFP = 0;
 f.originEnERO = 0;
 f.originEnARS = 1.1;//arouse
-f.originEnTEC = 50;//技術力
-f.originEnEND = 50;//忍耐力
+f.originEnTEC = 70;//技術力
+f.originEnEND = 70;//忍耐力
 f.originBindPower = 100;
 
 f.originEnOption[0] = ['グー','グー','グー','チョキ','チョキ','チョキ','チョキ','パー','パー'];
@@ -73,8 +73,8 @@ f.originEnSPD = 30;
 f.originEnFP = 0;
 f.originEnERO = 0;
 f.originEnARS = 1;//arouse
-f.originEnTEC = 50;//技術力
-f.originEnEND = 10;//忍耐力
+f.originEnTEC = 70;//技術力
+f.originEnEND = 70;//忍耐力
 f.originBindPower = 80;
 
 f.originEnOption[0] = ['グー','グー','グー','グー','チョキ','チョキ','チョキ','パー','パー'];
@@ -100,8 +100,8 @@ f.originEnSPD = 50;
 f.originEnFP = 0;
 f.originEnERO = 0;
 f.originEnARS = 1.2;//arouse
-f.originEnTEC = 50;//技術力
-f.originEnEND = 30;//忍耐力
+f.originEnTEC = 70;//技術力
+f.originEnEND = 70;//忍耐力
 f.originBindPower = 120;
 
 f.originEnOption[0] = ['グー','グー','チョキ','チョキ','チョキ','チョキ','パー','パー','パー'];

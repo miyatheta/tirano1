@@ -72,14 +72,13 @@ tf.EnDFP = Math.floor(f.EnDEF);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
-
+[eval exp="f.EnFP = 0"]
 敵「散れい！小娘！！」[l][r]
 
 [jump target="*身代わりの術" cond="f.Pary > 0"]
 
 くぬぎの体力が[emb exp="tf.Damage"]減少した。[lrcm]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
-[eval exp="f.EnFP = 0"]
 [showStatus]
 
 [jump target="*被虐体質" cond="f.Maso > 0"]
@@ -105,6 +104,7 @@ tf.EnDFP = Math.floor(f.EnDEF);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
+[eval exp="f.EnFP = 0"]
 
 敵「散れい！小娘！！」[l][r]
 
@@ -112,7 +112,6 @@ if(tf.Damage<0){tf.Damage=0;}
 
 くぬぎの体力が[emb exp="tf.Damage"]減少した。[lrcm]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
-[eval exp="f.EnFP = 0"]
 [showStatus]
 
 [jump target="*被虐体質" cond="f.Maso > 0"]
@@ -138,6 +137,7 @@ tf.EnDFP = Math.floor(f.EnDEF);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
+[eval exp="f.EnFP = 0"]
 
 敵「散れい！小娘！！」[l][r]
 
@@ -145,7 +145,6 @@ if(tf.Damage<0){tf.Damage=0;}
 
 くぬぎの体力が[emb exp="tf.Damage"]減少した。[lrcm]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
-[eval exp="f.EnFP = 0"]
 [showStatus]
 
 [jump target="*被虐体質" cond="f.Maso > 0"]

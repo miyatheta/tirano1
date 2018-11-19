@@ -26,7 +26,7 @@ if(f.BindPower < 0){f.BindPower = 0;}
 *組付選択
 くぬぎは敵に拘束されている！[lrcm]
 くぬぎの敏捷が減少した[lrcm]
-[eval exp="f.SPD = f.SPD - 3"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+[eval exp="f.SPD = f.SPD - 5"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
 [showStatus]
 
 [if exp="f.StanOrga==1"]

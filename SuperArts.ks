@@ -1,5 +1,5 @@
 *発動超必殺技
-くぬぎ「受けてみなさい！必殺・鳴神の舞」[l][r]
+くぬぎ「受けてみなさい！必殺・鳴神の舞」[lrcm]
 [macro name="SuperArts"]
 [iscript]
 tf.Min = 0, tf.Max = 50;
@@ -28,9 +28,10 @@ if(tf.Damage<0){tf.Damage=0;}
 
 *身代わりの術
 「身代わりの術」[lrcm]
-くぬぎは敵の攻撃を回避した[lrcm]
-くぬぎは脱衣状態になった[lrcm]
-[eval exp="f.Pary = 0, f.Undress = 1, f.EnARS = f.EnARS + 0.1"]
+くぬぎは敵の攻撃を回避した[wt5]
+くぬぎは脱衣状態になった[wt5]敵♡[wt5]
+[eval exp="f.EnARS = f.EnARS + 0.05"]
+[eval exp="f.Pary = 0, f.Undress = 1"]
 [jump storage="battle.ks" target="*戦闘続行"]
 error[s]
 
@@ -44,6 +45,7 @@ tf.Damage = Math.floor(2 * f.ARS * amp);
 [showStatus]
 
 [jump storage="battle.ks" target="*戦闘終了" cond="f.HP <= 0"]
+[jump storage="battle.ks" ttarget="*戦闘絶頂" cond="f.ERO >= 100"]
 [jump storage="battle.ks" target="*戦闘続行" cond="f.HP > 0"]
 error[s]
 
@@ -73,7 +75,7 @@ tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 [eval exp="f.EnFP = 0"]
-敵「散れい！小娘！！」[l][r]
+敵「散れい！小娘！！」[lrcm]
 
 [jump target="*身代わりの術" cond="f.Pary > 0"]
 
@@ -106,7 +108,7 @@ if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 [eval exp="f.EnFP = 0"]
 
-敵「散れい！小娘！！」[l][r]
+敵「散れい！小娘！！」[lrcm]
 
 [jump target="*身代わりの術" cond="f.Pary > 0"]
 
@@ -139,7 +141,7 @@ if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 [eval exp="f.EnFP = 0"]
 
-敵「散れい！小娘！！」[l][r]
+敵「散れい！小娘！！」[lrcm]
 
 [jump target="*身代わりの術" cond="f.Pary > 0"]
 

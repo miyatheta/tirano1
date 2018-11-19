@@ -146,6 +146,10 @@ f.EnStan = 0;
 [l][r][cm]
 [endmacro]
 
+[macro name="wt5"]
+[wait time=500][cm]
+[endmacro]
+
 [macro name="showStatus"]
 [freeimage layer=1]
 [iscript]

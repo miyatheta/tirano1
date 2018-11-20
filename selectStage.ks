@@ -28,95 +28,9 @@ f.Undress = 0;//脱衣
 f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 
 [endscript]
-[showStatus]
 
-*エネミー選択
-[emb exp="f.stage"]回戦[r]
-[glink target="*敵1" exp="f.enemy=1" text="敵１" size=15 x=50 y=100]
-[glink target="*敵2" exp="f.enemy=2" text="敵２" size=15 x=50 y=150]
-[glink target="*敵3" exp="f.enemy=3" text="敵３" size=15 x=50 y=200]
-[s]
-
-*敵1
-[iscript]
-//敵の設定
-f.originEnHP = 1000;
-f.originEnSTR = 80;
-f.originEnDEF = 70;
-f.originEnSPD = 60;
-f.originEnFP = 0;
-f.originEnERO = 0;
-f.originEnARS = 1.1;//arouse
-f.originEnTEC = 70;//技術力
-f.originEnEND = 70;//忍耐力
-f.originBindPower = 100;
-
-f.originEnOption[0] = ['グー','グー','グー','チョキ','チョキ','チョキ','チョキ','パー','パー'];
-f.originEnOption[1] = ['グー','チョキ','チョキ','パー','チョキ','グー','グー','パー','チョキ'];
-f.originEnOption[2] = ['グー','パー','グー','チョキ','チョキ','グー','チョキ','チョキ','パー'];
-f.originEnOption[3] = ['パー','チョキ','グー','チョキ','パー','グー','パー','チョキ','グー'];
-f.originEnOption[4] = ['チョキ','グー','グー','チョキ','パー','チョキ','パー','チョキ','グー'];
-f.originEnOption[5] = ['チョキ','チョキ','グー','チョキ','グー','パー','グー','チョキ','パー'];
-f.originEnOption[6] = ['チョキ','グー','チョキ','パー','チョキ','グー','グー','パー','チョキ'];
-
-f.ClutchRate = 20;//組付初期値
-[endscript]
-[jump target="*敵設定読込"]
-
-*敵2
-[iscript]
-//敵の設定
-f.originEnHP = 1000;
-f.originEnSTR = 90;
-f.originEnDEF = 80;
-f.originEnSPD = 30;
-f.originEnFP = 0;
-f.originEnERO = 0;
-f.originEnARS = 1;//arouse
-f.originEnTEC = 70;//技術力
-f.originEnEND = 70;//忍耐力
-f.originBindPower = 80;
-
-f.originEnOption[0] = ['グー','グー','グー','グー','チョキ','チョキ','チョキ','パー','パー'];
-f.originEnOption[1] = ['グー','チョキ','チョキ','パー','グー','グー','グー','パー','チョキ'];
-f.originEnOption[2] = ['グー','グー','グー','チョキ','グー','パー','チョキ','チョキ','パー'];
-f.originEnOption[3] = ['パー','チョキ','グー','チョキ','パー','グー','グー','チョキ','グー'];
-f.originEnOption[4] = ['チョキ','グー','グー','チョキ','パー','チョキ','パー','グー','グー'];
-f.originEnOption[5] = ['チョキ','チョキ','グー','パー','チョキ','グー','グー','グー','パー'];
-f.originEnOption[6] = ['チョキ','グー','チョキ','パー','グー','グー','グー','パー','チョキ'];
-
-f.ClutchRate = 0;//組付初期値
-
-[endscript]
-[jump target="*敵設定読込"]
-
-*敵3
-[iscript]
-//敵の設定
-f.originEnHP = 1000;
-f.originEnSTR = 80;
-f.originEnDEF = 70;
-f.originEnSPD = 50;
-f.originEnFP = 0;
-f.originEnERO = 0;
-f.originEnARS = 1.2;//arouse
-f.originEnTEC = 70;//技術力
-f.originEnEND = 70;//忍耐力
-f.originBindPower = 120;
-
-f.originEnOption[0] = ['グー','グー','チョキ','チョキ','チョキ','チョキ','パー','パー','パー'];
-f.originEnOption[1] = ['グー','チョキ','チョキ','パー','パー','チョキ','グー','パー','チョキ'];
-f.originEnOption[2] = ['グー','パー','チョキ','チョキ','パー','グー','チョキ','チョキ','パー'];
-f.originEnOption[3] = ['パー','チョキ','グー','チョキ','パー','チョキ','パー','チョキ','グー'];
-f.originEnOption[4] = ['チョキ','グー','チョキ','チョキ','パー','チョキ','パー','パー','グー'];
-f.originEnOption[5] = ['チョキ','チョキ','グー','チョキ','パー','チョキ','グー','パー','パー'];
-f.originEnOption[6] = ['チョキ','グー','チョキ','パー','パー','チョキ','グー','パー','チョキ'];
-
-f.ClutchRate = 50;//組付初期値
-[endscript]
-[jump target="*敵設定読込"]
-
-*敵設定読込
+[macro name="enemySetUp"]
+;敵設定読込
 [iscript]
 f.BaseEnHP = f.originEnHP;
 f.BaseEnSTR = f.originEnSTR;
@@ -150,5 +64,96 @@ f.EnCount = 0;
 f.EnVBuff = 1.0;
 f.EnStan = 0;
 [endscript]
-[cm]
-[jump storage="battle.ks" target="*バトルスタート"]
+[endmacro]
+
+[showStatus]
+
+*エネミー選択
+[emb exp="f.stage"]回戦[r]
+[glink target="*敵1" exp="f.enemy=1" text="敵１" size=15 x=50 y=100]
+[glink target="*敵2" exp="f.enemy=2" text="敵２" size=15 x=50 y=150]
+[glink target="*敵3" exp="f.enemy=3" text="敵３" size=15 x=50 y=200]
+[s]
+
+*敵1
+[iscript]
+//敵の設定
+f.originEnHP = 1000;
+f.originEnSTR = 80;
+f.originEnDEF = 70;
+f.originEnSPD = 60;
+f.originEnFP = 0;
+f.originEnERO = 0;
+f.originEnARS = 1.1;//arouse
+f.originEnTEC = 70;//技術力
+f.originEnEND = 70;//忍耐力
+f.originBindPower = 100;
+
+f.originEnOption[0] = ['グーー','グーー','グーー','チョキ','チョキ','チョキ','チョキ','パーー','パーー'];
+f.originEnOption[1] = ['グーー','チョキ','チョキ','パーー','チョキ','グーー','グーー','パーー','チョキ'];
+f.originEnOption[2] = ['グーー','パーー','グーー','チョキ','チョキ','グーー','チョキ','チョキ','パーー'];
+f.originEnOption[3] = ['パーー','チョキ','グーー','チョキ','パーー','グーー','パーー','チョキ','グーー'];
+f.originEnOption[4] = ['チョキ','グーー','グーー','チョキ','パーー','チョキ','パーー','チョキ','グーー'];
+f.originEnOption[5] = ['チョキ','チョキ','グーー','チョキ','グーー','パーー','グーー','チョキ','パーー'];
+f.originEnOption[6] = ['チョキ','グーー','チョキ','パーー','チョキ','グーー','グーー','パーー','チョキ'];
+
+f.ClutchRate = 20;//組付初期値
+[endscript]
+[enemySetUp]
+[jump storage="intermission.ks" target="*敵1"]
+
+*敵2
+[iscript]
+//敵の設定
+f.originEnHP = 1000;
+f.originEnSTR = 90;
+f.originEnDEF = 80;
+f.originEnSPD = 30;
+f.originEnFP = 0;
+f.originEnERO = 0;
+f.originEnARS = 1;//arouse
+f.originEnTEC = 70;//技術力
+f.originEnEND = 70;//忍耐力
+f.originBindPower = 80;
+
+f.originEnOption[0] = ['グーー','グーー','グーー','グーー','チョキ','チョキ','チョキ','パーー','パーー'];
+f.originEnOption[1] = ['グーー','チョキ','チョキ','パーー','グーー','グーー','グーー','パーー','チョキ'];
+f.originEnOption[2] = ['グーー','グーー','グーー','チョキ','グーー','パーー','チョキ','チョキ','パーー'];
+f.originEnOption[3] = ['パーー','チョキ','グーー','チョキ','パーー','グーー','グーー','チョキ','グーー'];
+f.originEnOption[4] = ['チョキ','グーー','グーー','チョキ','パーー','チョキ','パーー','グーー','グーー'];
+f.originEnOption[5] = ['チョキ','チョキ','グーー','パーー','チョキ','グーー','グーー','グーー','パーー'];
+f.originEnOption[6] = ['チョキ','グーー','チョキ','パーー','グーー','グーー','グーー','パーー','チョキ'];
+
+f.ClutchRate = 0;//組付初期値
+
+[endscript]
+[enemySetUp]
+[jump storage="intermission.ks" target="*敵2"]
+
+*敵3
+[iscript]
+//敵の設定
+f.originEnHP = 1000;
+f.originEnSTR = 80;
+f.originEnDEF = 70;
+f.originEnSPD = 50;
+f.originEnFP = 0;
+f.originEnERO = 0;
+f.originEnARS = 1.2;//arouse
+f.originEnTEC = 70;//技術力
+f.originEnEND = 70;//忍耐力
+f.originBindPower = 120;
+
+f.originEnOption[0] = ['グーー','グーー','チョキ','チョキ','チョキ','チョキ','パーー','パーー','パーー'];
+f.originEnOption[1] = ['グーー','チョキ','チョキ','パーー','パーー','チョキ','グーー','パーー','チョキ'];
+f.originEnOption[2] = ['グーー','パーー','チョキ','チョキ','パーー','グーー','チョキ','チョキ','パーー'];
+f.originEnOption[3] = ['パーー','チョキ','グーー','チョキ','パーー','チョキ','パーー','チョキ','グーー'];
+f.originEnOption[4] = ['チョキ','グーー','チョキ','チョキ','パーー','チョキ','パーー','パーー','グーー'];
+f.originEnOption[5] = ['チョキ','チョキ','グーー','チョキ','パーー','チョキ','グーー','パーー','パーー'];
+f.originEnOption[6] = ['チョキ','グーー','チョキ','パーー','パーー','チョキ','グーー','パーー','チョキ'];
+
+f.ClutchRate = 50;//組付初期値
+[endscript]
+[enemySetUp]
+[jump storage="intermission.ks" target="*敵3"]
+[s]

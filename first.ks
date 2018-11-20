@@ -13,15 +13,15 @@ f.originMND = 100;//精神力
 f.originTIR = 0;//疲労度
 
 f.originOption=[
-{id:0, hand:'グー', name:'力', switch:0},
-{id:1, hand:'グー', name:'力', switch:0},
-{id:2, hand:'グー', name:'力', switch:0},
+{id:0, hand:'グーー', name:'力', switch:0},
+{id:1, hand:'グーー', name:'力', switch:0},
+{id:2, hand:'グーー', name:'力', switch:0},
 {id:3, hand:'チョキ', name:'技', switch:0},
 {id:4, hand:'チョキ', name:'技', switch:0},
 {id:5, hand:'チョキ', name:'技', switch:0},
-{id:6, hand:'パー', name:'速', switch:0},
-{id:7, hand:'パー', name:'速', switch:0},
-{id:8, hand:'パー', name:'速', switch:0}];
+{id:6, hand:'パーー', name:'速', switch:0},
+{id:7, hand:'パーー', name:'速', switch:0},
+{id:8, hand:'パーー', name:'速', switch:0}];
 
 [endscript]
 
@@ -74,9 +74,12 @@ f.Undress = 0;//脱衣
 f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 f.StanOrga = 0;//絶頂時のスタン
 
-f.Ampl = 1;//感度増幅
-f.Estr = 1;//発情
-f.Maso = 1;//被虐
+f.Ampl = 0;//感度増幅
+f.Estr = 0;//発情
+f.Maso = 0;//被虐
+f.Paras = 0;
+f.Bitch = 0;
+f.Hypno = 0;
 
 f.stage = 1;
 [endscript]
@@ -121,15 +124,15 @@ f.EnEND = f.BaseEnEND;
 f.BindPower = f.BaseBindPower;
 
 f.originEnOption=[
-{id:0, hand:'グー', name:'力', switch:0},
-{id:1, hand:'グー', name:'力', switch:0},
-{id:2, hand:'グー', name:'力', switch:0},
+{id:0, hand:'グーー', name:'力', switch:0},
+{id:1, hand:'グーー', name:'力', switch:0},
+{id:2, hand:'グーー', name:'力', switch:0},
 {id:3, hand:'チョキ', name:'技', switch:0},
 {id:4, hand:'チョキ', name:'技', switch:0},
 {id:5, hand:'チョキ', name:'技', switch:0},
-{id:6, hand:'パー', name:'速', switch:0},
-{id:7, hand:'パー', name:'速', switch:0},
-{id:8, hand:'パー', name:'速', switch:0}];
+{id:6, hand:'パーー', name:'速', switch:0},
+{id:7, hand:'パーー', name:'速', switch:0},
+{id:8, hand:'パーー', name:'速', switch:0}];
 
 f.BaseEnOption = JSON.stringify(f.originEnOption);
 f.BaseEnOption = JSON.parse(f.BaseEnOption);
@@ -143,7 +146,8 @@ f.EnStan = 0;
 [endscript]
 
 [macro name="lrcm"]
-[l][r][cm]
+;[l][r][cm]
+[wait time=1000][cm]
 [endmacro]
 
 [macro name="wt5"]

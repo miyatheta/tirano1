@@ -1,4 +1,5 @@
 *バトルスタート
+[showStatus]
 [iscript]
 //環境変数
 f.turn = 0;
@@ -68,15 +69,20 @@ f.EnVBuff = 1.0;
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 tf.randomNum = (tf.dice / 1000) + 1;
-naked = (f.Undress/10) + 1
-tf.ATP = Math.floor(f.value * f.ARS * f.EnARS * naked * tf.randomNum);
+naked = (f.Undress/10) + 1;
+sexAppeal = 1 + (f.APP - 50) / 100;
+tf.ATP = Math.floor(f.value * sexAppeal * naked * tf.randomNum);
 tf.EnDFP = (100 - f.EnEND) / 100;
 tf.HDamage = Math.floor(tf.ATP * tf.EnDFP);
 if(tf.Damage<0){tf.Damage=0;}
-f.ARS = f.ARS + 0.1;
 [endscript]
 [endmacro]
 
+[macro name="Masochism"]
+[iscript]
+tf.Damage = Math.floor(2 * f.SEN / 100);
+[endscript]
+[endmacro]
 
 *ターン開始
 [position width=960 height=480 top=0 left=0]
@@ -523,8 +529,8 @@ error[s]
   「代わり身の術」[lrcm]
   くぬぎは敵の攻撃を回避した[wt5]
   くぬぎは脱衣状態になった[wt5]
-  敵♡[wt5]
-  [eval exp="f.EnARS = f.EnARS + 0.05"]
+  くぬぎの色気が上昇した[wt5]
+  [eval exp="f.APP = f.APP + 2"]
   [eval exp="f.Pary = 0, f.Undress = 1"]
   [jump target="*戦闘続行" cond="f.HP > 0"]
 [endif]
@@ -536,10 +542,7 @@ error[s]
 
 [if exp="f.Maso > 0"]
   くぬぎは痛みに快感を感じた[lrcm]
-  [iscript]
-  amp = f.Ampl + 1;
-  tf.Damage = Math.floor(2 * f.ARS * amp);
-  [endscript]
+  [Masochism]
   [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
   [showStatus]
 [endif]
@@ -578,8 +581,7 @@ if(f.EnCount>2){
   くぬぎ「はぁ・・・、はぁ・・・・」[lrcm]
   発情しているくぬぎは快感度が上昇した[lrcm]
   [iscript]
-  amp = f.Ampl + 1;
-  tf.Damage = Math.floor(2 * f.ARS * amp);
+  tf.Damage = Math.floor(2 * f.SEN / 100);
   [endscript]
   [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
   [showStatus]
@@ -622,15 +624,15 @@ tf.EnDFP = Math.floor(f.EnDEF * 1.2);
 tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
-[eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-[eval exp="f.EnFP = f.EnFP + 20"]
+[eval exp="f.APP = f.APP + 1"]
 [eval exp="f.value = 15"][HDamage]
 [eval exp="f.EnERO = f.EnERO + tf.HDamage"][eval exp="f.EnERO = 100" cond="f.EnERO >= 100"]
-[eval exp="f.ARS = f.ARS + 0.1"]
+[eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
+[eval exp="f.EnFP = f.EnFP + 20"]
 「忍法・よだか落とし！」[lrcm]
 敵の体力が[emb exp="tf.Damage"]減少した。[wt5]
-敵の興奮度が上昇した[wt5]敵♡[lrcm]
-
+くぬぎの色気が上昇した[lrcm]
+敵の興奮度が上昇した[wt5]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
 [jump target="*戦闘続行" cond="f.EnHP > 0"]
@@ -685,16 +687,17 @@ if(tf.Damage<0){tf.Damage=0;}
 １回だけ敵の攻撃を回避します[lrcm]
 [eval exp="f.Pary = 1"]
 [eval exp="f.skill1CT = 6"]
-[eval exp="f.EnARS = f.EnARS + 0.1"]
 [jump target="*選択1"]
 
 *スキル4使用
 スキル4使用[wt5]
 くぬぎは変わり身の術を使った[wt5]
 くぬぎは目にも留まらぬ速さで忍装束を纏った[lrcm]
+くぬぎの色気が減少した[lrcm]
 [eval exp="f.Undress = 0"]
 [eval exp="f.skill4CT = 6"]
-[eval exp="f.EnARS = f.EnARS + 0.1"]
+[eval exp="f.APP = f.APP - 2"][eval exp="f.APP = 0" cond="f.APP < 0"]
+[showStatus]
 [jump target="*選択1"]
 
 *スキル2使用
@@ -713,12 +716,14 @@ f.count=0;
 [jump target="*選択1"]
 
 *スキル3使用
+[eval exp="f.APP = f.APP + 10"]
 [eval exp="f.value = 30"][HDamage]
 [eval exp="f.EnERO = f.EnERO + tf.HDamage"][eval exp="f.EnERO = 100" cond="f.EnERO >= 100"]
 [eval exp="f.CharmBuff = 25 , f.CharmET = 3"]
 スキル3使用[wt5]
 くぬぎは魅了の術を使った[wt5]
-敵の興奮度が[emb exp="tf.HDamage"]上がった[wt5]敵♡[wt5]
+くぬぎの色気が上昇した[wt5]
+敵の興奮度が[emb exp="tf.HDamage"]上がった[wt5]
 敵の攻撃力が低下した[lrcm]
 [showStatus]
 [jump target="*敵絶頂戦闘時" cond="f.EnERO >= 100"]
@@ -752,8 +757,8 @@ if(f.SPD < f.EnSPD){
   ;組付を代わり身で回避
   「代わり身の術」[lrcm]
   くぬぎは敵の攻撃を回避した[wt5]
-  くぬぎは脱衣状態になった[wt5]敵♡[wt5]
-  [eval exp="f.EnARS = f.EnARS + 0.05"]
+  くぬぎは脱衣状態になった[wt5]くぬぎの色気が上昇した[wt5]
+  [eval exp="f.APP = f.APP + 2"]
   [eval exp="f.Pary = 0, f.Undress = 1"]
   [jump target="*戦闘続行" cond="f.HP > 0"]
 [endif]
@@ -856,7 +861,7 @@ tf.hand = f.selectOption[f.H].hand;
 くぬぎは絶頂を迎えた。[lrcm]
 [eval exp="f.ERO = 0"][showStatus]
 くぬぎの感度が上昇した。[lrcm]
-[eval exp="f.ARS = f.ARS + 0.1"][showStatus]
+[eval exp="f.SEN = f.SEN + 10"][showStatus]
 [wait time=500]
 ;組付選択等割愛
 くぬぎ「はぁ・・・・はぁ・・・・」[lrcm]

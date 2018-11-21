@@ -5,11 +5,11 @@ f.originHP = 1000;
 f.originSTR = 70;
 f.originDEF = 60;
 f.originSPD = 100;
-f.originFP = 0;//force
+f.originFP = 0;//気力
 f.originERO = 0;//快感
-f.originARS = 1;//arouse
-f.originSTM = 100;//房中体力
-f.originMND = 100;//精神力
+f.originARS = 50;//淫力
+f.originSEN = 100;//感度
+f.originMND = 100;//精神力=房中体力
 f.originTIR = 0;//疲労度
 
 f.originOption=[
@@ -31,10 +31,10 @@ f.BaseHP = f.originHP;
 f.BaseSTR = f.originSTR;
 f.BaseDEF = f.originDEF;
 f.BaseSPD = f.originSPD;
-f.BaseFP = f.originFP;//force
+f.BaseFP = f.originFP;
 f.BaseERO = f.originERO;
-f.BaseARS = f.originARS;//arouse
-f.BaseSTM = f.originSTM;
+f.BaseARS = f.originARS;
+f.BaseSEN = f.originSEN;
 f.BaseMND = f.originMND;
 f.BaseTIR = f.originTIR;
 
@@ -53,8 +53,9 @@ f.DEF = f.BaseDEF;
 f.SPD = f.BaseSPD;
 f.FP = f.BaseFP;
 f.ERO = f.BaseERO;
-f.ARS = f.BaseARS;//arouse
-f.STM  = f.BaseSTM;
+f.APP = f.BaseAPP;
+f.ARS = f.BaseARS;
+f.SEN  = f.BaseSEN;
 f.MND = f.BaseMND;
 f.TIR = f.BaseTIR;
 
@@ -86,15 +87,14 @@ f.stage = 1;
 
 [iscript]
 //敵の設定
-f.originEnHP = 1000;
-f.originEnSTR = 80;
-f.originEnDEF = 60;
-f.originEnSPD = 30;
+f.originEnHP = 0;
+f.originEnSTR = 0;
+f.originEnDEF = 0;
+f.originEnSPD = 0;
 f.originEnFP = 0;
 f.originEnERO = 0;
-f.originEnARS = 1;//arouse
-f.originEnTEC = 40;//技術力
-f.originEnEND = 20;//忍耐力
+f.originEnTEC = 0;//技術力
+f.originEnEND = 0;//忍耐力
 f.originBindPower = 100;
 
 f.ClutchRate = 20;//組付初期値
@@ -105,8 +105,6 @@ f.BaseEnDEF = f.originEnDEF;
 f.BaseEnSPD = f.originEnSPD;
 f.BaseEnFP = f.originEnFP;
 f.BaseEnERO = f.originEnERO;
-f.BaseEnARS = f.originEnARS;//arouse
-f.BaseEnEROAP = f.originEnEROAP;
 f.BaseEnTEC = f.originEnTEC;
 f.BaseEnEND = f.originEnEND;
 f.BaseBindPower = f.originBindPower;
@@ -117,8 +115,6 @@ f.EnDEF = f.BaseEnDEF;
 f.EnSPD = f.BaseEnSPD;
 f.EnFP = f.BaseEnFP;
 f.EnERO = f.BaseEnERO;
-f.EnARS = f.BaseEnARS;//arouse
-f.EnEROAP = f.BaseEnEROAP;
 f.EnTEC = f.BaseEnTEC;
 f.EnEND = f.BaseEnEND;
 f.BindPower = f.BaseBindPower;
@@ -147,7 +143,7 @@ f.EnStan = 0;
 
 [macro name="lrcm"]
 ;[l][r][cm]
-[wait time=1000][cm]
+[wait time=750][cm]
 [endmacro]
 
 [macro name="wt5"]
@@ -180,6 +176,13 @@ f.TIRdigit=[];
 calcStatus(f.TIRdigit,f.TIR);
 f.MNDdigit=[];
 calcStatus(f.MNDdigit,f.MND);
+f.ARSdigit=[];
+calcStatus(f.ARSdigit,f.ARS);
+f.APPdigit=[];
+calcStatus(f.APPdigit,f.APP);
+f.SENdigit=[];
+calcStatus(f.SENdigit,f.SEN);
+
 
 f.EnHPdigit=[];
 calcStatus(f.EnHPdigit,f.EnHP);
@@ -189,6 +192,7 @@ f.EnSPDdigit=[];
 calcStatus(f.EnSPDdigit,f.EnSPD);
 f.EnEROdigit=[];
 calcStatus(f.EnEROdigit,f.EnERO);
+
 [endscript]
 [image layer=1 storage="number/PL.png" width="100" top="475" left="0" visible="true"]
 
@@ -210,49 +214,67 @@ calcStatus(f.EnEROdigit,f.EnERO);
 [image layer=1 storage="&f.SPDdigit[3]" width="25" top="550" left="125" visible="true"]
 [image layer=1 storage="&f.SPDdigit[4]" width="25" top="550" left="150" visible="true"]
 
-[image layer=1 storage="number/快感.png" width="100" top="575" left="0" visible="true"]
-[image layer=1 storage="&f.EROdigit[1]" width="25" top="575" left="75" visible="true"]
-[image layer=1 storage="&f.EROdigit[2]" width="25" top="575" left="100" visible="true"]
-[image layer=1 storage="&f.EROdigit[3]" width="25" top="575" left="125" visible="true"]
-[image layer=1 storage="&f.EROdigit[4]" width="25" top="575" left="150" visible="true"]
+[image layer=1 storage="number/疲労.png" width="100" top="575" left="0" visible="true"]
+[image layer=1 storage="&f.TIRdigit[1]" width="25" top="575" left="75" visible="true"]
+[image layer=1 storage="&f.TIRdigit[2]" width="25" top="575" left="100" visible="true"]
+[image layer=1 storage="&f.TIRdigit[3]" width="25" top="575" left="125" visible="true"]
+[image layer=1 storage="&f.TIRdigit[4]" width="25" top="575" left="150" visible="true"]
 
-[image layer=1 storage="number/疲労.png" width="100" top="500" left="200" visible="true"]
-[image layer=1 storage="&f.TIRdigit[1]" width="25" top="500" left="250" visible="true"]
-[image layer=1 storage="&f.TIRdigit[2]" width="25" top="500" left="270" visible="true"]
-[image layer=1 storage="&f.TIRdigit[3]" width="25" top="500" left="300" visible="true"]
-[image layer=1 storage="&f.TIRdigit[4]" width="25" top="500" left="325" visible="true"]
+[image layer=1 storage="number/精神.png" width="100" top="500" left="200" visible="true"]
+[image layer=1 storage="&f.MNDdigit[1]" width="25" top="500" left="275" visible="true"]
+[image layer=1 storage="&f.MNDdigit[2]" width="25" top="500" left="300" visible="true"]
+[image layer=1 storage="&f.MNDdigit[3]" width="25" top="500" left="325" visible="true"]
+[image layer=1 storage="&f.MNDdigit[4]" width="25" top="500" left="350" visible="true"]
 
-[image layer=1 storage="number/精神.png" width="100" top="550" left="200" visible="true"]
-[image layer=1 storage="&f.MNDdigit[1]" width="25" top="550" left="250" visible="true"]
-[image layer=1 storage="&f.MNDdigit[2]" width="25" top="550" left="270" visible="true"]
-[image layer=1 storage="&f.MNDdigit[3]" width="25" top="550" left="300" visible="true"]
-[image layer=1 storage="&f.MNDdigit[4]" width="25" top="550" left="325" visible="true"]
+[image layer=1 storage="number/淫力.png" width="100" top="525" left="200" visible="true"]
+[image layer=1 storage="&f.ARSdigit[1]" width="25" top="525" left="275" visible="true"]
+[image layer=1 storage="&f.ARSdigit[2]" width="25" top="525" left="300" visible="true"]
+[image layer=1 storage="&f.ARSdigit[3]" width="25" top="525" left="325" visible="true"]
+[image layer=1 storage="&f.ARSdigit[4]" width="25" top="525" left="350" visible="true"]
 
-[image layer=1 storage="number/敵名.png" width="100" top="475" left="480" visible="true"]
+[image layer=1 storage="number/色気.png" width="100" top="550" left="200" visible="true"]
+[image layer=1 storage="&f.APPdigit[1]" width="25" top="550" left="275" visible="true"]
+[image layer=1 storage="&f.APPdigit[2]" width="25" top="550" left="300" visible="true"]
+[image layer=1 storage="&f.APPdigit[3]" width="25" top="550" left="325" visible="true"]
+[image layer=1 storage="&f.APPdigit[4]" width="25" top="550" left="350" visible="true"]
 
-[image layer=1 storage="number/体力.png" width="100" top="500" left="480" visible="true"]
-[image layer=1 storage="&f.EnHPdigit[1]" width="25" top="500" left="555" visible="true"]
-[image layer=1 storage="&f.EnHPdigit[2]" width="25" top="500" left="580" visible="true"]
-[image layer=1 storage="&f.EnHPdigit[3]" width="25" top="500" left="605" visible="true"]
-[image layer=1 storage="&f.EnHPdigit[4]" width="25" top="500" left="630" visible="true"]
+[image layer=1 storage="number/感度.png" width="100" top="575" left="200" visible="true"]
+[image layer=1 storage="&f.SENdigit[1]" width="25" top="575" left="275" visible="true"]
+[image layer=1 storage="&f.SENdigit[2]" width="25" top="575" left="300" visible="true"]
+[image layer=1 storage="&f.SENdigit[3]" width="25" top="575" left="325" visible="true"]
+[image layer=1 storage="&f.SENdigit[4]" width="25" top="575" left="350" visible="true"]
 
-[image layer=1 storage="number/気力.png" width="100" top="525" left="480" visible="true"]
-[image layer=1 storage="&f.EnFPdigit[1]" width="25" top="525" left="555" visible="true"]
-[image layer=1 storage="&f.EnFPdigit[2]" width="25" top="525" left="580" visible="true"]
-[image layer=1 storage="&f.EnFPdigit[3]" width="25" top="525" left="605" visible="true"]
-[image layer=1 storage="&f.EnFPdigit[4]" width="25" top="525" left="630" visible="true"]
+[image layer=1 storage="number/快感.png" width="100" top="600" left="200" visible="true"]
+[image layer=1 storage="&f.EROdigit[1]" width="25" top="600" left="275" visible="true"]
+[image layer=1 storage="&f.EROdigit[2]" width="25" top="600" left="300" visible="true"]
+[image layer=1 storage="&f.EROdigit[3]" width="25" top="600" left="325" visible="true"]
+[image layer=1 storage="&f.EROdigit[4]" width="25" top="600" left="350" visible="true"]
 
-[image layer=1 storage="number/敏捷.png" width="100" top="550" left="480" visible="true"]
-[image layer=1 storage="&f.EnSPDdigit[1]" width="25" top="550" left="555" visible="true"]
-[image layer=1 storage="&f.EnSPDdigit[2]" width="25" top="550" left="580" visible="true"]
-[image layer=1 storage="&f.EnSPDdigit[3]" width="25" top="550" left="605" visible="true"]
-[image layer=1 storage="&f.EnSPDdigit[4]" width="25" top="550" left="630" visible="true"]
+[image layer=1 storage="number/敵名.png" width="100" top="475" left="680" visible="true"]
 
-[image layer=1 storage="number/興奮.png" width="100" top="575" left="480" visible="true"]
-[image layer=1 storage="&f.EnEROdigit[1]" width="25" top="575" left="555" visible="true"]
-[image layer=1 storage="&f.EnEROdigit[2]" width="25" top="575" left="580" visible="true"]
-[image layer=1 storage="&f.EnEROdigit[3]" width="25" top="575" left="605" visible="true"]
-[image layer=1 storage="&f.EnEROdigit[4]" width="25" top="575" left="630" visible="true"]
+[image layer=1 storage="number/体力.png" width="100" top="500" left="680" visible="true"]
+[image layer=1 storage="&f.EnHPdigit[1]" width="25" top="500" left="755" visible="true"]
+[image layer=1 storage="&f.EnHPdigit[2]" width="25" top="500" left="780" visible="true"]
+[image layer=1 storage="&f.EnHPdigit[3]" width="25" top="500" left="805" visible="true"]
+[image layer=1 storage="&f.EnHPdigit[4]" width="25" top="500" left="830" visible="true"]
+
+[image layer=1 storage="number/気力.png" width="100" top="525" left="680" visible="true"]
+[image layer=1 storage="&f.EnFPdigit[1]" width="25" top="525" left="755" visible="true"]
+[image layer=1 storage="&f.EnFPdigit[2]" width="25" top="525" left="780" visible="true"]
+[image layer=1 storage="&f.EnFPdigit[3]" width="25" top="525" left="805" visible="true"]
+[image layer=1 storage="&f.EnFPdigit[4]" width="25" top="525" left="830" visible="true"]
+
+[image layer=1 storage="number/敏捷.png" width="100" top="550" left="680" visible="true"]
+[image layer=1 storage="&f.EnSPDdigit[1]" width="25" top="550" left="755" visible="true"]
+[image layer=1 storage="&f.EnSPDdigit[2]" width="25" top="550" left="780" visible="true"]
+[image layer=1 storage="&f.EnSPDdigit[3]" width="25" top="550" left="805" visible="true"]
+[image layer=1 storage="&f.EnSPDdigit[4]" width="25" top="550" left="830" visible="true"]
+
+[image layer=1 storage="number/興奮.png" width="100" top="575" left="680" visible="true"]
+[image layer=1 storage="&f.EnEROdigit[1]" width="25" top="575" left="755" visible="true"]
+[image layer=1 storage="&f.EnEROdigit[2]" width="25" top="575" left="780" visible="true"]
+[image layer=1 storage="&f.EnEROdigit[3]" width="25" top="575" left="805" visible="true"]
+[image layer=1 storage="&f.EnEROdigit[4]" width="25" top="575" left="830" visible="true"]
 
 [endmacro]
 
@@ -263,4 +285,5 @@ alert("くぬぎ　\n体力：" + f.HP + "　すばやさ：" + f.SPD + "　気�
 [endscript]
 [endmacro]
 
+[position width=960 height=480 top=0 left=0]
 [jump storage="selectStage.ks" target="*ステージセレクト"]

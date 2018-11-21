@@ -27,20 +27,18 @@ if(tf.Damage<0){tf.Damage=0;}
 
 
 *身代わりの術
-「身代わりの術」[lrcm]
+「代わり身の術」[lrcm]
 くぬぎは敵の攻撃を回避した[wt5]
-くぬぎは脱衣状態になった[wt5]敵♡[wt5]
-[eval exp="f.EnARS = f.EnARS + 0.05"]
+くぬぎは脱衣状態になった[wt5]
+くぬぎの色気が上昇した[wt5]
+[eval exp="f.APP = f.APP + 1"]
 [eval exp="f.Pary = 0, f.Undress = 1"]
 [jump storage="battle.ks" target="*戦闘続行"]
 error[s]
 
 *被虐体質
 くぬぎは痛みに快感を感じた[lrcm]
-[iscript]
-a = f.Ampl + 1;
-tf.Damage = Math.floor(2 * f.ARS * amp);
-[endscript]
+[Masochism]
 [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
 [showStatus]
 

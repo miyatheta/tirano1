@@ -69,13 +69,13 @@ if(f.BindPower < 0){f.BindPower = 0;}
 [elsif exp="tf.Select==4"]
   くぬぎ「ああんっ！・・・」[lrcm]
   くぬぎは甘い声を上げてみせた[lrcm]
-  敵♡[wt5]
-  [eval exp="f.EnARS = f.EnARS + 0.05"]
+  くぬぎの色気が上昇した[wt5]
+  [eval exp="f.APP= f.APP+ 2"]
 
 [elsif exp="tf.Select==5"]
   くぬぎは敵に体を密着させるようにしなだれかかった[lrcm]
-  敵♡[wt5]
-  [eval exp="f.EnARS = f.EnARS + 0.05"]
+  くぬぎの色気が上昇した[wt5]
+  [eval exp="f.APP= f.APP+ 2"]
 [endif]
 
 [jump target="*組付終了" cond="f.BindPower <= 0"]
@@ -106,9 +106,9 @@ if(tf.dice < 30){
 
 [if exp="f.EnBindOption==1"]
   [iscript]
-  amp = f.Ampl + 1;
-  f.ERO = f.ERO + Math.floor(10 * f.ARS * amp);
-  f.EnERO = f.EnERO + Math.floor(5 * f.EnARS);
+  f.ERO = f.ERO + Math.floor(10 * f.SEN / 100);
+  sexAppeal = 1 + (f.APP - 50) / 100;
+  f.EnERO = f.EnERO + Math.floor(5 * sexAppeal);
   [endscript]
   敵はくぬぎの胸を揉みしだいた[wt5]
   くぬぎの快感度が上昇した[wt5]
@@ -135,7 +135,8 @@ if(tf.dice < 30){
 
 [if exp="f.EnBindOption==3"]
   [iscript]
-  f.EnERO = f.EnERO + Math.floor(10 * f.EnARS);
+  sexAppeal = 1 + (f.APP - 50) / 100;
+  f.EnERO = f.EnERO + Math.floor(10 * sexAppeal);
   [endscript]
   敵はくぬぎの尻に股間を押し付けてきた[wt5]
   くぬぎ「ひっ！」[lrcm]
@@ -148,10 +149,7 @@ if(tf.dice < 30){
 
 *被虐趣味
 くぬぎは痛みに快感を感じた[wt5]
-[iscript]
-amp = f.Ampl + 1;
-tf.Damage = Math.floor(2 * f.ARS * amp);
-[endscript]
+[Masochism]
 [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
 [showStatus]
 [jump target="*拘束絶頂" cond="f.ERO >= 100"]
@@ -161,10 +159,7 @@ tf.Damage = Math.floor(2 * f.ARS * amp);
 *組付継続
 [if exp="f.Estr > 0"]
   発情しているくぬぎは快感度が上昇した[wt5]
-  [iscript]
-  amp = f.Ampl + 1;
-  tf.Damage = Math.floor(2 * f.ARS * amp);
-  [endscript]
+  [Masochism]
   [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
   [showStatus]
 [endif]
@@ -175,7 +170,7 @@ tf.Damage = Math.floor(2 * f.ARS * amp);
 
 *組付終了
 [if exp="tf.Select >= 4"]
-  敵は思わずくぬぎを掴む手を緩めた[r]その隙を突いて
+  敵は思わずくぬぎを掴む手を緩めた[lrcm]その隙を突いて
 [endif]
 くぬぎは敵の拘束を振りほどいた[lrcm]
 [eval exp="f.Clutch = 0"]
@@ -192,7 +187,7 @@ tf.Damage = Math.floor(2 * f.ARS * amp);
 くぬぎは絶頂を迎えた。[wt5]
 [eval exp="f.ERO = 0"][showStatus]
 くぬぎの感度が上昇した。[wt5]
-[eval exp="f.ARS = f.ARS + 0.1"][showStatus]
+[eval exp="f.SEN = f.SEN + 10"][showStatus]
 [wait time=500]
 ;組付選択等割愛
 くぬぎ「はぁ・・・・はぁ・・・・」[lrcm]

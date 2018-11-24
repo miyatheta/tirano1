@@ -24,7 +24,7 @@ if(f.BindPower < 0){f.BindPower = 0;}
 
 
 *組付選択
-くぬぎは敵に拘束されている！[lrcm]
+くぬぎは敵に拘束されている！[wt7]
 くぬぎの敏捷が減少した[wt5]
 [eval exp="f.SPD = f.SPD - 5"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
 [showStatus]
@@ -67,13 +67,13 @@ if(f.BindPower < 0){f.BindPower = 0;}
   [jump storage="battle.ks" target="*戦闘終了" cond="f.EnHP <= 0"]
 
 [elsif exp="tf.Select==4"]
-  くぬぎ「ああんっ！・・・」[lrcm]
-  くぬぎは甘い声を上げてみせた[lrcm]
+  くぬぎ「ああんっ！・・・」[wt7]
+  くぬぎは甘い声を上げてみせた[wt7]
   くぬぎの色気が上昇した[wt5]
   [eval exp="f.APP= f.APP+ 2"]
 
 [elsif exp="tf.Select==5"]
-  くぬぎは敵に体を密着させるようにしなだれかかった[lrcm]
+  くぬぎは敵に体を密着させるようにしなだれかかった[wt7]
   くぬぎの色気が上昇した[wt5]
   [eval exp="f.APP= f.APP+ 2"]
 [endif]
@@ -106,13 +106,15 @@ if(tf.dice < 30){
 
 [if exp="f.EnBindOption==1"]
   [iscript]
-  f.ERO = f.ERO + Math.floor(10 * f.SEN / 100);
+  tf.Damage = Math.floor(6 * f.SEN / 100);
+  f.ERO = f.ERO + tf.Damage;
   sexAppeal = 1 + (f.APP - 50) / 100;
-  f.EnERO = f.EnERO + Math.floor(5 * sexAppeal);
+  f.EnDamage = Math.floor(3 * sexAppeal);
+  f.EnERO = f.EnERO + f.EnDamage;
   [endscript]
   敵はくぬぎの胸を揉みしだいた[wt5]
-  くぬぎの快感度が上昇した[wt5]
-  敵の興奮度が上昇した[wt5]
+  くぬぎの快感度が[emb exp="tf.Damage"]上昇した[wt5]
+  敵の興奮度が[emb exp="f.EnDamage"]上昇した[wt5]
   [showStatus]
   [jump target="*拘束絶頂" cond="f.ERO >= 100"]
 [endif]
@@ -136,11 +138,12 @@ if(tf.dice < 30){
 [if exp="f.EnBindOption==3"]
   [iscript]
   sexAppeal = 1 + (f.APP - 50) / 100;
-  f.EnERO = f.EnERO + Math.floor(10 * sexAppeal);
+  f.EnDamage = Math.floor(6 * sexAppeal);
+  f.EnERO = f.EnERO + f.EnDamage;
   [endscript]
   敵はくぬぎの尻に股間を押し付けてきた[wt5]
-  くぬぎ「ひっ！」[lrcm]
-  敵の興奮度が上昇した[wt5]
+  くぬぎ「ひっ！」[wt7]
+  敵の興奮度が[emb exp="f.EnDamage"]上昇した[wt5]
   [showStatus]
 [endif]
 
@@ -170,33 +173,33 @@ if(tf.dice < 30){
 
 *組付終了
 [if exp="tf.Select >= 4"]
-  敵は思わずくぬぎを掴む手を緩めた[lrcm]その隙を突いて
+  敵は思わずくぬぎを掴む手を緩めた[wt7]その隙を突いて
 [endif]
-くぬぎは敵の拘束を振りほどいた[lrcm]
+くぬぎは敵の拘束を振りほどいた[wt7]
 [eval exp="f.Clutch = 0"]
 [jump storage="battle.ks" target="*ターン開始"]
 
 
 *拘束絶頂
 [cm]
-くぬぎ「あっ・・・・！」[lrcm]
-くぬぎ（嫌っ・・・こんなことで・・・・！！）[lrcm]
-くぬぎ（でも、もう・・・耐えられない！！！）[lrcm]
-くぬぎ「もうっ・・・ダメェ！！」[lrcm]
-くぬぎ「イクッ・・・・！！いくううううう！！」[lrcm]
+くぬぎ「あっ・・・・！」[wt7]
+くぬぎ（嫌っ・・・こんなことで・・・・！！）[wt7]
+くぬぎ（でも、もう・・・耐えられない！！！）[wt7]
+くぬぎ「もうっ・・・ダメェ！！」[wt7]
+くぬぎ「イクッ・・・・！！いくううううう！！」[wt7]
 くぬぎは絶頂を迎えた。[wt5]
 [eval exp="f.ERO = 0"][showStatus]
 くぬぎの感度が上昇した。[wt5]
 [eval exp="f.SEN = f.SEN + 10"][showStatus]
 [wait time=500]
 ;組付選択等割愛
-くぬぎ「はぁ・・・・はぁ・・・・」[lrcm]
+くぬぎ「はぁ・・・・はぁ・・・・」[wt7]
 絶頂の余韻でくぬぎは動けない！！[wt5]
 [eval exp="f.StanOrga=1"][showStatus]
 [jump target="*組付攻撃"]
 
 
 *敵絶頂組付時
-敵「くそっ！もう堪らん！！」[lrcm]
-敵はくぬぎ押し倒した[lrcm]
+敵「くそっ！もう堪らん！！」[wt7]
+敵はくぬぎ押し倒した[wt7]
 [jump storage="bochu.ks" target="*房中開始"]

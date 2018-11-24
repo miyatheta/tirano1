@@ -67,6 +67,9 @@ f.EnStan = 0;
 
 [showStatus]
 
+*時間経過
+[eval exp="f.stage++"]
+
 *エネミー選択
 [emb exp="f.stage"]回戦[r]
 [glink target="*敵1" exp="f.enemy=1" text="敵１" size=15 x=50 y=100]

@@ -152,8 +152,8 @@ if(f.EnStan>0){
 [emb exp="f.turn"]合目[wt5]
 
 [if exp="f.StanOrga > 0"]
-  くぬぎ「ん・・・ぁう・・・・」[lrcm]
-  くぬぎは絶頂の余韻で行動ができない！！[lrcm]
+  くぬぎ「ん・・・ぁう・・・・」[wt7]
+  くぬぎは絶頂の余韻で行動ができない！！[wt7]
   [jump target="*比較"]
 [endif]
 
@@ -369,7 +369,7 @@ tf.Hight =  f.N * 150 + 50;
 
 [if exp="tf.hand == 'グーー' && tf.EnHand == 'チョキ'"]
   ;勝利(VP+1)　くぬぎの攻撃力上昇[r]
-  [eval exp="f.VP = f.VP + 1"]
+  [eval exp="f.VP = f.VP + 3"]
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.VBuff = f.VBuff + 0.1"]
   [image layer=0 storage="hand/マル.png" width="100" top="&tf.Hight" left="380" visible="true"]
@@ -378,7 +378,7 @@ tf.Hight =  f.N * 150 + 50;
 [endif]
 [if exp="tf.hand == 'チョキ' && tf.EnHand == 'パーー'"]
   ;勝利(VP+1)　くぬぎの気力上昇[r]
-  [eval exp="f.VP = f.VP + 1"]
+  [eval exp="f.VP = f.VP + 3"]
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.FP = f.FP + 5"]
   [image layer=0 storage="hand/マル.png" width="100" top="&tf.Hight" left="380" visible="true"]
@@ -387,7 +387,7 @@ tf.Hight =  f.N * 150 + 50;
 [endif]
 [if exp="tf.hand == 'パーー' && tf.EnHand == 'グーー'"]
   ;勝利(VP+1)　くぬぎの敏捷上昇[r]
-  [eval exp="f.VP = f.VP + 1"]
+  [eval exp="f.VP = f.VP + 3"]
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.SPD = f.SPD + 5" cond="f.SPD < f.BaseSPD"]
   [image layer=0 storage="hand/マル.png" width="100" top="&tf.Hight" left="380" visible="true"]
@@ -397,7 +397,7 @@ tf.Hight =  f.N * 150 + 50;
 
 [if exp="tf.hand == 'グーー' && tf.EnHand == 'パーー'"]
   ;敗北(VP-1)　敵の敏捷上昇[r]
-  [eval exp="f.VP = f.VP - 1"]
+  [eval exp="f.VP = f.VP - 3"]
   [eval exp="f.EnVB = f.EnVB + 1"]
   [eval exp="f.EnSPD = f.EnSPD + 5" cond="f.EnSPD < f.BaseEnSPD"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
@@ -406,7 +406,7 @@ tf.Hight =  f.N * 150 + 50;
   [endif]
 [if exp="tf.hand == 'チョキ' && tf.EnHand == 'グーー'"]
   ;敗北(VP-1)　敵の攻撃力上昇[r]
-  [eval exp="f.VP = f.VP - 1"]
+  [eval exp="f.VP = f.VP - 3"]
   [eval exp="f.EnVB = f.EnVB + 1"]
   [eval exp="f.EnVBuff = f.EnVBuff + 0.1"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
@@ -415,7 +415,7 @@ tf.Hight =  f.N * 150 + 50;
 [endif]
 [if exp="tf.hand == 'パーー' && tf.EnHand == 'チョキ'"]
   ;敗北(VP-1)　敵の気力上昇[r]
-  [eval exp="f.VP = f.VP - 1"]
+  [eval exp="f.VP = f.VP - 3"]
   [eval exp="f.EnVB = f.EnVB + 1"]
   [eval exp="f.EnFP = f.EnFP + 5"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
@@ -478,7 +478,7 @@ tf.Hight =  f.N * 150 + 50;
 
 [eval exp="f.SPD = 0" cond="f.SPD < 0"]
 [eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
-[lrcm][wait time="500"]
+[wt7][wait time="500"]
 [showStatus]
 [jump target="*コマンド判定"]
 [s]
@@ -514,7 +514,7 @@ error[s]
 
 *通常攻撃
 [Damage]
-敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
+敵の体力が[emb exp="tf.Damage"]減少した。[wt7]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
 [eval exp="f.EnFP = f.EnFP + 20"]
 [showStatus]
@@ -526,7 +526,7 @@ error[s]
 [EnDamage]
 
 [if exp="f.Pary > 0"]
-  「代わり身の術」[lrcm]
+  「代わり身の術」[wt7]
   くぬぎは敵の攻撃を回避した[wt5]
   くぬぎは脱衣状態になった[wt5]
   くぬぎの色気が上昇した[wt5]
@@ -535,13 +535,13 @@ error[s]
   [jump target="*戦闘続行" cond="f.HP > 0"]
 [endif]
 
-くぬぎの体力が[emb exp="tf.Damage"]減少した。[lrcm]
+くぬぎの体力が[emb exp="tf.Damage"]減少した。[wt7]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
 [eval exp="f.FP = f.FP + 20"]
 [showStatus]
 
 [if exp="f.Maso > 0"]
-  くぬぎは痛みに快感を感じた[lrcm]
+  くぬぎは痛みに快感を感じた[wt7]
   [Masochism]
   [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
   [showStatus]
@@ -568,18 +568,18 @@ if(f.EnCount>2){
 [endscript]
 
 [if exp="f.EnStan == 1"]
-  敵は行動不能から復帰した[lrcm]
+  敵は行動不能から復帰した[wt7]
   [eval exp="f.EnStan = 0"]
 [endif]
 
 [if exp="f.StanOrga == 1"]
-  くぬぎは絶頂の余韻から復帰した[lrcm]
+  くぬぎは絶頂の余韻から復帰した[wt7]
   [eval exp="f.StanOrga = 0"]
 [endif]
 
 [if exp="f.Estr > 0"]
-  くぬぎ「はぁ・・・、はぁ・・・・」[lrcm]
-  発情しているくぬぎは快感度が上昇した[lrcm]
+  くぬぎ「はぁ・・・、はぁ・・・・」[wt7]
+  発情しているくぬぎは快感度が上昇した[wt7]
   [iscript]
   tf.Damage = Math.floor(2 * f.SEN / 100);
   [endscript]
@@ -605,7 +605,7 @@ if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
 [eval exp="f.EnFP = f.EnFP + 20"]
-「忍法・すずめ刺し！」[lrcm]
+「忍法・すずめ刺し！」[wt7]
 敵の体力が[emb exp="tf.Damage"]減少した。[wt5]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
@@ -629,10 +629,10 @@ if(tf.Damage<0){tf.Damage=0;}
 [eval exp="f.EnERO = f.EnERO + tf.HDamage"][eval exp="f.EnERO = 100" cond="f.EnERO >= 100"]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
 [eval exp="f.EnFP = f.EnFP + 20"]
-「忍法・よだか落とし！」[lrcm]
+「忍法・よだか落とし！」[wt7]
 敵の体力が[emb exp="tf.Damage"]減少した。[wt5]
-くぬぎの色気が上昇した[lrcm]
-敵の興奮度が上昇した[wt5]
+くぬぎの色気が上昇した[wt7]
+敵の興奮度[emb exp="tf.HDamage"]が上昇した[wt5]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
 [jump target="*戦闘続行" cond="f.EnHP > 0"]
@@ -652,8 +652,8 @@ if(tf.Damage<0){tf.Damage=0;}
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
 [eval exp="f.EnSPD = f.EnSPD - 10"][eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
 [eval exp="f.EnFP = f.EnFP + 20"]
-くぬぎ「甘い！」[lrcm]
-「忍法・つばめ返り！」[lrcm]
+くぬぎ「甘い！」[wt7]
+「忍法・つばめ返り！」[wt7]
 敵の体力が[emb exp="tf.Damage"]減少した。[wt5]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
@@ -678,13 +678,14 @@ if(tf.Damage<0){tf.Damage=0;}
 [glink target="*スキル3使用" text="魅了の術" color="red" size=15 x=50 y=105 exp="f.skill3CT == 0"]
 [glink target="*スキル選択" text="魅了の術" color="black" size=15 x=50 y=105 cond="f.skill3CT != 0"]
 [glink target="*選択1" text="戻　る" color="red" size=15 x=50 y=140]
+[glink storage="bochu.ks" target="*房中開始" text="降参する" color="red" size=15 x=50 y=175]
 [s]
 
 
 *スキル1使用
 スキル1使用[wt5]
 くぬぎは代わり身の術を使った[wt5]
-１回だけ敵の攻撃を回避します[lrcm]
+１回だけ敵の攻撃を回避します[wt7]
 [eval exp="f.Pary = 1"]
 [eval exp="f.skill1CT = 6"]
 [jump target="*選択1"]
@@ -692,8 +693,8 @@ if(tf.Damage<0){tf.Damage=0;}
 *スキル4使用
 スキル4使用[wt5]
 くぬぎは変わり身の術を使った[wt5]
-くぬぎは目にも留まらぬ速さで忍装束を纏った[lrcm]
-くぬぎの色気が減少した[lrcm]
+くぬぎは目にも留まらぬ速さで忍装束を纏った[wt7]
+くぬぎの色気が減少した[wt7]
 [eval exp="f.Undress = 0"]
 [eval exp="f.skill4CT = 6"]
 [eval exp="f.APP = f.APP - 2"][eval exp="f.APP = 0" cond="f.APP < 0"]
@@ -701,10 +702,10 @@ if(tf.Damage<0){tf.Damage=0;}
 [jump target="*選択1"]
 
 *スキル2使用
-スキル2使用[lrcm]
-くぬぎは目眩ましの術を使った[lrcm]
-敵「ぬうっ！」[lrcm]
-敵がひるんでいる間にくぬぎは体勢を整えた[lrcm]
+スキル2使用[wt7]
+くぬぎは目眩ましの術を使った[wt7]
+敵「ぬうっ！」[wt7]
+敵がひるんでいる間にくぬぎは体勢を整えた[wt7]
 [iscript]
 for(i=0; i<f.selectOption.length; i++){
   f.selectOption[i].switch=0
@@ -724,7 +725,7 @@ f.count=0;
 くぬぎは魅了の術を使った[wt5]
 くぬぎの色気が上昇した[wt5]
 敵の興奮度が[emb exp="tf.HDamage"]上がった[wt5]
-敵の攻撃力が低下した[lrcm]
+敵の攻撃力が低下した[wt7]
 [showStatus]
 [jump target="*敵絶頂戦闘時" cond="f.EnERO >= 100"]
 [endif]
@@ -734,7 +735,7 @@ f.count=0;
 
 
 *組付判定
-敵が組み付いてきた！[lrcm]
+敵が組み付いてきた！[wt7]
 [iscript]
 tf.Min = 0, tf.Max = 99;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
@@ -749,13 +750,13 @@ if(f.SPD < f.EnSPD){
 
 [if exp="f.Clutch==0"]
   ;組み付き失敗
-  くぬぎは敵の組付を回避した[lrcm]
+  くぬぎは敵の組付を回避した[wt7]
   [jump target="*選択1"]
 [endif]
 
 [if exp="f.Pary > 0"]
   ;組付を代わり身で回避
-  「代わり身の術」[lrcm]
+  「代わり身の術」[wt7]
   くぬぎは敵の攻撃を回避した[wt5]
   くぬぎは脱衣状態になった[wt5]くぬぎの色気が上昇した[wt5]
   [eval exp="f.APP = f.APP + 2"]
@@ -764,8 +765,8 @@ if(f.SPD < f.EnSPD){
 [endif]
 
 ;組み付き成功
-くぬぎ「きゃあっ！！」[lrcm]
-くぬぎは敵に押し倒された[lrcm]
+くぬぎ「きゃあっ！！」[wt7]
+くぬぎは敵に押し倒された[wt7]
 
 [iscript]
 f.BindCount++;
@@ -806,7 +807,7 @@ tf.Hight =  f.N * 150 + 50;
   [eval exp="f.N=f.N+1,f.H=f.H+1"][jump target="*行動不能"]
 [endif]
 
-[lrcm][wait time="500"]
+[wt7][wait time="500"]
 [showStatus]
 [freeimage layer=0]
 敵の攻撃![wt5]
@@ -844,7 +845,7 @@ tf.hand = f.selectOption[f.H].hand;
   [eval exp="f.N=f.N+1,f.H=f.H+1"][jump target="*敵行動不能"]
 [endif]
 
-[lrcm][wait time="500"]
+[wt7][wait time="500"]
 [showStatus]
 [freeimage layer=0]
 くぬぎの攻撃![wt5]
@@ -853,37 +854,37 @@ tf.hand = f.selectOption[f.H].hand;
 
 *戦闘絶頂
 [cm]
-くぬぎ「あっ・・・・！」[lrcm]
-くぬぎ（嫌っ・・・こんなことで・・・・！！）[lrcm]
-くぬぎ（でも、もう・・・耐えられない！！！）[lrcm]
-くぬぎ「もうっ・・・ダメェ！！」[lrcm]
-くぬぎ「イクッ・・・・！！いくううううう！！」[lrcm]
-くぬぎは絶頂を迎えた。[lrcm]
+くぬぎ「あっ・・・・！」[wt7]
+くぬぎ（嫌っ・・・こんなことで・・・・！！）[wt7]
+くぬぎ（でも、もう・・・耐えられない！！！）[wt7]
+くぬぎ「もうっ・・・ダメェ！！」[wt7]
+くぬぎ「イクッ・・・・！！いくううううう！！」[wt7]
+くぬぎは絶頂を迎えた。[wt7]
 [eval exp="f.ERO = 0"][showStatus]
-くぬぎの感度が上昇した。[lrcm]
+くぬぎの感度が上昇した。[wt7]
 [eval exp="f.SEN = f.SEN + 10"][showStatus]
 [wait time=500]
 ;組付選択等割愛
-くぬぎ「はぁ・・・・はぁ・・・・」[lrcm]
-絶頂の余韻でくぬぎは動けない！！[lrcm]
+くぬぎ「はぁ・・・・はぁ・・・・」[wt7]
+絶頂の余韻でくぬぎは動けない！！[wt7]
 [eval exp="f.StanOrga = 2"][showStatus]
 [jump target="*戦闘終了" cond="f.HP <= 0"]
 [jump target="*戦闘続行" cond="f.HP > 0"]
 
 
 *敵絶頂戦闘時
-敵「くそっ！もう堪らん！！」[lrcm]
-敵はくぬぎ押し倒した[lrcm]
+敵「くそっ！もう堪らん！！」[wt7]
+敵はくぬぎ押し倒した[wt7]
 [jump storage="bochu.ks" target="*房中開始"]
 
 
 *戦闘終了
 [if exp="f.EnHP > 0"]
-  くぬぎは敗北した...[lrcm]
+  くぬぎは敗北した...[wt7]
 [jump storage="prison.ks" target="*スタート"]
 [else]
-  敵を倒した！！[lrcm]
-  疲労度が上昇した[lrcm]
+  敵を倒した！！[wt7]
+  疲労度が上昇した[wt7]
   [eval exp="f.TIR = f.TIR + (f.turn * 3)"][eval exp="f.TIR = 100" cond="f.TIR > 100 "]
 [endif]
 [showStatus]
@@ -895,6 +896,5 @@ for(i=0; i<f.selectOption.length; i++){
 f.selectOption = [];
 f.count=0;
 f.EnCount=0;
-f.stage++;
 [endscript]
 [jump storage="selectStage.ks" target="*ステージセレクト"]

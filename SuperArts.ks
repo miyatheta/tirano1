@@ -1,5 +1,5 @@
 *発動超必殺技
-くぬぎ「受けてみなさい！必殺・鳴神の舞」[lrcm]
+くぬぎ「受けてみなさい！必殺・鳴神の舞」[wt7]
 [macro name="SuperArts"]
 [iscript]
 tf.Min = 0, tf.Max = 50;
@@ -18,7 +18,7 @@ if(tf.Damage<0){tf.Damage=0;}
 [endmacro]
 [SuperArts]
 
-敵の体力が[emb exp="tf.Damage"]減少した。[lrcm]
+敵の体力が[emb exp="tf.Damage"]減少した。[wt7]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
 [eval exp="f.FP = 0"]
 [showStatus]
@@ -27,7 +27,7 @@ if(tf.Damage<0){tf.Damage=0;}
 
 
 *身代わりの術
-「代わり身の術」[lrcm]
+「代わり身の術」[wt7]
 くぬぎは敵の攻撃を回避した[wt5]
 くぬぎは脱衣状態になった[wt5]
 くぬぎの色気が上昇した[wt5]
@@ -37,7 +37,7 @@ if(tf.Damage<0){tf.Damage=0;}
 error[s]
 
 *被虐体質
-くぬぎは痛みに快感を感じた[lrcm]
+くぬぎは痛みに快感を感じた[wt7]
 [Masochism]
 [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
 [showStatus]
@@ -73,11 +73,11 @@ tf.Damage = tf.ATP - tf.EnDFP;
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 [eval exp="f.EnFP = 0"]
-敵「散れい！小娘！！」[lrcm]
+敵「散れい！小娘！！」[wt7]
 
 [jump target="*身代わりの術" cond="f.Pary > 0"]
 
-くぬぎの体力が[emb exp="tf.Damage"]減少した。[lrcm]
+くぬぎの体力が[emb exp="tf.Damage"]減少した。[wt7]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
 [showStatus]
 
@@ -106,11 +106,11 @@ if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 [eval exp="f.EnFP = 0"]
 
-敵「散れい！小娘！！」[lrcm]
+敵「散れい！小娘！！」[wt7]
 
 [jump target="*身代わりの術" cond="f.Pary > 0"]
 
-くぬぎの体力が[emb exp="tf.Damage"]減少した。[lrcm]
+くぬぎの体力が[emb exp="tf.Damage"]減少した。[wt7]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
 [showStatus]
 
@@ -139,11 +139,11 @@ if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 [eval exp="f.EnFP = 0"]
 
-敵「散れい！小娘！！」[lrcm]
+敵「散れい！小娘！！」[wt7]
 
 [jump target="*身代わりの術" cond="f.Pary > 0"]
 
-くぬぎの体力が[emb exp="tf.Damage"]減少した。[lrcm]
+くぬぎの体力が[emb exp="tf.Damage"]減少した。[wt7]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
 [showStatus]
 

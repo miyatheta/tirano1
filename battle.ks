@@ -108,6 +108,7 @@ if(f.EnStan > 0){
 [iscript]
 //ターン数
 f.turn++;
+tf.dice = 0;
 [endscript]
 
 [cm]
@@ -157,6 +158,13 @@ if(f.EnStan>0){
   [jump target="*比較"]
 [endif]
 
+[if exp="f.Paras > 0"]
+[eval exp="tf.Min=0,tf.Max=99"][dice]
+[eval exp="tf.Paras = 2" cond="tf.dice < 5"]
+[endif]
+[if exp="f.Paras1 == 2"]
+  [jump target="*寄生イベント"]
+[endif]
 
 *特殊行動
 ;超必殺技
@@ -505,7 +513,7 @@ if(f.selectOption[f.count-3].hand == "パーー" && f.selectOption[f.count-2].ha
   [jump target="*通常攻撃"]
 [else]
   [freeimage layer=0]
-  敵の攻撃![wt5]
+  [EnName]の攻撃![wt5]
   [jump target="*コマンド技3" cond="f.Comand == 3"]
   [jump target="*敵通常攻撃"]
 [endif]
@@ -514,7 +522,7 @@ error[s]
 
 *通常攻撃
 [Damage]
-敵の体力が[emb exp="tf.Damage"]減少した。[wt7]
+[EnName]の体力が[emb exp="tf.Damage"]減少した。[wt7]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
 [eval exp="f.EnFP = f.EnFP + 20"]
 [showStatus]
@@ -527,7 +535,7 @@ error[s]
 
 [if exp="f.Pary > 0"]
   「代わり身の術」[wt7]
-  くぬぎは敵の攻撃を回避した[wt5]
+  くぬぎは[EnName]の攻撃を回避した[wt5]
   くぬぎは脱衣状態になった[wt5]
   くぬぎの色気が上昇した[wt5]
   [eval exp="f.APP = f.APP + 2"]
@@ -568,7 +576,7 @@ if(f.EnCount>2){
 [endscript]
 
 [if exp="f.EnStan == 1"]
-  敵は行動不能から復帰した[wt7]
+  [EnName]は行動不能から復帰した[wt7]
   [eval exp="f.EnStan = 0"]
 [endif]
 
@@ -606,7 +614,7 @@ if(tf.Damage<0){tf.Damage=0;}
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
 [eval exp="f.EnFP = f.EnFP + 20"]
 「忍法・すずめ刺し！」[wt7]
-敵の体力が[emb exp="tf.Damage"]減少した。[wt5]
+[EnName]の体力が[emb exp="tf.Damage"]減少した。[wt5]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
 [jump target="*戦闘続行" cond="f.EnHP > 0"]
@@ -630,9 +638,9 @@ if(tf.Damage<0){tf.Damage=0;}
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
 [eval exp="f.EnFP = f.EnFP + 20"]
 「忍法・よだか落とし！」[wt7]
-敵の体力が[emb exp="tf.Damage"]減少した。[wt5]
+[EnName]の体力が[emb exp="tf.Damage"]減少した。[wt5]
 くぬぎの色気が上昇した[wt7]
-敵の興奮度[emb exp="tf.HDamage"]が上昇した[wt5]
+[EnName]の興奮度[emb exp="tf.HDamage"]が上昇した[wt5]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
 [jump target="*戦闘続行" cond="f.EnHP > 0"]
@@ -654,7 +662,7 @@ if(tf.Damage<0){tf.Damage=0;}
 [eval exp="f.EnFP = f.EnFP + 20"]
 くぬぎ「甘い！」[wt7]
 「忍法・つばめ返り！」[wt7]
-敵の体力が[emb exp="tf.Damage"]減少した。[wt5]
+[EnName]の体力が[emb exp="tf.Damage"]減少した。[wt5]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
 [jump target="*戦闘続行" cond="f.EnHP > 0"]
@@ -705,7 +713,7 @@ if(tf.Damage<0){tf.Damage=0;}
 スキル2使用[wt7]
 くぬぎは目眩ましの術を使った[wt7]
 敵「ぬうっ！」[wt7]
-敵がひるんでいる間にくぬぎは体勢を整えた[wt7]
+[EnName]がひるんでいる間にくぬぎは体勢を整えた[wt7]
 [iscript]
 for(i=0; i<f.selectOption.length; i++){
   f.selectOption[i].switch=0
@@ -724,8 +732,8 @@ f.count=0;
 スキル3使用[wt5]
 くぬぎは魅了の術を使った[wt5]
 くぬぎの色気が上昇した[wt5]
-敵の興奮度が[emb exp="tf.HDamage"]上がった[wt5]
-敵の攻撃力が低下した[wt7]
+[EnName]の興奮度が[emb exp="tf.HDamage"]上がった[wt5]
+[EnName]の攻撃力が低下した[wt7]
 [showStatus]
 [jump target="*敵絶頂戦闘時" cond="f.EnERO >= 100"]
 [endif]
@@ -735,7 +743,7 @@ f.count=0;
 
 
 *組付判定
-敵が組み付いてきた！[wt7]
+[EnName]が組み付いてきた！[wt7]
 [iscript]
 tf.Min = 0, tf.Max = 99;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
@@ -750,14 +758,14 @@ if(f.SPD < f.EnSPD){
 
 [if exp="f.Clutch==0"]
   ;組み付き失敗
-  くぬぎは敵の組付を回避した[wt7]
+  くぬぎは[EnName]の組付を回避した[wt7]
   [jump target="*選択1"]
 [endif]
 
 [if exp="f.Pary > 0"]
   ;組付を代わり身で回避
   「代わり身の術」[wt7]
-  くぬぎは敵の攻撃を回避した[wt5]
+  くぬぎは[EnName]の攻撃を回避した[wt5]
   くぬぎは脱衣状態になった[wt5]くぬぎの色気が上昇した[wt5]
   [eval exp="f.APP = f.APP + 2"]
   [eval exp="f.Pary = 0, f.Undress = 1"]
@@ -810,7 +818,7 @@ tf.Hight =  f.N * 150 + 50;
 [wt7][wait time="500"]
 [showStatus]
 [freeimage layer=0]
-敵の攻撃![wt5]
+[EnName]の攻撃![wt5]
 [jump target="*敵通常攻撃"]
 
 
@@ -874,7 +882,7 @@ tf.hand = f.selectOption[f.H].hand;
 
 *敵絶頂戦闘時
 敵「くそっ！もう堪らん！！」[wt7]
-敵はくぬぎ押し倒した[wt7]
+[EnName]はくぬぎ押し倒した[wt7]
 [jump storage="bochu.ks" target="*房中開始"]
 
 
@@ -898,3 +906,43 @@ f.count=0;
 f.EnCount=0;
 [endscript]
 [jump storage="selectStage.ks" target="*ステージセレクト"]
+
+*寄生イベント
+もぞり・・・　[lrcm]
+戦闘の最中、くぬぎは下腹部で何かが蠢くのを感じた[lrcm]
+脳裏を過るのは深淵に囚われたときのおぞましい記憶[lrcm]
+くぬぎ（まさか！？こんな時に！！）[lrcm]
+胎内に植え付けられた異形の生物の卵[lrcm]
+あれが孵ろうとしているのか？[lrcm]
+くぬぎの予感を裏付けるかのように下腹部が再び蠕動に襲われた[lrcm]
+くぬぎ（間違いない！深淵の蟲が！！）[lrcm]
+三度の震え。どんどん間隔が短くなっている[lrcm]
+さらに今度はどろりと何かの液体が流れるのを感じた[lrcm]
+くぬぎ「っ！！」[lrcm]
+初めは冷たく感じた液体はしかしすぐに[lrcm]
+くぬぎ（いやっ！！あ、熱い！！）[lrcm]
+子宮がまるで燃えるように熱く、そしてどうしようもないほど[lrcm]
+（気持ち、いいっ！！）[lrcm]
+かくんと、くぬぎの膝が折れた[lrcm]
+[if exp="EnemyCode==1"]
+剛造「なんだぁ？どうしやがったんだ？？」
+[elsif exp="EnemyCode==2"]
+深淵「？」
+[elsif exp="EnemyCode==3"]
+弦十郎「おやぁ？一体どうされたのですか？」
+[elsif exp="EnemyCode==4"]
+虎太郎「くぬぎ様！？どうされたんですか！？」
+[elsif exp="EnemyCode==5"]
+毒沼「ややっ！？これはいかなことか」
+[elsif exp="EnemyCode==6"]
+雨笠「んんっ？どうしたんだ急に？」
+[endif]
+突然へたりこんだくぬぎを見て[EnName]は訝しげな表情を浮かべた[lrcm]
+くぬぎは蟲を産み落とすと同時に絶頂を迎えた[lrcm]
+[eval exp="f.Paras = 0"]
+[eval exp="f.StanOrga = 1"][showStatus]
+[if exp="f.StanOrga > 0"]
+  くぬぎ「ん・・・ぁう・・・・」[wt7]
+  くぬぎは絶頂の余韻で行動ができない！！[wt7]
+  [jump target="*比較"]
+[endif]

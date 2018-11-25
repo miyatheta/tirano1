@@ -76,9 +76,9 @@ f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 f.StanOrga = 0;//絶頂時のスタン
 
 f.Ampl = 0;//感度増幅
-f.Estr = 0;//発情
+f.Estr = 0;//色情狂
 f.Maso = 0;//被虐
-f.Paras = 0;//寄生
+f.Paras = 1;//寄生
 f.Bitch = 0;//淫乱
 f.Hypno = 0;//催眠
 
@@ -286,6 +286,10 @@ calcStatus(f.EnEROdigit,f.EnERO);
 alert("くぬぎ　\n体力：" + f.HP + "　すばやさ：" + f.SPD + "　気力：" + f.FP + "　快感度：" + f.ERO
 + "\n\n敵　　\n体力：" + f.EnHP + "　すばやさ：" + f.EnSPD + "　気力：" + f.EnFP + "　興奮度：" + f.EnERO);
 [endscript]
+[endmacro]
+
+[macro name="EnName"]
+[emb exp="f.EnemyName"]
 [endmacro]
 
 [macro name="dice"]

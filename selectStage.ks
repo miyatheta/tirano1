@@ -80,6 +80,9 @@ f.EnStan = 0;
 *敵1
 [iscript]
 //敵の設定
+f.EnemyCode=1;
+f.EnemyName="剛造";
+
 f.originEnHP = 1000;
 f.originEnSTR = 80;
 f.originEnDEF = 70;
@@ -106,6 +109,9 @@ f.ClutchRate = 20;//組付初期値
 *敵2
 [iscript]
 //敵の設定
+f.EnemyCode=2;
+f.EnemyName="深淵";
+
 f.originEnHP = 1000;
 f.originEnSTR = 90;
 f.originEnDEF = 80;
@@ -133,6 +139,9 @@ f.ClutchRate = 0;//組付初期値
 *敵3
 [iscript]
 //敵の設定
+f.EnemyCode=3;
+f.EnemyName="弦十郎";
+
 f.originEnHP = 1000;
 f.originEnSTR = 80;
 f.originEnDEF = 70;

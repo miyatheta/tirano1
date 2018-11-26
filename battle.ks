@@ -10,80 +10,6 @@ f.SPD = f.SPD - f.TIR;
 if(f.SPD<0){f.SPD=0};
 [endscript]
 
-[macro name="Damage"]
-[iscript]
-if(f.VB > 2){
-  f.VBonus = 1.5;
-}else if(f.VB > 1){
-  f.VBonus = 1.3;
-}else{
-  f.VBonus = 1.1;
-}
-
-tf.Min = 0, tf.Max = 50;
-tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-tf.randomNum= (tf.dice / 1000) + 1;
-
-tf.Buff = f.VBonus * f.VBuff;
-
-tf.ATP = Math.floor(f.STR * 2.25 * tf.Buff * tf.randomNum);
-tf.EnDFP = Math.floor(f.EnDEF * 1.2);
-tf.Damage = tf.ATP - tf.EnDFP;
-if(tf.Damage<0){tf.Damage=0;}
-
-f.VBuff = 1.0;
-[endscript]
-[endmacro]
-
-[macro name="EnDamage"]
-[iscript]
-if(f.EnVB > 2){
-  f.EnVBonus = 1.5;
-}else if(f.EnVB > 1){
-  f.EnVBonus = 1.3;
-}else{
-  f.EnVBonus = 1.1;
-}
-
-tf.Min = 0, tf.Max = 50;
-tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-tf.randomNum = (tf.dice / 1000) + 1;
-
-tf.Buff = f.EnVBonus * f.EnVBuff;
-tf.DeBuff = (100 - f.CharmBuff) / 100;
-if (tf.DeBuff < 0){tf.DeBuff = 0};
-
-//alert('バフは' + tf.Buff + '、デバフは' +tf.DeBuff);
-
-tf.EnATP = Math.floor(f.EnSTR * 2.25 * tf.Buff * tf.DeBuff * tf.randomNum);
-tf.DFP = Math.floor(f.DEF * 1.2);
-tf.Damage = tf.EnATP - tf.DFP;
-if(tf.Damage<0){tf.Damage=0;}
-
-f.EnVBuff = 1.0;
-[endscript]
-[endmacro]
-
-[macro name="HDamage"]
-[iscript]
-tf.Min = 0, tf.Max = 50;
-tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-tf.randomNum = (tf.dice / 1000) + 1;
-naked = (f.Undress/10) + 1;
-sexAppeal = 1 + (f.APP - 50) / 100;
-tf.ATP = Math.floor(f.value * sexAppeal * naked * tf.randomNum);
-tf.EnDFP = (100 - f.EnEND) / 100;
-tf.HDamage = Math.floor(tf.ATP * tf.EnDFP);
-if(tf.Damage<0){tf.Damage=0;}
-[endscript]
-[endmacro]
-
-[macro name="Masochism"]
-[iscript]
-tf.Damage = Math.floor(2 * f.SEN / 100);
-[endscript]
-[endmacro]
-
 *ターン開始
 [position width=960 height=480 top=0 left=0]
 
@@ -156,14 +82,6 @@ if(f.EnStan>0){
   くぬぎ「ん・・・ぁう・・・・」[wt7]
   くぬぎは絶頂の余韻で行動ができない！！[wt7]
   [jump target="*比較"]
-[endif]
-
-[if exp="f.Paras > 0"]
-[eval exp="tf.Min=0,tf.Max=99"][dice]
-[eval exp="tf.Paras = 2" cond="tf.dice < 5"]
-[endif]
-[if exp="f.Paras1 == 2"]
-  [jump target="*寄生イベント"]
 [endif]
 
 *特殊行動
@@ -537,7 +455,7 @@ error[s]
   「代わり身の術」[wt7]
   くぬぎは[EnName]の攻撃を回避した[wt5]
   くぬぎは脱衣状態になった[wt5]
-  くぬぎの色気が上昇した[wt5]
+  くぬぎの淫力が上昇した[wt5]
   [eval exp="f.APP = f.APP + 2"]
   [eval exp="f.Pary = 0, f.Undress = 1"]
   [jump target="*戦闘続行" cond="f.HP > 0"]
@@ -585,12 +503,32 @@ if(f.EnCount>2){
   [eval exp="f.StanOrga = 0"]
 [endif]
 
+[if exp="f.Bitch > 0"]
+  淫乱状態のくぬぎは淫力が上昇した[wt5]
+  [eval exp="f.APP = f.APP + 2"]
+  [showStatus]
+[endif]
+
 [if exp="f.Estr > 0"]
   くぬぎ「はぁ・・・、はぁ・・・・」[wt7]
   発情しているくぬぎは快感度が上昇した[wt7]
-  [iscript]
-  tf.Damage = Math.floor(2 * f.SEN / 100);
-  [endscript]
+  [Estrus]
+  [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
+  [showStatus]
+[endif]
+
+[if exp="f.Paras > 0 && f.turn%3 == 0 && f.FP >= 10"]
+  くぬぎの胎内で蟲が蠢いた[wt7]
+  くぬぎ「んっ・・・！」[wt7]
+  くぬぎは蟲に気力を吸収された[wt7]
+  [eval exp="f.FP = f.FP - 10"][showStatus]
+[elsif exp="f.Paras > 0 && f.turn%3 == 0 && f.FP < 10"]
+  くぬぎの胎内で蟲が蠢いた[wt7]
+  くぬぎ「ああん！！」[wt7]
+  くぬぎ（普段より激しい！！気力が吸えないから？）
+  気力を吸えなかった蟲はいつもより激しく暴れた[wt7]
+  くぬぎの快感度が上昇した[wt7]
+  [Parasite]
   [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
   [showStatus]
 [endif]
@@ -639,7 +577,7 @@ if(tf.Damage<0){tf.Damage=0;}
 [eval exp="f.EnFP = f.EnFP + 20"]
 「忍法・よだか落とし！」[wt7]
 [EnName]の体力が[emb exp="tf.Damage"]減少した。[wt5]
-くぬぎの色気が上昇した[wt7]
+くぬぎの淫力が上昇した[wt7]
 [EnName]の興奮度[emb exp="tf.HDamage"]が上昇した[wt5]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
@@ -702,7 +640,7 @@ if(tf.Damage<0){tf.Damage=0;}
 スキル4使用[wt5]
 くぬぎは変わり身の術を使った[wt5]
 くぬぎは目にも留まらぬ速さで忍装束を纏った[wt7]
-くぬぎの色気が減少した[wt7]
+くぬぎの淫力が減少した[wt7]
 [eval exp="f.Undress = 0"]
 [eval exp="f.skill4CT = 6"]
 [eval exp="f.APP = f.APP - 2"][eval exp="f.APP = 0" cond="f.APP < 0"]
@@ -731,7 +669,7 @@ f.count=0;
 [eval exp="f.CharmBuff = 25 , f.CharmET = 3"]
 スキル3使用[wt5]
 くぬぎは魅了の術を使った[wt5]
-くぬぎの色気が上昇した[wt5]
+くぬぎの淫力が上昇した[wt5]
 [EnName]の興奮度が[emb exp="tf.HDamage"]上がった[wt5]
 [EnName]の攻撃力が低下した[wt7]
 [showStatus]
@@ -766,7 +704,7 @@ if(f.SPD < f.EnSPD){
   ;組付を代わり身で回避
   「代わり身の術」[wt7]
   くぬぎは[EnName]の攻撃を回避した[wt5]
-  くぬぎは脱衣状態になった[wt5]くぬぎの色気が上昇した[wt5]
+  くぬぎは脱衣状態になった[wt5]くぬぎの淫力が上昇した[wt5]
   [eval exp="f.APP = f.APP + 2"]
   [eval exp="f.Pary = 0, f.Undress = 1"]
   [jump target="*戦闘続行" cond="f.HP > 0"]
@@ -867,10 +805,10 @@ tf.hand = f.selectOption[f.H].hand;
 くぬぎ（でも、もう・・・耐えられない！！！）[wt7]
 くぬぎ「もうっ・・・ダメェ！！」[wt7]
 くぬぎ「イクッ・・・・！！いくううううう！！」[wt7]
-くぬぎは絶頂を迎えた。[wt7]
+くぬぎは絶頂を迎えた[wt7]
 [eval exp="f.ERO = 0"][showStatus]
-くぬぎの感度が上昇した。[wt7]
-[eval exp="f.SEN = f.SEN + 10"][showStatus]
+くぬぎの快感への抵抗が低下した[wt7]
+[eval exp="f.SEN = f.SEN + 20"][showStatus]
 [wait time=500]
 ;組付選択等割愛
 くぬぎ「はぁ・・・・はぁ・・・・」[wt7]
@@ -906,43 +844,3 @@ f.count=0;
 f.EnCount=0;
 [endscript]
 [jump storage="selectStage.ks" target="*ステージセレクト"]
-
-*寄生イベント
-もぞり・・・　[lrcm]
-戦闘の最中、くぬぎは下腹部で何かが蠢くのを感じた[lrcm]
-脳裏を過るのは深淵に囚われたときのおぞましい記憶[lrcm]
-くぬぎ（まさか！？こんな時に！！）[lrcm]
-胎内に植え付けられた異形の生物の卵[lrcm]
-あれが孵ろうとしているのか？[lrcm]
-くぬぎの予感を裏付けるかのように下腹部が再び蠕動に襲われた[lrcm]
-くぬぎ（間違いない！深淵の蟲が！！）[lrcm]
-三度の震え。どんどん間隔が短くなっている[lrcm]
-さらに今度はどろりと何かの液体が流れるのを感じた[lrcm]
-くぬぎ「っ！！」[lrcm]
-初めは冷たく感じた液体はしかしすぐに[lrcm]
-くぬぎ（いやっ！！あ、熱い！！）[lrcm]
-子宮がまるで燃えるように熱く、そしてどうしようもないほど[lrcm]
-（気持ち、いいっ！！）[lrcm]
-かくんと、くぬぎの膝が折れた[lrcm]
-[if exp="EnemyCode==1"]
-剛造「なんだぁ？どうしやがったんだ？？」
-[elsif exp="EnemyCode==2"]
-深淵「？」
-[elsif exp="EnemyCode==3"]
-弦十郎「おやぁ？一体どうされたのですか？」
-[elsif exp="EnemyCode==4"]
-虎太郎「くぬぎ様！？どうされたんですか！？」
-[elsif exp="EnemyCode==5"]
-毒沼「ややっ！？これはいかなことか」
-[elsif exp="EnemyCode==6"]
-雨笠「んんっ？どうしたんだ急に？」
-[endif]
-突然へたりこんだくぬぎを見て[EnName]は訝しげな表情を浮かべた[lrcm]
-くぬぎは蟲を産み落とすと同時に絶頂を迎えた[lrcm]
-[eval exp="f.Paras = 0"]
-[eval exp="f.StanOrga = 1"][showStatus]
-[if exp="f.StanOrga > 0"]
-  くぬぎ「ん・・・ぁう・・・・」[wt7]
-  くぬぎは絶頂の余韻で行動ができない！！[wt7]
-  [jump target="*比較"]
-[endif]

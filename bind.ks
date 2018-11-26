@@ -69,12 +69,12 @@ if(f.BindPower < 0){f.BindPower = 0;}
 [elsif exp="tf.Select==4"]
   くぬぎ「ああんっ！・・・」[wt7]
   くぬぎは甘い声を上げてみせた[wt7]
-  くぬぎの色気が上昇した[wt5]
+  くぬぎの淫力が上昇した[wt5]
   [eval exp="f.APP= f.APP+ 2"]
 
 [elsif exp="tf.Select==5"]
   くぬぎは敵に体を密着させるようにしなだれかかった[wt7]
-  くぬぎの色気が上昇した[wt5]
+  くぬぎの淫力が上昇した[wt5]
   [eval exp="f.APP= f.APP+ 2"]
 [endif]
 
@@ -103,55 +103,78 @@ if(tf.dice < 30){
   f.EnBindOption=3;
 }
 [endscript]
+[jump target="*組付攻撃A" cond="f.EnBindOption == 1"]
+[jump target="*組付攻撃B" cond="f.EnBindOption == 2"]
+[jump target="*組付攻撃C" cond="f.EnBindOption == 3"]
+エラー[s]
 
-[if exp="f.EnBindOption==1"]
-  [iscript]
-  tf.Damage = Math.floor(6 * f.SEN / 100);
-  f.ERO = f.ERO + tf.Damage;
-  sexAppeal = 1 + (f.APP - 50) / 100;
-  f.EnDamage = Math.floor(3 * sexAppeal);
-  f.EnERO = f.EnERO + f.EnDamage;
-  [endscript]
-  敵はくぬぎの胸を揉みしだいた[wt5]
-  くぬぎの快感度が[emb exp="tf.Damage"]上昇した[wt5]
-  敵の興奮度が[emb exp="f.EnDamage"]上昇した[wt5]
-  [showStatus]
-  [jump target="*拘束絶頂" cond="f.ERO >= 100"]
+*組付攻撃A
+[iscript]
+sexAppeal = 1 + (f.APP - 50) / 100;
+f.EnDamage = Math.floor(6 * sexAppeal);
+f.EnERO = f.EnERO + f.EnDamage;
+[endscript]
+敵はくぬぎの尻に股間を押し付けてきた[wt5]
+くぬぎ「ひっ！」[wt7]
+敵の興奮度が[emb exp="f.EnDamage"]上昇した[wt5]
+[showStatus]
+[if exp="f.Hypno > 0"]
+くぬぎ（アァ・・・ソレヲ・・・イレテェ）[wt7]
+くぬぎ「！」[wt7]
+くぬぎ（いけない、流されちゃダメ！）[wt7]
+催淫状態のくぬぎは快楽への誘惑に抵抗した[wt7]
+くぬぎの精神力が減少した[wt7]
+[eval exp="f.MND = f.MND - 3"]
+[showStatus]
 [endif]
-
-[if exp="f.EnBindOption==2"]
-  [iscript]
-  tf.Min = 0, tf.Max = 50;
-  tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-  tf.randomNum = (tf.dice / 1000) + 1;
-  tf.Damage = Math.floor(f.EnSTR * 0.3 * tf.randomNum);
-  [endscript]
-  敵はくぬぎを締め上げた[wt5]
-  [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-  くぬぎの体力が[emb exp="tf.Damage"]減少した[wt5]
-  [eval exp="f.FP = f.FP + 10"]
-  [showStatus]
-  [jump storage="battle.ks" target="*戦闘終了" cond="f.EnHP <= 0"]
-  [jump target="*被虐趣味" cond="f.Maso > 0"]
-[endif]
-
-[if exp="f.EnBindOption==3"]
-  [iscript]
-  sexAppeal = 1 + (f.APP - 50) / 100;
-  f.EnDamage = Math.floor(6 * sexAppeal);
-  f.EnERO = f.EnERO + f.EnDamage;
-  [endscript]
-  敵はくぬぎの尻に股間を押し付けてきた[wt5]
-  くぬぎ「ひっ！」[wt7]
-  敵の興奮度が[emb exp="f.EnDamage"]上昇した[wt5]
-  [showStatus]
-[endif]
-
 [jump target="*組付継続"]
+[s]
+
+*組付攻撃B
+[iscript]
+tf.Damage = Math.floor(6 * f.SEN / 100);
+f.ERO = f.ERO + tf.Damage;
+sexAppeal = 1 + (f.APP - 50) / 100;
+f.EnDamage = Math.floor(3 * sexAppeal);
+f.EnERO = f.EnERO + f.EnDamage;
+[endscript]
+敵はくぬぎの胸を揉みしだいた[wt5]
+くぬぎの快感度が[emb exp="tf.Damage"]上昇した[wt5]
+敵の興奮度が[emb exp="f.EnDamage"]上昇した[wt5]
+[showStatus]
+[if exp="f.Hypno > 0"]
+くぬぎ（キモチイイ・・・モット・・・）[wt7]
+くぬぎ「！」[wt7]
+くぬぎ（いけない、流されちゃダメ！）[wt7]
+催淫状態のくぬぎは快楽への誘惑に抵抗した[wt7]
+くぬぎの精神力が減少した[wt7]
+[eval exp="f.MND = f.MND - 3"]
+[showStatus]
+[endif]
+[jump target="*拘束絶頂" cond="f.ERO >= 100"]
+[jump target="*組付継続"]
+[s]
+
+*組付攻撃C
+[iscript]
+tf.Min = 0, tf.Max = 50;
+tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+tf.randomNum = (tf.dice / 1000) + 1;
+tf.Damage = Math.floor(f.EnSTR * 0.3 * tf.randomNum);
+[endscript]
+敵はくぬぎを締め上げた[wt5]
+[eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
+くぬぎの体力が[emb exp="tf.Damage"]減少した[wt5]
+[eval exp="f.FP = f.FP + 10"]
+[showStatus]
+[jump storage="battle.ks" target="*戦闘終了" cond="f.EnHP <= 0"]
+[jump target="*被虐趣味" cond="f.Maso > 0"]
+[jump target="*組付継続"]
+[s]
 
 
 *被虐趣味
-くぬぎは痛みに快感を感じた[wt5]
+くぬぎは被虐の快感を感じた[wt5]
 [Masochism]
 [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
 [showStatus]
@@ -161,9 +184,14 @@ if(tf.dice < 30){
 
 *組付継続
 [if exp="f.Estr > 0"]
-  発情しているくぬぎは快感度が上昇した[wt5]
-  [Masochism]
+  発情状態のくぬぎは快感度が上昇した[wt5]
+  [Estrus]
   [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
+  [showStatus]
+[endif]
+[if exp="f.Bitch > 0"]
+  淫乱状態のくぬぎは淫力が上昇した[wt5]
+  [eval exp="f.APP = f.APP + 2"]
   [showStatus]
 [endif]
 [jump target="*拘束絶頂" cond="f.ERO >= 100"]
@@ -189,8 +217,8 @@ if(tf.dice < 30){
 くぬぎ「イクッ・・・・！！いくううううう！！」[wt7]
 くぬぎは絶頂を迎えた。[wt5]
 [eval exp="f.ERO = 0"][showStatus]
-くぬぎの感度が上昇した。[wt5]
-[eval exp="f.SEN = f.SEN + 10"][showStatus]
+くぬぎの快感への抵抗が低下した[wt5]
+[eval exp="f.SEN = f.SEN + 20"][showStatus]
 [wait time=500]
 ;組付選択等割愛
 くぬぎ「はぁ・・・・はぁ・・・・」[wt7]

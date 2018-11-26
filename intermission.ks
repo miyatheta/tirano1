@@ -1,6 +1,6 @@
 *敵1
 敵１の分岐点です[wt5]
-敵の名前は[emb exp="f.EnemyName"]です。[lrcm]
+敵の名前は[emb exp="f.EnemyName"]です。[wt7]
 [jump storage="battle.ks" target="*バトルスタート"]
 
 *敵１通常
@@ -9,7 +9,7 @@
 
 *敵2
 敵2の分岐点です[wt5]
-敵の名前は[emb exp="f.EnemyName"]です。[lrcm]
+敵の名前は[emb exp="f.EnemyName"]です。[wt7]
 [jump storage="battle.ks" target="*バトルスタート"]
 
 *敵２通常
@@ -18,7 +18,7 @@
 
 *敵3
 敵3の分岐点です[wt5]
-敵の名前は[emb exp="f.EnemyName"]です。[lrcm]
+敵の名前は[emb exp="f.EnemyName"]です。[wt7]
 [jump storage="battle.ks" target="*バトルスタート"]
 
 *敵３通常

@@ -11,43 +11,37 @@
 
 *過敏
 ;//超感度：秘所への攻撃によるダメージ増加。
-;毒使いによる薬物投与。
-[eval exp="f.Ampl = 1"]
+[eval exp="f.Ampl = 1 , f.countAmpl = 1"]
 くぬぎは過敏状態になった[lrcm]
 [jump target="*終了"]
 
 *発情
 ;//発情:毎ターン快感度が上昇。
-;エロの達人の精液にある効果で発症。
-[eval exp="f.Estr = 1"]
+[eval exp="f.Estr = 1 , f.countEstr = 1"]
 くぬぎは発情状態になった[lrcm]
 [jump target="*終了"]
 
 *射乳
-;//蟲憑：絶頂時に乳を出す。どこかのタイミングで出産を行うことになる。
-;虫使いに蟲の幼生を植え付けられた状態
-[eval exp="f.Paras = 1"]
-くぬぎは射乳状態になった[lrcm]
+;//蟲憑：３の倍数のターンに気力減少。気力がない場合快感上昇。
+[eval exp="f.Paras = 1 , f.countParas = 1"]
+くぬぎは虫憑き状態になった[lrcm]
 [jump target="*終了"]
 
 *被虐
 ;//被虐：被ダメージ時に快感度上昇。
-;力自慢に強引に犯される中で開眼。
-[eval exp="f.Maso = 1"]
+[eval exp="f.Maso = 1 , f.countMaso = 1"]
 くぬぎは被虐状態になった[lrcm]
 [jump target="*終了"]
 
 *淫乱
-;//淫乱：セリフが変化。絶頂すると精神力が回復する。
-;堅物系の敵から主導権を取ることで目覚めてしまう。
-[eval exp="f.Bitch = 1"]
+;//淫乱：戦闘中毎ターン淫力が上昇。房中の選択肢が変化。
+[eval exp="f.Bitch = 1 , f.countBitch = 1"]
 くぬぎは淫乱状態になった[lrcm]
 [jump target="*終了"]
 
 *催淫
 ;//催淫：房中時に敵に従ってしまう
-;幻術使いに催眠をかけられた状態。
-[eval exp="f.Hypno = 1"]
+[eval exp="f.Hypno = 1 , f.countHypno = 1"]
 くぬぎは催淫状態になった[lrcm]
 [jump target="*終了"]
 

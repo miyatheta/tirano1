@@ -75,12 +75,18 @@ f.Undress = 0;//脱衣
 f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 f.StanOrga = 0;//絶頂時のスタン
 
-f.Ampl = 1;//感度増幅
-f.Estr = 1;//発情
-f.Maso = 1;//被虐
-f.Paras = 1;//蟲憑き
-f.Bitch = 1;//淫乱
-f.Hypno = 1;//催眠
+f.Ampl = 0;//感度増幅
+f.countAmpl = 0; 
+f.Estr = 0;//発情
+f.countEstr = 0;
+f.Maso = 0;//被虐
+f.countMaso = 0;
+f.Paras = 0;//蟲憑き
+f.countParas = 0;
+f.Bitch = 0;//淫乱
+f.countBitch = 0;
+f.Hypno = 0;//催眠
+f.countHypno = 0;
 
 f.stage = 0;
 [endscript]

@@ -14,6 +14,7 @@ if(f.SPD<0){f.SPD=0};
 [position width=960 height=480 top=0 left=0]
 
 [iscript]
+f.skill = 0;
 if(f.skill1CT > 0){f.skill1CT--;}
 if(f.skill2CT > 0){f.skill2CT--;}
 if(f.skill3CT > 0){f.skill3CT--;}
@@ -118,7 +119,7 @@ if(f.return==1){
 [glink target="*選択2" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[6]" color="red" size=15 x=250 y=140 cond="f.Option[6].switch == 0"]
 [glink target="*選択2" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[7]" color="red" size=15 x=250 y=175 cond="f.Option[7].switch == 0"]
 [glink target="*選択2" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[8]" color="red" size=15 x=250 y=210 cond="f.Option[8].switch == 0"]
-[glink target="*スキル選択" text="技　能" color="blue" size=15 x=250 y=245]
+[glink target="*スキル選択" text="技　能" color="blue" size=15 x=250 y=245 cond="f.skill == 0"]
 [s]
 
 *選択2
@@ -139,31 +140,22 @@ if(f.return==1){
 [font face="KozGoPro-Bold"]
 [glink target="*選択3" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[0]" color="red" size=15 x=50 y=105 cond="f.Option[0].switch == 0"]
 [glink target="*選択1" exp="f.return=1" text="・グ　ー" color="black" size=15 x=50 y=105 cond="f.Option[0].switch == 1"]
-
 [glink target="*選択3" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[1]" color="red" size=15 x=50 y=140 cond="f.Option[1].switch == 0"]
 [glink target="*選択1" text="・グ　ー" exp="f.return=1" color="black" size=15 x=50 y=140 cond="f.Option[1].switch == 1"]
-
 [glink target="*選択3" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[2]" color="red" size=15 x=50 y=175 cond="f.Option[2].switch == 0"]
 [glink target="*選択1" text="・グ　ー" exp="f.return=1" color="black" size=15 x=50 y=175 cond="f.Option[2].switch == 1"]
-
 [glink target="*選択3" text="・チョキ" exp="f.selectOption[f.count]=f.Option[3]" color="red" size=15 x=50 y=210 cond="f.Option[3].switch == 0"]
 [glink target="*選択1" text="・チョキ" exp="f.return=1" color="black" size=15 x=50 y=210 cond="f.Option[3].switch == 1"]
-
 [glink target="*選択3" text="・チョキ" exp="f.selectOption[f.count]=f.Option[4]" color="red" size=15 x=50 y=245 cond="f.Option[4].switch == 0"]
 [glink target="*選択1" text="・チョキ" exp="f.return=1" color="black" size=15 x=50 y=245 cond="f.Option[4].switch == 1"]
-
 [glink target="*選択3" text="・チョキ" exp="f.selectOption[f.count]=f.Option[5]" color="red" size=15 x=250 y=105 cond="f.Option[5].switch == 0"]
 [glink target="*選択1" text="・チョキ" exp="f.return=1" color="black" size=15 x=250 y=105 cond="f.Option[5].switch == 1"]
-
 [glink target="*選択3" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[6]" color="red" size=15 x=250 y=140 cond="f.Option[6].switch == 0"]
 [glink target="*選択1" text="・パ　ー" exp="f.return=1" color="black" size=15 x=250 y=140 cond="f.Option[6].switch == 1"]
-
 [glink target="*選択3" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[7]" color="red" size=15 x=250 y=175 cond="f.Option[7].switch == 0"]
 [glink target="*選択1" text="・パ　ー" exp="f.return=1" color="black" size=15 x=250 y=175 cond="f.Option[7].switch == 1"]
-
 [glink target="*選択3" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[8]" color="red" size=15 x=250 y=210 cond="f.Option[8].switch == 0"]
 [glink target="*選択1" text="・パ　ー" exp="f.return=1" color="black" size=15 x=250 y=210 cond="f.Option[8].switch == 1"]
-
 [glink target="*選択1" text="戻る" exp="f.return=1" color="red" size=15 x=250 y=245]
 [s]
 
@@ -185,31 +177,22 @@ if(f.return==1){
 [font face="KozGoPro-Bold"]
 [glink target="*確認" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[0]" color="red" size=15 x=50 y=105 cond="f.Option[0].switch == 0"]
 [glink target="*選択2" exp="f.return=1" text="・グ　ー" color="black" size=15 x=50 y=105 cond="f.Option[0].switch == 1"]
-
 [glink target="確認" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[1]" color="red" size=15 x=50 y=140 cond="f.Option[1].switch == 0"]
 [glink target="*選択2" exp="f.return=1" text="・グ　ー" color="black" size=15 x=50 y=140 cond="f.Option[1].switch == 1"]
-
 [glink target="確認" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[2]" color="red" size=15 x=50 y=175 cond="f.Option[2].switch == 0"]
 [glink target="*選択2" exp="f.return=1" text="・グ　ー" color="black" size=15 x=50 y=175 cond="f.Option[2].switch == 1"]
-
 [glink target="確認" text="・チョキ" exp="f.selectOption[f.count]=f.Option[3]" color="red" size=15 x=50 y=210 cond="f.Option[3].switch == 0"]
 [glink target="*選択2" exp="f.return=1" text="・チョキ" color="black" size=15 x=50 y=210 cond="f.Option[3].switch == 1"]
-
 [glink target="確認" text="・チョキ" exp="f.selectOption[f.count]=f.Option[4]" color="red" size=15 x=50 y=245 cond="f.Option[4].switch == 0"]
 [glink target="*選択2" exp="f.return=1" text="・チョキ" color="black" size=15 x=50 y=245 cond="f.Option[4].switch == 1"]
-
 [glink target="確認" text="・チョキ" exp="f.selectOption[f.count]=f.Option[5]" color="red" size=15 x=250 y=105 cond="f.Option[5].switch == 0"]
 [glink target="*選択2" exp="f.return=1" text="・チョキ" color="black" size=15 x=250 y=105 cond="f.Option[5].switch == 1"]
-
 [glink target="確認" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[6]" color="red" size=15 x=250 y=140 cond="f.Option[6].switch == 0"]
 [glink target="*選択2" exp="f.return=1" text="・パ　ー" color="black" size=15 x=250 y=140 cond="f.Option[6].switch == 1"]
-
 [glink target="確認" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[7]" color="red" size=15 x=250 y=175 cond="f.Option[7].switch == 0"]
 [glink target="*選択2" exp="f.return=1" text="・パ　ー" color="black" size=15 x=250 y=175 cond="f.Option[7].switch == 1"]
-
 [glink target="確認" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[8]" color="red" size=15 x=250 y=210 cond="f.Option[8].switch == 0"]
 [glink target="*選択2" exp="f.return=1" text="・パ　ー" color="black" size=15 x=250 y=210 cond="f.Option[8].switch == 1"]
-
 [glink target="*選択2" text="戻る" exp="f.return=1" color="red" size=15 x=250 y=245]
 [s]
 
@@ -521,7 +504,7 @@ if(f.EnCount>2){
   くぬぎの胎内で蟲が蠢いた[wt7]
   くぬぎ「んっ・・・！」[wt7]
   くぬぎは蟲に気力を吸収された[wt7]
-  [eval exp="f.FP = f.FP - 10"][showStatus]
+  [eval exp="f.FP = f.FP - 10 , f.countParas++"][showStatus]
 [elsif exp="f.Paras > 0 && f.turn%3 == 0 && f.FP < 10"]
   くぬぎの胎内で蟲が蠢いた[wt7]
   くぬぎ「ああん！！」[wt7]
@@ -607,24 +590,22 @@ if(tf.Damage<0){tf.Damage=0;}
 
 
 *スキル選択
-[if exp="f.Undress == 0"]
+[eval exp="f.skill = 1"]
 [emb exp="f.skill1CT"][r]
-[else]
 [emb exp="f.skill4CT"][r]
-[endif]
 [emb exp="f.skill2CT"][r]
 [emb exp="f.skill3CT"][r]
 
 [glink target="*スキル1使用" text="代わり身の術" color="red" size=15 x=50 y=35 cond="f.skill1CT == 0 && f.Undress == 0"]
-[glink target="*スキル選択" text="代わり身の術" color="black" size=15 x=50 y=35 cond="f.skill1CT != 0 && f.Undress == 0"]
-[glink target="*スキル4使用" text="変わり身の術" color="red" size=15 x=50 y=35 cond="f.skill4CT == 0 && f.Undress == 1"]
-[glink target="*スキル選択" text="変わり身の術" color="black" size=15 x=50 y=35 cond="f.skill4CT != 0 && f.Undress == 1"]
-[glink target="*スキル2使用" text="目眩ましの術" color="red" size=15 x=50 y=70 cond="f.skill2CT == 0"]
-[glink target="*スキル選択" text="目眩ましの術" color="black" size=15 x=50 y=70 cond="f.skill2CT != 0"]
-[glink target="*スキル3使用" text="魅了の術" color="red" size=15 x=50 y=105 exp="f.skill3CT == 0"]
-[glink target="*スキル選択" text="魅了の術" color="black" size=15 x=50 y=105 cond="f.skill3CT != 0"]
-[glink target="*選択1" text="戻　る" color="red" size=15 x=50 y=140]
-[glink storage="bochu.ks" target="*房中開始" text="降参する" color="red" size=15 x=50 y=175]
+[glink target="*スキル選択" text="代わり身の術" color="black" size=15 x=50 y=35 cond="f.skill1CT != 0 || f.Undress != 0"]
+[glink target="*スキル4使用" text="変わり身の術" color="red" size=15 x=50 y=70 cond="f.skill4CT == 0 && f.Undress == 1"]
+[glink target="*スキル選択" text="変わり身の術" color="black" size=15 x=50 y=70 cond="f.skill4CT != 0 || f.Undress != 1"]
+[glink target="*スキル2使用" text="目眩ましの術" color="red" size=15 x=50 y=105 cond="f.skill2CT == 0"]
+[glink target="*スキル選択" text="目眩ましの術" color="black" size=15 x=50 y=105 cond="f.skill2CT != 0"]
+[glink target="*スキル3使用" text="魅了の術" color="red" size=15 x=50 y=140 exp="f.skill3CT == 0"]
+[glink target="*スキル選択" text="魅了の術" color="black" size=15 x=50 y=140 cond="f.skill3CT != 0"]
+[glink target="*選択1" text="戻　る" color="red" size=15 x=50 y=175 exp="f.skill = 0"]
+[glink storage="bochu.ks" target="*房中開始" text="降参する" color="red" size=15 x=50 y=210]
 [s]
 
 

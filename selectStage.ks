@@ -30,45 +30,47 @@ f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 
 [endscript]
 
-[macro name="enemySetUp"]
-;敵設定読込
-[iscript]
-f.BaseEnHP = f.originEnHP;
-f.BaseEnSTR = f.originEnSTR;
-f.BaseEnDEF = f.originEnDEF;
-f.BaseEnSPD = f.originEnSPD;
-f.BaseEnFP = f.originEnFP;
-f.BaseEnERO = f.originEnERO;
-f.BaseEnTEC = f.originEnTEC;
-f.BaseEnEND = f.originEnEND;
-f.BaseBindPower = f.originBindPower;
-
-f.EnHP = f.BaseEnHP;
-f.EnSTR = f.BaseEnSTR;
-f.EnDEF = f.BaseEnDEF;
-f.EnSPD = f.BaseEnSPD;
-f.EnFP = f.BaseEnFP;
-f.EnERO = f.BaseEnERO;
-f.EnTEC = f.BaseEnTEC;
-f.EnEND = f.BaseEnEND;
-f.BindPower = f.BaseBindPower;
-
-f.BaseEnOption = JSON.stringify(f.originEnOption);
-f.BaseEnOption = JSON.parse(f.BaseEnOption);
-f.EnOption = JSON.stringify(f.BaseEnOption);
-f.EnOption = JSON.parse(f.EnOption);
-
-f.EnCount = 0;
-
-f.EnVBuff = 1.0;
-f.EnStan = 0;
-[endscript]
-[endmacro]
-
 [showStatus]
 
 *時間経過
 [eval exp="f.stage++"]
+
+[eval exp="f.countAmpl++" cond="f.countAmpl > 0"]
+[if exp="f.countAmpl > 10"]
+くぬぎは感度増幅状態から回復した[wt7]
+[eval exp="f.countAmpl = 0 , f.countAmpl = 0"][showStatus]
+[endif]
+
+[eval exp="f.countEstr++" cond="f.countEstr > 0"]
+[if exp="f.countEstr > 10"]
+くぬぎは発情状態から回復した[wt7]
+[eval exp="f.countEstr = 0 , f.countEstr = 0"][showStatus]
+[endif]
+
+[eval exp="f.countMaso++" cond="f.countMaso > 0"][showStatus]
+[if exp="f.countMaso > 10"]
+くぬぎは被虐体質から回復した[wt7]
+[eval exp="f.countMaso = 0 , f.countMaso = 0"]
+[endif]
+
+[eval exp="f.countBitch++" cond="f.countBitch > 0"]
+[if exp="f.countBitch > 10"]
+くぬぎは淫乱状態から回復した[wt7]
+[eval exp="f.countBitch = 0 , f.countBitch = 0"][showStatus]
+[endif]
+
+[eval exp="f.countHypno++" cond="f.countHypno > 0"]
+[if exp="f.countHypno > 10"]
+くぬぎは催淫状態から回復した[wt7]
+[eval exp="f.countHypno = 0 , f.countHypno = 0"][showStatus]
+[endif]
+
+[if exp="f.countParas > 30"]
+くぬぎは虫憑き状態から回復した[wt7]
+[eval exp="f.countParas = 0 , f.countParas = 0"][showStatus]
+[endif]
+
+
 
 *エネミー選択
 [emb exp="f.stage"]回戦[r]

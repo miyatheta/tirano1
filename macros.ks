@@ -24,6 +24,42 @@ tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 [endmacro]
 
 ;ステータス関係
+
+[macro name="enemySetUp"]
+;敵設定読込
+[iscript]
+f.BaseEnHP = f.originEnHP;
+f.BaseEnSTR = f.originEnSTR;
+f.BaseEnDEF = f.originEnDEF;
+f.BaseEnSPD = f.originEnSPD;
+f.BaseEnFP = f.originEnFP;
+f.BaseEnERO = f.originEnERO;
+f.BaseEnTEC = f.originEnTEC;
+f.BaseEnEND = f.originEnEND;
+f.BaseBindPower = f.originBindPower;
+
+f.EnHP = f.BaseEnHP;
+f.EnSTR = f.BaseEnSTR;
+f.EnDEF = f.BaseEnDEF;
+f.EnSPD = f.BaseEnSPD;
+f.EnFP = f.BaseEnFP;
+f.EnERO = f.BaseEnERO;
+f.EnTEC = f.BaseEnTEC;
+f.EnEND = f.BaseEnEND;
+f.BindPower = f.BaseBindPower;
+
+f.BaseEnOption = JSON.stringify(f.originEnOption);
+f.BaseEnOption = JSON.parse(f.BaseEnOption);
+f.EnOption = JSON.stringify(f.BaseEnOption);
+f.EnOption = JSON.parse(f.EnOption);
+
+f.EnCount = 0;
+
+f.EnVBuff = 1.0;
+f.EnStan = 0;
+[endscript]
+[endmacro]
+
 [macro name="showStatus"]
 [freeimage layer=1]
 [iscript]

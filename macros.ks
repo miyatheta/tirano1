@@ -275,6 +275,5 @@ tf.Damage = Math.floor(5 * f.SEN / 100);
 [endscript]
 [endmacro]
 
-
 [position width=960 height=480 top=0 left=0]
 [jump storage="selectStage.ks" target="*ステージセレクト"]

@@ -1,5 +1,5 @@
 *発動超必殺技
-くぬぎ「受けてみなさい！必殺・鳴神の舞」[wt7]
+くぬぎ「受けてみなさい！必殺・八咫からす！！」[wt7]
 [macro name="SuperArts"]
 [iscript]
 tf.Min = 0, tf.Max = 50;
@@ -37,7 +37,7 @@ if(tf.Damage<0){tf.Damage=0;}
 error[s]
 
 *被虐体質
-くぬぎは痛みに快感を感じた[wt7]
+くぬぎは痛みに快感を覚えた[wt7]
 [Masochism]
 [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
 [showStatus]
@@ -77,6 +77,7 @@ if(tf.Damage<0){tf.Damage=0;}
 
 [jump target="*身代わりの術" cond="f.Pary > 0"]
 
+[call storage="voicePL.ks" target="*悲鳴"]
 くぬぎの体力が[emb exp="tf.Damage"]減少した。[wt7]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
 [showStatus]
@@ -110,6 +111,7 @@ if(tf.Damage<0){tf.Damage=0;}
 
 [jump target="*身代わりの術" cond="f.Pary > 0"]
 
+[call storage="voicePL.ks" target="*悲鳴"]
 くぬぎの体力が[emb exp="tf.Damage"]減少した。[wt7]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
 [showStatus]
@@ -143,6 +145,7 @@ if(tf.Damage<0){tf.Damage=0;}
 
 [jump target="*身代わりの術" cond="f.Pary > 0"]
 
+[call storage="voicePL.ks" target="*悲鳴"]
 くぬぎの体力が[emb exp="tf.Damage"]減少した。[wt7]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
 [showStatus]

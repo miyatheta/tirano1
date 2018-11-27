@@ -115,7 +115,7 @@ f.EnDamage = Math.floor(6 * sexAppeal);
 f.EnERO = f.EnERO + f.EnDamage;
 [endscript]
 敵はくぬぎの尻に股間を押し付けてきた[wt5]
-くぬぎ「ひっ！」[wt7]
+[call storage="voicePL.ks" target="*悲鳴セクハラ"]
 敵の興奮度が[emb exp="f.EnDamage"]上昇した[wt5]
 [showStatus]
 [if exp="f.Hypno > 0"]
@@ -139,6 +139,7 @@ f.EnDamage = Math.floor(3 * sexAppeal);
 f.EnERO = f.EnERO + f.EnDamage;
 [endscript]
 敵はくぬぎの胸を揉みしだいた[wt5]
+[call storage="voicePL.ks" target="*悲鳴セクハラ"]
 くぬぎの快感度が[emb exp="tf.Damage"]上昇した[wt5]
 敵の興奮度が[emb exp="f.EnDamage"]上昇した[wt5]
 [showStatus]
@@ -163,8 +164,9 @@ tf.randomNum = (tf.dice / 1000) + 1;
 tf.Damage = Math.floor(f.EnSTR * 0.3 * tf.randomNum);
 [endscript]
 敵はくぬぎを締め上げた[wt5]
-[eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
+[call storage="voicePL.ks" target="*悲鳴"]
 くぬぎの体力が[emb exp="tf.Damage"]減少した[wt5]
+[eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
 [eval exp="f.FP = f.FP + 10"]
 [showStatus]
 [jump storage="battle.ks" target="*戦闘終了" cond="f.EnHP <= 0"]

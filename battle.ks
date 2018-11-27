@@ -30,16 +30,11 @@ if(f.StanOrga > 0){
 if(f.EnStan > 0){
   f.EnStan--;
 }
-[endscript]
 
-[iscript]
 //ターン数
 f.turn++;
 tf.dice = 0;
-[endscript]
 
-[cm]
-[iscript]
 //敵の行動パターン抽選
 if(f.EnCount==0){
   tf.Min = 1, tf.Max = 6;
@@ -78,7 +73,6 @@ if(f.EnStan>0){
 
 [showStatus]
 [emb exp="f.turn"]合目[wt5]
-
 [if exp="f.StanOrga > 0"]
   くぬぎ「ん・・・ぁう・・・・」[wt7]
   くぬぎは絶頂の余韻で行動ができない！！[wt7]
@@ -219,7 +213,6 @@ if(f.return==1){
 [s]
 
 *比較
-
 [if exp="f.StanOrga > 0"]
   [image layer=0 storage="hand/停止.png" width="100" top="50" left="380" visible="true"]
   [image layer=0 storage="hand/停止.png" width="100" top="200" left="380" visible="true"]
@@ -333,51 +326,33 @@ tf.Hight =  f.N * 150 + 50;
 [endif]
 
 [if exp="tf.hand == 'グーー' && tf.EnHand == 'グーー' && f.Priority == 1"]
-  ;相討(VP+1)　くぬぎの敏捷低下[r]
   [eval exp="f.VP = f.VP + 1"]
-  ;[eval exp="f.SPD = f.SPD - 20"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  ;[image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
 [elsif exp="tf.hand == 'グーー' && tf.EnHand == 'グーー' && f.Priority != 1"]
-  ;相討(VP-1)　敵の敏捷低下[r]
   [eval exp="f.VP = f.VP - 1"]
-  ;[eval exp="f.EnSPD = f.EnSPD - 20"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  ;[image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
 [endif]
 
 [if exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.Priority == 1"]
-  ;相討(VP+1)　くぬぎの敏捷低下[r]
   [eval exp="f.VP = f.VP + 1"]
-  ;[eval exp="f.SPD = f.SPD - 20"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  ;[image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
 [elsif exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.Priority != 1"]
-  ;相討(VP-1)　敵の敏捷低下[r]
   [eval exp="f.VP = f.VP - 1"]
-  ;[eval exp="f.EnSPD = f.EnSPD - 20"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  ;[image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
 [endif]
 
 [if exp="tf.hand == 'パーー' && tf.EnHand == 'パーー' && f.Priority == 1"]
-  ;相討(VP+1)　くぬぎの敏捷低下[r]
   [eval exp="f.VP = f.VP + 1"]
-  ;[eval exp="f.SPD = f.SPD - 20"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  ;[image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="280" visible="true"]
 [elsif exp="tf.hand == 'パーー' && tf.EnHand == 'パーー' && f.Priority != 1"]
-  ;相討(VP-1)　敵の敏捷低下[r]
   [eval exp="f.VP = f.VP - 1"]
-  ;[eval exp="f.EnSPD = f.EnSPD - 20"]
   [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
   [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  ;[image layer=0 storage="buff/SPDdown.png" width="100" top="&tf.Hight" left="580" visible="true"]
 [endif]
 
 [if exp="f.N<2"]
@@ -422,6 +397,7 @@ error[s]
 
 
 *通常攻撃
+[call storage="voicePL.ks" target="*かけ声"]
 [Damage]
 [EnName]の体力が[emb exp="tf.Damage"]減少した。[wt7]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
@@ -444,6 +420,7 @@ error[s]
   [jump target="*戦闘続行" cond="f.HP > 0"]
 [endif]
 
+[call storage="voicePL.ks" target="*悲鳴"]
 くぬぎの体力が[emb exp="tf.Damage"]減少した。[wt7]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
 [eval exp="f.FP = f.FP + 20"]
@@ -813,6 +790,7 @@ tf.hand = f.selectOption[f.H].hand;
   敵を倒した！！[wt7]
   疲労度が上昇した[wt7]
   [eval exp="f.TIR = f.TIR + (f.turn * 3)"][eval exp="f.TIR = 100" cond="f.TIR > 100 "]
+  [eval exp="f.ERO = f.ERO - 20"][eval exp="f.ERO = 0" cond="f.ERO < 100 "]
 [endif]
 [showStatus]
 ;戦闘終了処理

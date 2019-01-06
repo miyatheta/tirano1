@@ -31,6 +31,9 @@ f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 [endscript]
 
 [showStatus]
+[image layer="base" visible="true" storage="mori_yoru.jpg" width=960]
+[chara_new name="kunugi" storage="chara/kunugi/kunugi_battle_stand.png"]
+[chara_show name="kunugi" left=50 top=100 width=400]
 
 *時間経過
 [eval exp="f.stage++"]
@@ -73,6 +76,9 @@ f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 
 
 *エネミー選択
+[image layer=1 folder="image" storage="Card/Card_A.png" width="100" top="50" left="380" visible="true"]
+[freeimage layer=1]
+
 [emb exp="f.stage"]回戦[r]
 [glink target="*敵1" exp="f.enemy=1" text="敵１" size=15 x=50 y=100]
 [glink target="*敵2" exp="f.enemy=2" text="敵２" size=15 x=50 y=150]
@@ -82,8 +88,7 @@ f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 *敵1
 [iscript]
 //敵の設定
-f.EnemyCode=1;
-f.EnemyName="剛造";
+f.Enemy={Code:1, Name:"亥川豪左衛門", HN:"豪左", Lv:1}
 
 f.originEnHP = 1000;
 f.originEnSTR = 80;
@@ -95,13 +100,29 @@ f.originEnTEC = 70;//技術力
 f.originEnEND = 70;//忍耐力
 f.originBindPower = 100;
 
-f.originEnOption[0] = ['グーー','グーー','グーー','チョキ','チョキ','チョキ','チョキ','パーー','パーー'];
-f.originEnOption[1] = ['グーー','チョキ','チョキ','パーー','チョキ','グーー','グーー','パーー','チョキ'];
-f.originEnOption[2] = ['グーー','パーー','グーー','チョキ','チョキ','グーー','チョキ','チョキ','パーー'];
-f.originEnOption[3] = ['パーー','チョキ','グーー','チョキ','パーー','グーー','パーー','チョキ','グーー'];
-f.originEnOption[4] = ['チョキ','グーー','グーー','チョキ','パーー','チョキ','パーー','チョキ','グーー'];
-f.originEnOption[5] = ['チョキ','チョキ','グーー','チョキ','グーー','パーー','グーー','チョキ','パーー'];
-f.originEnOption[6] = ['チョキ','グーー','チョキ','パーー','チョキ','グーー','グーー','パーー','チョキ'];
+f.originEnOption=[
+{id:0, hand:'グーー', name:'力', suit:'P', switch:0},
+{id:1, hand:'グーー', name:'力', suit:'P', switch:0},
+{id:2, hand:'グーー', name:'力', suit:'P', switch:0},
+{id:3, hand:'グーー', name:'力', suit:'P', switch:0},
+{id:4, hand:'チョキ', name:'心', suit:'F', switch:0},
+{id:5, hand:'チョキ', name:'心', suit:'F', switch:0},
+{id:6, hand:'チョキ', name:'心', suit:'F', switch:0},
+{id:7, hand:'パーー', name:'技', suit:'A', switch:0},
+{id:8, hand:'パーー', name:'技', suit:'A', switch:0}];
+
+f.EnOption = [];
+f.EnOption = JSON.stringify(f.originEnOption);
+f.EnOption = JSON.parse(f.EnOption);
+
+f.EnPattern = [];
+f.EnPattern[0] = [0,1,2,4,5,3,6,7,8];
+f.EnPattern[1] = [0,4,5,7,1,2,3,8,6];
+f.EnPattern[2] = [0,7,1,4,5,2,6,3,8];
+f.EnPattern[3] = [7,4,0,1,5,2,8,6,3];
+f.EnPattern[4] = [4,0,1,5,7,2,8,6,3];
+f.EnPattern[5] = [4,0,1,5,2,7,3,6,8];
+f.EnPattern[6] = [7,0,4,5,1,2,3,8,6];
 
 f.ClutchRate = 20;//組付初期値
 [endscript]
@@ -111,8 +132,7 @@ f.ClutchRate = 20;//組付初期値
 *敵2
 [iscript]
 //敵の設定
-f.EnemyCode=2;
-f.EnemyName="深淵";
+f.Enemy={Code:2, Name:"蛭児石舟", HN:"蛭児", Lv:1};
 
 f.originEnHP = 1000;
 f.originEnSTR = 90;
@@ -141,8 +161,7 @@ f.ClutchRate = 0;//組付初期値
 *敵3
 [iscript]
 //敵の設定
-f.EnemyCode=3;
-f.EnemyName="弦十郎";
+f.Enemy={Code:3, Name:"遊田弦十郎", HN:"遊田", Lv:1}
 
 f.originEnHP = 1000;
 f.originEnSTR = 80;

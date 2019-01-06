@@ -11,7 +11,6 @@ if(f.SPD<0){f.SPD=0};
 [endscript]
 
 *ターン開始
-[position width=960 height=480 top=0 left=0]
 
 [iscript]
 f.skill = 0;
@@ -40,11 +39,18 @@ if(f.EnCount==0){
   tf.Min = 1, tf.Max = 6;
   tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
   f.EnSelectOption = [];
-  f.EnSelectOption = JSON.stringify(f.originEnOption[tf.dice]);
+  f.EnSelectOption = JSON.stringify(f.EnOption);
   f.EnSelectOption = JSON.parse(f.EnSelectOption);
 }
 
 //１手目開示
+if(f.EnSelectOption[f.EnPattern[tf.dice][f.EnCount * 3]].hand == "グーー"){
+    f.openCard = "Card/Card_P.png"
+}else if(f.EnSelectOption[f.EnPattern[tf.dice][f.EnCount * 3]].hand == "チョキ"){
+    f.openCard = "Card/Card_F.png"
+}if(f.EnSelectOption[f.EnPattern[tf.dice][f.EnCount * 3]].hand == "パーー"){
+    f.openCard = "Card/Card_A.png"
+}
 f.releaseNote = f.EnSelectOption[f.EnCount * 3] + '→？→？';
 //使用済み手札の表示
 f.usedNote = [];
@@ -102,21 +108,25 @@ if(f.return==1){
 }
 [endscript]
 [deffont]
-敵行動：[emb exp="f.releaseNote"]/使用済み：[emb exp="f.usedNote"]
-[font face="KozGoPro-Bold"]
-[glink target="*選択2" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[0]" color="red" size=15 x=50 y=105 cond="f.Option[0].switch == 0"]
-[glink target="*選択2" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[1]" color="red" size=15 x=50 y=140 cond="f.Option[1].switch == 0"]
-[glink target="*選択2" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[2]" color="red" size=15 x=50 y=175 cond="f.Option[2].switch == 0"]
-[glink target="*選択2" text="・チョキ" exp="f.selectOption[f.count]=f.Option[3]" color="red" size=15 x=50 y=210 cond="f.Option[3].switch == 0"]
-[glink target="*選択2" text="・チョキ" exp="f.selectOption[f.count]=f.Option[4]" color="red" size=15 x=50 y=245 cond="f.Option[4].switch == 0"]
-[glink target="*選択2" text="・チョキ" exp="f.selectOption[f.count]=f.Option[5]" color="red" size=15 x=250 y=105 cond="f.Option[5].switch == 0"]
-[glink target="*選択2" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[6]" color="red" size=15 x=250 y=140 cond="f.Option[6].switch == 0"]
-[glink target="*選択2" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[7]" color="red" size=15 x=250 y=175 cond="f.Option[7].switch == 0"]
-[glink target="*選択2" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[8]" color="red" size=15 x=250 y=210 cond="f.Option[8].switch == 0"]
+[image layer=2 width=75 left=480 top=105 visible="true" folder="image" storage="&f.openCard"]
+[image layer=2 width=75 left=480 top=205 visible="true" folder="image" storage="Card/Card_Close.png"]
+[image layer=2 width=75 left=480 top=305 visible="true" folder="image" storage="Card/Card_Close.png"]
+
+[button target="*選択2" exp="f.selectOption[f.count]=f.Option[0]" width=50 x=50 y=105 cond="f.Option[0].switch == 0" graphic="Card/Card_P.png" enterimg="Card/Card_Pc.png" clickimg="Card/Card_Pc.png"]
+[button target="*選択2" exp="f.selectOption[f.count]=f.Option[1]" width=50 x=100 y=105 cond="f.Option[1].switch == 0" graphic="Card/Card_P.png" enterimg="Card/Card_Pc.png" clickimg="Card/Card_Pc.png"]
+[button target="*選択2" exp="f.selectOption[f.count]=f.Option[2]" width=50 x=150 y=105 cond="f.Option[2].switch == 0" graphic="Card/Card_P.png" enterimg="Card/Card_Pc.png" clickimg="Card/Card_Pc.png"]
+[button target="*選択2" exp="f.selectOption[f.count]=f.Option[3]" width=50 x=50 y=205 cond="f.Option[3].switch == 0" graphic="Card/Card_F.png" enterimg="Card/Card_Fc.png" clickimg="Card/Card_Fc.png"]
+[button target="*選択2" exp="f.selectOption[f.count]=f.Option[4]" width=50 x=100 y=205 cond="f.Option[4].switch == 0" graphic="Card/Card_F.png" enterimg="Card/Card_Fc.png" clickimg="Card/Card_Fc.png"]
+[button target="*選択2" exp="f.selectOption[f.count]=f.Option[5]" width=50 x=150 y=205 cond="f.Option[5].switch == 0" graphic="Card/Card_F.png" enterimg="Card/Card_Fc.png" clickimg="Card/Card_Fc.png"]
+[button target="*選択2" exp="f.selectOption[f.count]=f.Option[6]" width=50 x=50 y=305 cond="f.Option[6].switch == 0" graphic="Card/Card_A.png" enterimg="Card/Card_Ac.png" clickimg="Card/Card_Ac.png"]
+[button target="*選択2" exp="f.selectOption[f.count]=f.Option[7]" width=50 x=100 y=305 cond="f.Option[7].switch == 0" graphic="Card/Card_A.png" enterimg="Card/Card_Ac.png" clickimg="Card/Card_Ac.png"]
+[button target="*選択2" exp="f.selectOption[f.count]=f.Option[8]" width=50 x=150 y=305 cond="f.Option[8].switch == 0" graphic="Card/Card_A.png" enterimg="Card/Card_Ac.png" clickimg="Card/Card_Ac.png"]
+
 [glink target="*スキル選択" text="技　能" color="blue" size=15 x=250 y=245 cond="f.skill == 0"]
 [s]
 
 *選択2
+[cm]
 [iscript]
 if(f.return==1){
   f.count--;
@@ -128,32 +138,33 @@ if(f.return==1){
   f.count++;
 }
 [endscript]
-[deffont]
-選択済：[emb exp="f.Option[f.selectOption[f.count-1].id].hand"][r]
-敵行動：[emb exp="f.releaseNote"]/使用済み：[emb exp="f.usedNote"]
-[font face="KozGoPro-Bold"]
-[glink target="*選択3" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[0]" color="red" size=15 x=50 y=105 cond="f.Option[0].switch == 0"]
-[glink target="*選択1" exp="f.return=1" text="・グ　ー" color="black" size=15 x=50 y=105 cond="f.Option[0].switch == 1"]
-[glink target="*選択3" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[1]" color="red" size=15 x=50 y=140 cond="f.Option[1].switch == 0"]
-[glink target="*選択1" text="・グ　ー" exp="f.return=1" color="black" size=15 x=50 y=140 cond="f.Option[1].switch == 1"]
-[glink target="*選択3" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[2]" color="red" size=15 x=50 y=175 cond="f.Option[2].switch == 0"]
-[glink target="*選択1" text="・グ　ー" exp="f.return=1" color="black" size=15 x=50 y=175 cond="f.Option[2].switch == 1"]
-[glink target="*選択3" text="・チョキ" exp="f.selectOption[f.count]=f.Option[3]" color="red" size=15 x=50 y=210 cond="f.Option[3].switch == 0"]
-[glink target="*選択1" text="・チョキ" exp="f.return=1" color="black" size=15 x=50 y=210 cond="f.Option[3].switch == 1"]
-[glink target="*選択3" text="・チョキ" exp="f.selectOption[f.count]=f.Option[4]" color="red" size=15 x=50 y=245 cond="f.Option[4].switch == 0"]
-[glink target="*選択1" text="・チョキ" exp="f.return=1" color="black" size=15 x=50 y=245 cond="f.Option[4].switch == 1"]
-[glink target="*選択3" text="・チョキ" exp="f.selectOption[f.count]=f.Option[5]" color="red" size=15 x=250 y=105 cond="f.Option[5].switch == 0"]
-[glink target="*選択1" text="・チョキ" exp="f.return=1" color="black" size=15 x=250 y=105 cond="f.Option[5].switch == 1"]
-[glink target="*選択3" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[6]" color="red" size=15 x=250 y=140 cond="f.Option[6].switch == 0"]
-[glink target="*選択1" text="・パ　ー" exp="f.return=1" color="black" size=15 x=250 y=140 cond="f.Option[6].switch == 1"]
-[glink target="*選択3" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[7]" color="red" size=15 x=250 y=175 cond="f.Option[7].switch == 0"]
-[glink target="*選択1" text="・パ　ー" exp="f.return=1" color="black" size=15 x=250 y=175 cond="f.Option[7].switch == 1"]
-[glink target="*選択3" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[8]" color="red" size=15 x=250 y=210 cond="f.Option[8].switch == 0"]
-[glink target="*選択1" text="・パ　ー" exp="f.return=1" color="black" size=15 x=250 y=210 cond="f.Option[8].switch == 1"]
+
+[button target="*選択3" exp="f.selectOption[f.count]=f.Option[0]" width=50 x=50 y=105 cond="f.Option[0].switch == 0" graphic="Card/Card_P.png" enterimg="Card/Card_Pc.png" clickimg="Card/Card_Pc.png"]
+[button target="*選択1" exp="f.return=1" width=50 x=50 y=105 cond="f.Option[0].switch == 1" graphic="Card/Card_Pu.png"]
+[button target="*選択3" exp="f.selectOption[f.count]=f.Option[1]" width=50 x=100 y=105 cond="f.Option[1].switch == 0" graphic="Card/Card_P.png" enterimg="Card/Card_Pc.png" clickimg="Card/Card_Pc.png"]
+[button target="*選択1" exp="f.return=1" width=50 x=100 y=105 cond="f.Option[1].switch == 1" graphic="Card/Card_Pu.png"]
+[button target="*選択3" exp="f.selectOption[f.count]=f.Option[2]" width=50 x=150 y=105 cond="f.Option[2].switch == 0" graphic="Card/Card_P.png" enterimg="Card/Card_Pc.png" clickimg="Card/Card_Pc.png"]
+[button target="*選択1" exp="f.return=1" width=50 x=150 y=105 cond="f.Option[2].switch == 1" graphic="Card/Card_Pu.png"]
+[button target="*選択3" exp="f.selectOption[f.count]=f.Option[3]" width=50 x=50 y=205 cond="f.Option[3].switch == 0" graphic="Card/Card_F.png" enterimg="Card/Card_Fc.png" clickimg="Card/Card_Fc.png"]
+[button target="*選択1" exp="f.return=1" width=50 x=50 y=205 cond="f.Option[3].switch == 1" graphic="Card/Card_Fu.png"]
+[button target="*選択3" exp="f.selectOption[f.count]=f.Option[4]" width=50 x=100 y=205 cond="f.Option[4].switch == 0" graphic="Card/Card_F.png" enterimg="Card/Card_Fc.png" clickimg="Card/Card_Fc.png"]
+[button target="*選択1" exp="f.return=1" width=50 x=100 y=205 cond="f.Option[4].switch == 1" graphic="Card/Card_Fu.png"]
+[button target="*選択3" exp="f.selectOption[f.count]=f.Option[5]" width=50 x=150 y=205 cond="f.Option[5].switch == 0" graphic="Card/Card_F.png" enterimg="Card/Card_Fc.png" clickimg="Card/Card_Fc.png"]
+[button target="*選択1" exp="f.return=1" width=50 x=150 y=205 cond="f.Option[5].switch == 1" graphic="Card/Card_Fu.png"]
+[button target="*選択3" exp="f.selectOption[f.count]=f.Option[6]" width=50 x=50 y=305 cond="f.Option[6].switch == 0" graphic="Card/Card_A.png" enterimg="Card/Card_Ac.png" clickimg="Card/Card_Ac.png"]
+[button target="*選択1" exp="f.return=1" width=50 x=50 y=305 cond="f.Option[6].switch == 1" graphic="Card/Card_Au.png"]
+[button target="*選択3" exp="f.selectOption[f.count]=f.Option[7]" width=50 x=100 y=305 cond="f.Option[7].switch == 0" graphic="Card/Card_A.png" enterimg="Card/Card_Ac.png" clickimg="Card/Card_Ac.png"]
+[button target="*選択1" exp="f.return=1" width=50 x=100 y=305 cond="f.Option[7].switch == 1" graphic="Card/Card_Au.png"]
+[button target="*選択3" exp="f.selectOption[f.count]=f.Option[8]" width=50 x=150 y=305 cond="f.Option[8].switch == 0" graphic="Card/Card_A.png" enterimg="Card/Card_Ac.png" clickimg="Card/Card_Ac.png"]
+[button target="*選択1" exp="f.return=1" width=50 x=150 y=305 cond="f.Option[8].switch == 1" graphic="Card/Card_Au.png"]
+
 [glink target="*選択1" text="戻る" exp="f.return=1" color="red" size=15 x=250 y=245]
+
+選択済：[emb exp="f.selectOption[f.count-1].hand"][r]
 [s]
 
 *選択3
+[cm]
 [iscript]
 if(f.return==1){
   f.count--;
@@ -165,29 +176,29 @@ if(f.return==1){
   f.count++;
 }
 [endscript]
-[deffont]
-選択済：[emb exp="f.Option[f.selectOption[f.count-2].id].hand"]→[emb exp="f.Option[f.selectOption[f.count-1].id].hand"][r]
-敵行動：[emb exp="f.releaseNote"]/使用済み：[emb exp="f.usedNote"]
-[font face="KozGoPro-Bold"]
-[glink target="*確認" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[0]" color="red" size=15 x=50 y=105 cond="f.Option[0].switch == 0"]
-[glink target="*選択2" exp="f.return=1" text="・グ　ー" color="black" size=15 x=50 y=105 cond="f.Option[0].switch == 1"]
-[glink target="確認" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[1]" color="red" size=15 x=50 y=140 cond="f.Option[1].switch == 0"]
-[glink target="*選択2" exp="f.return=1" text="・グ　ー" color="black" size=15 x=50 y=140 cond="f.Option[1].switch == 1"]
-[glink target="確認" text="・グ　ー" exp="f.selectOption[f.count]=f.Option[2]" color="red" size=15 x=50 y=175 cond="f.Option[2].switch == 0"]
-[glink target="*選択2" exp="f.return=1" text="・グ　ー" color="black" size=15 x=50 y=175 cond="f.Option[2].switch == 1"]
-[glink target="確認" text="・チョキ" exp="f.selectOption[f.count]=f.Option[3]" color="red" size=15 x=50 y=210 cond="f.Option[3].switch == 0"]
-[glink target="*選択2" exp="f.return=1" text="・チョキ" color="black" size=15 x=50 y=210 cond="f.Option[3].switch == 1"]
-[glink target="確認" text="・チョキ" exp="f.selectOption[f.count]=f.Option[4]" color="red" size=15 x=50 y=245 cond="f.Option[4].switch == 0"]
-[glink target="*選択2" exp="f.return=1" text="・チョキ" color="black" size=15 x=50 y=245 cond="f.Option[4].switch == 1"]
-[glink target="確認" text="・チョキ" exp="f.selectOption[f.count]=f.Option[5]" color="red" size=15 x=250 y=105 cond="f.Option[5].switch == 0"]
-[glink target="*選択2" exp="f.return=1" text="・チョキ" color="black" size=15 x=250 y=105 cond="f.Option[5].switch == 1"]
-[glink target="確認" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[6]" color="red" size=15 x=250 y=140 cond="f.Option[6].switch == 0"]
-[glink target="*選択2" exp="f.return=1" text="・パ　ー" color="black" size=15 x=250 y=140 cond="f.Option[6].switch == 1"]
-[glink target="確認" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[7]" color="red" size=15 x=250 y=175 cond="f.Option[7].switch == 0"]
-[glink target="*選択2" exp="f.return=1" text="・パ　ー" color="black" size=15 x=250 y=175 cond="f.Option[7].switch == 1"]
-[glink target="確認" text="・パ　ー" exp="f.selectOption[f.count]=f.Option[8]" color="red" size=15 x=250 y=210 cond="f.Option[8].switch == 0"]
-[glink target="*選択2" exp="f.return=1" text="・パ　ー" color="black" size=15 x=250 y=210 cond="f.Option[8].switch == 1"]
+
+[button target="*確認" exp="f.selectOption[f.count]=f.Option[0]" width=50 x=50 y=105 cond="f.Option[0].switch == 0" graphic="Card/Card_P.png" enterimg="Card/Card_Pc.png" clickimg="Card/Card_Pc.png"]
+[button target="*選択2" exp="f.return=1" width=50 x=50 y=105 cond="f.Option[0].switch == 1" graphic="Card/Card_Pu.png"]
+[button target="*確認" exp="f.selectOption[f.count]=f.Option[1]" width=50 x=100 y=105 cond="f.Option[1].switch == 0" graphic="Card/Card_P.png" enterimg="Card/Card_Pc.png" clickimg="Card/Card_Pc.png"]
+[button target="*選択2" exp="f.return=1" width=50 x=100 y=105 cond="f.Option[1].switch == 1" graphic="Card/Card_Pu.png"]
+[button target="*確認" exp="f.selectOption[f.count]=f.Option[2]" width=50 x=150 y=105 cond="f.Option[2].switch == 0" graphic="Card/Card_P.png" enterimg="Card/Card_Pc.png" clickimg="Card/Card_Pc.png"]
+[button target="*選択2" exp="f.return=1" width=50 x=150 y=105 cond="f.Option[2].switch == 1" graphic="Card/Card_Pu.png"]
+[button target="*確認" exp="f.selectOption[f.count]=f.Option[3]" width=50 x=50 y=205 cond="f.Option[3].switch == 0" graphic="Card/Card_F.png" enterimg="Card/Card_Fc.png" clickimg="Card/Card_Fc.png"]
+[button target="*選択2" exp="f.return=1" width=50 x=50 y=205 cond="f.Option[3].switch == 1" graphic="Card/Card_Fu.png"]
+[button target="*確認" exp="f.selectOption[f.count]=f.Option[4]" width=50 x=100 y=205 cond="f.Option[4].switch == 0" graphic="Card/Card_F.png" enterimg="Card/Card_Fc.png" clickimg="Card/Card_Fc.png"]
+[button target="*選択2" exp="f.return=1" width=50 x=100 y=205 cond="f.Option[4].switch == 1" graphic="Card/Card_Fu.png"]
+[button target="*確認" exp="f.selectOption[f.count]=f.Option[5]" width=50 x=150 y=205 cond="f.Option[5].switch == 0" graphic="Card/Card_F.png" enterimg="Card/Card_Fc.png" clickimg="Card/Card_Fc.png"]
+[button target="*選択2" exp="f.return=1" width=50 x=150 y=205 cond="f.Option[5].switch == 1" graphic="Card/Card_Fu.png"]
+[button target="*確認" exp="f.selectOption[f.count]=f.Option[6]" width=50 x=50 y=305 cond="f.Option[6].switch == 0" graphic="Card/Card_A.png" enterimg="Card/Card_Ac.png" clickimg="Card/Card_Ac.png"]
+[button target="*選択2" exp="f.return=1" width=50 x=50 y=305 cond="f.Option[6].switch == 1" graphic="Card/Card_Au.png"]
+[button target="*確認" exp="f.selectOption[f.count]=f.Option[7]" width=50 x=100 y=305 cond="f.Option[7].switch == 0" graphic="Card/Card_A.png" enterimg="Card/Card_Ac.png" clickimg="Card/Card_Ac.png"]
+[button target="*選択2" exp="f.return=1" width=50 x=100 y=305 cond="f.Option[7].switch == 1" graphic="Card/Card_Au.png"]
+[button target="*確認" exp="f.selectOption[f.count]=f.Option[8]" width=50 x=150 y=305 cond="f.Option[8].switch == 0" graphic="Card/Card_A.png" enterimg="Card/Card_Ac.png" clickimg="Card/Card_Ac.png"]
+[button target="*選択2" exp="f.return=1" width=50 x=150 y=305 cond="f.Option[8].switch == 1" graphic="Card/Card_Au.png"]
+
 [glink target="*選択2" text="戻る" exp="f.return=1" color="red" size=15 x=250 y=245]
+
+選択済：[emb exp="f.selectOption[f.count-2].hand"]→[emb exp="f.selectOption[f.count-1].hand"][r]
 [s]
 
 *確認
@@ -204,25 +215,15 @@ if(f.return==1){
 [endscript]
 [cm]
 [deffont]
-選択済:[emb exp="f.Option[f.selectOption[f.count-3].id].hand"]→
-[emb exp="f.Option[f.selectOption[f.count-2].id].hand"]→
-[emb exp="f.Option[f.selectOption[f.count-1].id].hand"][r]
+選択済:[emb exp="f.selectOption[f.count-3].hand"]→
+[emb exp="f.selectOption[f.count-2].hand"]→
+[emb exp="f.selectOption[f.count-1].hand"][r]
 敵行動：[emb exp="f.releaseNote"]
 [glink target="*比較" text="決定" color="red" size=15 x=50 y=100]
 [glink target="*選択3" text="戻る" exp="f.return=1" color="red" size=15 x=150 y=100]
 [s]
 
 *比較
-[if exp="f.StanOrga > 0"]
-  [image layer=0 storage="hand/停止.png" width="100" top="50" left="380" visible="true"]
-  [image layer=0 storage="hand/停止.png" width="100" top="200" left="380" visible="true"]
-  [image layer=0 storage="hand/停止.png" width="100" top="350" left="380" visible="true"]
-  [image layer=0 storage="&f.PictHand4" width="100" top="50" left="480" visible="true"]
-  [image layer=0 storage="&f.PictHand5" width="100" top="200" left="480" visible="true"]
-  [image layer=0 storage="&f.PictHand6" width="100" top="350" left="480" visible="true"]
-  [jump target="*行動不能"]
-[endif]
-
 [iscript]
 f.selectOption[f.count-3].switch=2;//配列の参照型を利用して選択肢をオンに
 f.selectOption[f.count-2].switch=2;
@@ -235,30 +236,41 @@ f.VB=0;
 f.EnVB=0;
 if(f.SPD > f.EnSPD){f.Priority = 1;} else {f.Priority = 0;}
 
-f.PictHand1 = "hand/PL" + f.selectOption[f.count-3].hand + ".png";
-f.PictHand2 = "hand/PL" + f.selectOption[f.count-2].hand + ".png";
-f.PictHand3 = "hand/PL" + f.selectOption[f.count-1].hand + ".png";
-f.PictHand4 = "hand/EN" + f.EnSelectOption[0 + (f.EnCount * 3)] + ".png";
-f.PictHand5 = "hand/EN" + f.EnSelectOption[1 + (f.EnCount * 3)] + ".png";
-f.PictHand6 = "hand/EN" + f.EnSelectOption[2 + (f.EnCount * 3)] + ".png";
+f.PictHand1 = "Card/Card_" + f.selectOption[f.count-3].suit + ".png";
+f.PictHand2 = "Card/Card_" + f.selectOption[f.count-2].suit + ".png";
+f.PictHand3 = "Card/Card_" + f.selectOption[f.count-1].suit + ".png";
+f.PictHand4 = "Card/Card_" + f.EnSelectOption[0 + (f.EnCount * 3)].suit + ".png";
+f.PictHand5 = "Card/Card_" + f.EnSelectOption[1 + (f.EnCount * 3)].suit + ".png";
+f.PictHand6 = "Card/Card_" + f.EnSelectOption[2 + (f.EnCount * 3)].suit + ".png";
 [endscript]
+[freeimage layer=2]
+
+[if exp="f.StanOrga > 0"]
+  [image layer=1 folder="image" storage="hand/停止.png" width="100" top="50" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/停止.png" width="100" top="200" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/停止.png" width="100" top="350" left="380" visible="true"]
+  [image layer=1 folder="image" storage="&f.PictHand4" width="100" top="50" left="480" visible="true"]
+  [image layer=1 folder="image" storage="&f.PictHand5" width="100" top="200" left="480" visible="true"]
+  [image layer=1 folder="image" storage="&f.PictHand6" width="100" top="350" left="480" visible="true"]
+  [jump target="*行動不能"]
+[endif]
 
 [if exp="f.EnStan > 0"]
-  [image layer=0 storage="&f.PictHand1" width="100" top="50" left="380" visible="true"]
-  [image layer=0 storage="&f.PictHand2" width="100" top="200" left="380" visible="true"]
-  [image layer=0 storage="&f.PictHand3" width="100" top="350" left="380" visible="true"]
-  [image layer=0 storage="hand/停止.png" width="100" top="50" left="480" visible="true"]
-  [image layer=0 storage="hand/停止.png" width="100" top="200" left="480" visible="true"]
-  [image layer=0 storage="hand/停止.png" width="100" top="350" left="480" visible="true"]
+  [image layer=1 folder="image" storage="&f.PictHand1" width="100" top="50" left="380" visible="true"]
+  [image layer=1 folder="image" storage="&f.PictHand2" width="100" top="200" left="380" visible="true"]
+  [image layer=1 folder="image" storage="&f.PictHand3" width="100" top="350" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/停止.png" width="100" top="50" left="480" visible="true"]
+  [image layer=1 folder="image" storage="hand/停止.png" width="100" top="200" left="480" visible="true"]
+  [image layer=1 folder="image" storage="hand/停止.png" width="100" top="350" left="480" visible="true"]
   [jump target="*敵行動不能"]
 [endif]
 
-[image layer=0 storage="&f.PictHand1" width="100" top="50" left="380" visible="true"]
-[image layer=0 storage="&f.PictHand2" width="100" top="200" left="380" visible="true"]
-[image layer=0 storage="&f.PictHand3" width="100" top="350" left="380" visible="true"]
-[image layer=0 storage="&f.PictHand4" width="100" top="50" left="480" visible="true"]
-[image layer=0 storage="&f.PictHand5" width="100" top="200" left="480" visible="true"]
-[image layer=0 storage="&f.PictHand6" width="100" top="350" left="480" visible="true"]
+[image layer=1 folder="image" storage="&f.PictHand1" width="100" top="50" left="380" visible="true"]
+[image layer=1 folder="image" storage="&f.PictHand2" width="100" top="200" left="380" visible="true"]
+[image layer=1 folder="image" storage="&f.PictHand3" width="100" top="350" left="380" visible="true"]
+[image layer=1 folder="image" storage="&f.PictHand4" width="100" top="50" left="480" visible="true"]
+[image layer=1 folder="image" storage="&f.PictHand5" width="100" top="200" left="480" visible="true"]
+[image layer=1 folder="image" storage="&f.PictHand6" width="100" top="350" left="480" visible="true"]
 [wait time=1500]
 
 
@@ -274,27 +286,27 @@ tf.Hight =  f.N * 150 + 50;
   [eval exp="f.VP = f.VP + 3"]
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.VBuff = f.VBuff + 0.1"]
-  [image layer=0 storage="hand/マル.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=0 storage="buff/STRup.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  [image layer=1 folder="image" storage="hand/マル.png" width="100" top="&tf.Hight" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=1 folder="image" storage="buff/STRup.png" width="100" top="&tf.Hight" left="280" visible="true"]
 [endif]
 [if exp="tf.hand == 'チョキ' && tf.EnHand == 'パーー'"]
   ;勝利(VP+1)　くぬぎの気力上昇[r]
   [eval exp="f.VP = f.VP + 3"]
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.FP = f.FP + 5"]
-  [image layer=0 storage="hand/マル.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=0 storage="buff/FPup.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  [image layer=1 folder="image" storage="hand/マル.png" width="100" top="&tf.Hight" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=1 folder="image" storage="buff/FPup.png" width="100" top="&tf.Hight" left="280" visible="true"]
 [endif]
 [if exp="tf.hand == 'パーー' && tf.EnHand == 'グーー'"]
   ;勝利(VP+1)　くぬぎの敏捷上昇[r]
   [eval exp="f.VP = f.VP + 3"]
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.SPD = f.SPD + 5" cond="f.SPD < f.BaseSPD"]
-  [image layer=0 storage="hand/マル.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=0 storage="buff/SPDup.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  [image layer=1 folder="image" storage="hand/マル.png" width="100" top="&tf.Hight" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=1 folder="image" storage="buff/SPDup.png" width="100" top="&tf.Hight" left="280" visible="true"]
 [endif]
 
 [if exp="tf.hand == 'グーー' && tf.EnHand == 'パーー'"]
@@ -302,57 +314,57 @@ tf.Hight =  f.N * 150 + 50;
   [eval exp="f.VP = f.VP - 3"]
   [eval exp="f.EnVB = f.EnVB + 1"]
   [eval exp="f.EnSPD = f.EnSPD + 5" cond="f.EnSPD < f.BaseEnSPD"]
-  [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=0 storage="hand/マル.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=0 storage="buff/SPDup.png" width="100" top="&tf.Hight" left="580" visible="true"]
+  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/マル.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=1 folder="image" storage="buff/SPDup.png" width="100" top="&tf.Hight" left="580" visible="true"]
   [endif]
 [if exp="tf.hand == 'チョキ' && tf.EnHand == 'グーー'"]
   ;敗北(VP-1)　敵の攻撃力上昇[r]
   [eval exp="f.VP = f.VP - 3"]
   [eval exp="f.EnVB = f.EnVB + 1"]
   [eval exp="f.EnVBuff = f.EnVBuff + 0.1"]
-  [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=0 storage="hand/マル.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=0 storage="buff/STRup.png" width="100" top="&tf.Hight" left="580" visible="true"]
+  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/マル.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=1 folder="image" storage="buff/STRup.png" width="100" top="&tf.Hight" left="580" visible="true"]
 [endif]
 [if exp="tf.hand == 'パーー' && tf.EnHand == 'チョキ'"]
   ;敗北(VP-1)　敵の気力上昇[r]
   [eval exp="f.VP = f.VP - 3"]
   [eval exp="f.EnVB = f.EnVB + 1"]
   [eval exp="f.EnFP = f.EnFP + 5"]
-  [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=0 storage="hand/マル.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=0 storage="buff/FPup.png" width="100" top="&tf.Hight" left="580" visible="true"]
+  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/マル.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=1 folder="image" storage="buff/FPup.png" width="100" top="&tf.Hight" left="580" visible="true"]
 [endif]
 
 [if exp="tf.hand == 'グーー' && tf.EnHand == 'グーー' && f.Priority == 1"]
   [eval exp="f.VP = f.VP + 1"]
-  [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=1 folder="image" storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
 [elsif exp="tf.hand == 'グーー' && tf.EnHand == 'グーー' && f.Priority != 1"]
   [eval exp="f.VP = f.VP - 1"]
-  [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
 [endif]
 
 [if exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.Priority == 1"]
   [eval exp="f.VP = f.VP + 1"]
-  [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=1 folder="image" storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
 [elsif exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.Priority != 1"]
   [eval exp="f.VP = f.VP - 1"]
-  [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
 [endif]
 
 [if exp="tf.hand == 'パーー' && tf.EnHand == 'パーー' && f.Priority == 1"]
   [eval exp="f.VP = f.VP + 1"]
-  [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=1 folder="image" storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
 [elsif exp="tf.hand == 'パーー' && tf.EnHand == 'パーー' && f.Priority != 1"]
   [eval exp="f.VP = f.VP - 1"]
-  [image layer=0 storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=0 storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
+  [image layer=1 folder="image" storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
 [endif]
 
 [if exp="f.N<2"]

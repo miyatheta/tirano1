@@ -1,4 +1,5 @@
 *スタート
+[position width=960 height=150 top=490 left=0]
 [iscript]
 //PL初期設定
 f.originHP = 1000;
@@ -13,15 +14,15 @@ f.originMND = 100;//精神力=房中体力
 f.originTIR = 0;//疲労度
 
 f.originOption=[
-{id:0, hand:'グーー', name:'力', switch:0},
-{id:1, hand:'グーー', name:'力', switch:0},
-{id:2, hand:'グーー', name:'力', switch:0},
-{id:3, hand:'チョキ', name:'技', switch:0},
-{id:4, hand:'チョキ', name:'技', switch:0},
-{id:5, hand:'チョキ', name:'技', switch:0},
-{id:6, hand:'パーー', name:'速', switch:0},
-{id:7, hand:'パーー', name:'速', switch:0},
-{id:8, hand:'パーー', name:'速', switch:0}];
+{id:0, hand:'グーー', name:'力', suit:'P', switch:0},
+{id:1, hand:'グーー', name:'力', suit:'P', switch:0},
+{id:2, hand:'グーー', name:'力', suit:'P', switch:0},
+{id:3, hand:'チョキ', name:'心', suit:'F', switch:0},
+{id:4, hand:'チョキ', name:'心', suit:'F', switch:0},
+{id:5, hand:'チョキ', name:'心', suit:'F', switch:0},
+{id:6, hand:'パーー', name:'技', suit:'A', switch:0},
+{id:7, hand:'パーー', name:'技', suit:'A', switch:0},
+{id:8, hand:'パーー', name:'技', suit:'A', switch:0}];
 
 [endscript]
 
@@ -76,7 +77,7 @@ f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 f.StanOrga = 0;//絶頂時のスタン
 
 f.Ampl = 0;//感度増幅
-f.countAmpl = 0; 
+f.countAmpl = 0;
 f.Estr = 0;//発情
 f.countEstr = 0;
 f.Maso = 0;//被虐

@@ -99,6 +99,7 @@ if(f.EnStan>0){
 
 
 *選択1
+[freeimage layer=3]
 [iscript]
 if(f.return==1){
   f.count--;
@@ -127,6 +128,7 @@ if(f.return==1){
 
 *選択2
 [cm]
+[freeimage layer=3]
 [iscript]
 if(f.return==1){
   f.count--;
@@ -137,7 +139,9 @@ if(f.return==1){
   f.selectOption[f.count].switch=1;//配列の参照型を利用して選択肢をオンに
   f.count++;
 }
+f.PictHand1 = "Card/Card_" + f.selectOption[f.count-1].suit + ".png";
 [endscript]
+[image layer=3 folder="image" storage="&f.PictHand1" width="75" top="105" left="380" visible="true"]
 
 [button target="*選択3" exp="f.selectOption[f.count]=f.Option[0]" width=50 x=50 y=105 cond="f.Option[0].switch == 0" graphic="Card/Card_P.png" enterimg="Card/Card_Pc.png" clickimg="Card/Card_Pc.png"]
 [button target="*選択1" exp="f.return=1" width=50 x=50 y=105 cond="f.Option[0].switch == 1" graphic="Card/Card_Pu.png"]
@@ -160,11 +164,11 @@ if(f.return==1){
 
 [glink target="*選択1" text="戻る" exp="f.return=1" color="red" size=15 x=250 y=245]
 
-選択済：[emb exp="f.selectOption[f.count-1].hand"][r]
 [s]
 
 *選択3
 [cm]
+[freeimage layer=3]
 [iscript]
 if(f.return==1){
   f.count--;
@@ -175,7 +179,11 @@ if(f.return==1){
   f.selectOption[f.count].switch=1;//配列の参照型を利用して選択肢をオンに
   f.count++;
 }
+f.PictHand1 = "Card/Card_" + f.selectOption[f.count-2].suit + ".png";
+f.PictHand2 = "Card/Card_" + f.selectOption[f.count-1].suit + ".png";
 [endscript]
+[image layer=3 folder="image" storage="&f.PictHand1" width="75" top="105" left="380" visible="true"]
+[image layer=3 folder="image" storage="&f.PictHand2" width="75" top="205" left="380" visible="true"]
 
 [button target="*確認" exp="f.selectOption[f.count]=f.Option[0]" width=50 x=50 y=105 cond="f.Option[0].switch == 0" graphic="Card/Card_P.png" enterimg="Card/Card_Pc.png" clickimg="Card/Card_Pc.png"]
 [button target="*選択2" exp="f.return=1" width=50 x=50 y=105 cond="f.Option[0].switch == 1" graphic="Card/Card_Pu.png"]
@@ -198,10 +206,10 @@ if(f.return==1){
 
 [glink target="*選択2" text="戻る" exp="f.return=1" color="red" size=15 x=250 y=245]
 
-選択済：[emb exp="f.selectOption[f.count-2].hand"]→[emb exp="f.selectOption[f.count-1].hand"][r]
 [s]
 
 *確認
+[cm][deffont]
 [iscript]
 if(f.return==1){
   f.count--;
@@ -212,13 +220,15 @@ if(f.return==1){
   f.selectOption[f.count].switch=1;//配列の参照型を利用して選択肢をオンに
   f.count++;
 }
+f.PictHand1 = "Card/Card_" + f.selectOption[f.count-3].suit + ".png";
+f.PictHand2 = "Card/Card_" + f.selectOption[f.count-2].suit + ".png";
+f.PictHand3 = "Card/Card_" + f.selectOption[f.count-1].suit + ".png";
 [endscript]
-[cm]
-[deffont]
-選択済:[emb exp="f.selectOption[f.count-3].hand"]→
-[emb exp="f.selectOption[f.count-2].hand"]→
-[emb exp="f.selectOption[f.count-1].hand"][r]
-敵行動：[emb exp="f.releaseNote"]
+
+[image layer=3 folder="image" storage="&f.PictHand1" width="75" top="105" left="380" visible="true"]
+[image layer=3 folder="image" storage="&f.PictHand2" width="75" top="205" left="380" visible="true"]
+[image layer=3 folder="image" storage="&f.PictHand3" width="75" top="305" left="380" visible="true"]
+
 [glink target="*比較" text="決定" color="red" size=15 x=50 y=100]
 [glink target="*選択3" text="戻る" exp="f.return=1" color="red" size=15 x=150 y=100]
 [s]
@@ -243,7 +253,9 @@ f.PictHand4 = "Card/Card_" + f.EnSelectOption[0 + (f.EnCount * 3)].suit + ".png"
 f.PictHand5 = "Card/Card_" + f.EnSelectOption[1 + (f.EnCount * 3)].suit + ".png";
 f.PictHand6 = "Card/Card_" + f.EnSelectOption[2 + (f.EnCount * 3)].suit + ".png";
 [endscript]
+
 [freeimage layer=2]
+[freeimage layer=3]
 
 [if exp="f.StanOrga > 0"]
   [image layer=1 folder="image" storage="hand/停止.png" width="100" top="50" left="380" visible="true"]

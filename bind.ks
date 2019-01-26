@@ -205,8 +205,9 @@ tf.Damage = Math.floor(f.EnSTR * 0.3 * tf.randomNum);
 [if exp="tf.Select >= 4"]
   敵は思わずくぬぎを掴む手を緩めた[wt7]その隙を突いて
 [endif]
-くぬぎは敵の拘束を振りほどいた[wt7]
+  くぬぎは敵の拘束を振りほどいた[wt7]
 [eval exp="f.Clutch = 0"]
+[chara_show name="kunugi" left=50 top=100 width=400]
 [jump storage="battle.ks" target="*ターン開始"]
 
 

@@ -1,4 +1,5 @@
 *バトルスタート
+[position width=960 height=50 top=590 left=0]
 [showStatus]
 [iscript]
 //環境変数
@@ -8,7 +9,10 @@ f.BindCount = 0;
 f.ClutchTurn = 0;
 f.SPD = f.SPD - f.TIR;
 if(f.SPD<0){f.SPD=0};
+f.para_bar_width = 100;
 [endscript]
+[jump target="*ターン開始"]
+[s]
 
 *ターン開始
 
@@ -38,17 +42,18 @@ tf.dice = 0;
 if(f.EnCount==0){
   tf.Min = 1, tf.Max = 6;
   tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
+  f.EnSelectPattern = f.EnPattern[tf.dice];
   f.EnSelectOption = [];
   f.EnSelectOption = JSON.stringify(f.EnOption);
   f.EnSelectOption = JSON.parse(f.EnSelectOption);
 }
 
 //１手目開示
-if(f.EnSelectOption[f.EnPattern[tf.dice][f.EnCount * 3]].hand == "グーー"){
+if(f.EnSelectOption[f.EnSelectPattern[f.EnCount * 3]].hand == "グー"){
     f.openCard = "Card/Card_P.png"
-}else if(f.EnSelectOption[f.EnPattern[tf.dice][f.EnCount * 3]].hand == "チョキ"){
+}else if(f.EnSelectOption[f.EnSelectPattern[f.EnCount * 3]].hand == "チョキ"){
     f.openCard = "Card/Card_F.png"
-}if(f.EnSelectOption[f.EnPattern[tf.dice][f.EnCount * 3]].hand == "パーー"){
+}if(f.EnSelectOption[f.EnSelectPattern[f.EnCount * 3]].hand == "パー"){
     f.openCard = "Card/Card_A.png"
 }
 f.releaseNote = f.EnSelectOption[f.EnCount * 3] + '→？→？';
@@ -64,7 +69,7 @@ tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 f.Lead = 0;
 if(f.SPD > f.EnSPD){f.Lead = f.SPD - f.EnSPD;}
 f.Rate = f.ClutchRate + f.Lead + f.ClutchTurn*5;
-if(tf.dice < f.Rate && f.ClutchTurn != 0){
+if(tf.dice < f.Rate && f.ClutchTurn > 1){
   f.Clutch = 1, f.ClutchTurn = 0;
 }else{
   f.Clutch = 0, f.ClutchTurn++;
@@ -76,6 +81,7 @@ if(f.EnStan>0){
   f.releaseNote = '行動不能に陥っている';
 }
 [endscript]
+;敵のパターン：[emb exp="f.EnSelectPattern"][l]
 
 [showStatus]
 [emb exp="f.turn"]合目[wt5]
@@ -123,7 +129,7 @@ if(f.return==1){
 [button target="*選択2" exp="f.selectOption[f.count]=f.Option[7]" width=50 x=100 y=305 cond="f.Option[7].switch == 0" graphic="Card/Card_A.png" enterimg="Card/Card_Ac.png" clickimg="Card/Card_Ac.png"]
 [button target="*選択2" exp="f.selectOption[f.count]=f.Option[8]" width=50 x=150 y=305 cond="f.Option[8].switch == 0" graphic="Card/Card_A.png" enterimg="Card/Card_Ac.png" clickimg="Card/Card_Ac.png"]
 
-[glink target="*スキル選択" text="技　能" color="blue" size=15 x=250 y=245 cond="f.skill == 0"]
+[glink target="*スキル選択" text="技　能" color="blue" size=15 x=50 y=420 cond="f.skill == 0"]
 [s]
 
 *選択2
@@ -162,7 +168,7 @@ f.PictHand1 = "Card/Card_" + f.selectOption[f.count-1].suit + ".png";
 [button target="*選択3" exp="f.selectOption[f.count]=f.Option[8]" width=50 x=150 y=305 cond="f.Option[8].switch == 0" graphic="Card/Card_A.png" enterimg="Card/Card_Ac.png" clickimg="Card/Card_Ac.png"]
 [button target="*選択1" exp="f.return=1" width=50 x=150 y=305 cond="f.Option[8].switch == 1" graphic="Card/Card_Au.png"]
 
-[glink target="*選択1" text="戻る" exp="f.return=1" color="red" size=15 x=250 y=245]
+[glink target="*選択1" text="戻る" exp="f.return=1" color="red" size=15 x=50 y=420]
 
 [s]
 
@@ -204,7 +210,7 @@ f.PictHand2 = "Card/Card_" + f.selectOption[f.count-1].suit + ".png";
 [button target="*確認" exp="f.selectOption[f.count]=f.Option[8]" width=50 x=150 y=305 cond="f.Option[8].switch == 0" graphic="Card/Card_A.png" enterimg="Card/Card_Ac.png" clickimg="Card/Card_Ac.png"]
 [button target="*選択2" exp="f.return=1" width=50 x=150 y=305 cond="f.Option[8].switch == 1" graphic="Card/Card_Au.png"]
 
-[glink target="*選択2" text="戻る" exp="f.return=1" color="red" size=15 x=250 y=245]
+[glink target="*選択2" text="戻る" exp="f.return=1" color="red" size=15 x=50 y=420]
 
 [s]
 
@@ -249,134 +255,134 @@ if(f.SPD > f.EnSPD){f.Priority = 1;} else {f.Priority = 0;}
 f.PictHand1 = "Card/Card_" + f.selectOption[f.count-3].suit + ".png";
 f.PictHand2 = "Card/Card_" + f.selectOption[f.count-2].suit + ".png";
 f.PictHand3 = "Card/Card_" + f.selectOption[f.count-1].suit + ".png";
-f.PictHand4 = "Card/Card_" + f.EnSelectOption[0 + (f.EnCount * 3)].suit + ".png";
-f.PictHand5 = "Card/Card_" + f.EnSelectOption[1 + (f.EnCount * 3)].suit + ".png";
-f.PictHand6 = "Card/Card_" + f.EnSelectOption[2 + (f.EnCount * 3)].suit + ".png";
+f.PictHand4 = "Card/Card_" + f.EnSelectOption[f.EnSelectPattern[0 + f.EnCount * 3]].suit + ".png";
+f.PictHand5 = "Card/Card_" + f.EnSelectOption[f.EnSelectPattern[1 + f.EnCount * 3]].suit + ".png";
+f.PictHand6 = "Card/Card_" + f.EnSelectOption[f.EnSelectPattern[2 + f.EnCount * 3]].suit + ".png";
 [endscript]
 
 [freeimage layer=2]
 [freeimage layer=3]
 
 [if exp="f.StanOrga > 0"]
-  [image layer=1 folder="image" storage="hand/停止.png" width="100" top="50" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/停止.png" width="100" top="200" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/停止.png" width="100" top="350" left="380" visible="true"]
-  [image layer=1 folder="image" storage="&f.PictHand4" width="100" top="50" left="480" visible="true"]
-  [image layer=1 folder="image" storage="&f.PictHand5" width="100" top="200" left="480" visible="true"]
-  [image layer=1 folder="image" storage="&f.PictHand6" width="100" top="350" left="480" visible="true"]
+  [image layer=3 folder="image" storage="hand/停止.png" width="75" top="105" left="380" visible="true"]
+  [image layer=3 folder="image" storage="hand/停止.png" width="75" top="205" left="380" visible="true"]
+  [image layer=3 folder="image" storage="hand/停止.png" width="75" top="305" left="380" visible="true"]
+  [image layer=3 folder="image" storage="&f.PictHand4" width="75" top="105" left="480" visible="true"]
+  [image layer=3 folder="image" storage="&f.PictHand5" width="75" top="205" left="480" visible="true"]
+  [image layer=3 folder="image" storage="&f.PictHand6" width="75" top="305" left="480" visible="true"]
   [jump target="*行動不能"]
 [endif]
 
 [if exp="f.EnStan > 0"]
-  [image layer=1 folder="image" storage="&f.PictHand1" width="100" top="50" left="380" visible="true"]
-  [image layer=1 folder="image" storage="&f.PictHand2" width="100" top="200" left="380" visible="true"]
-  [image layer=1 folder="image" storage="&f.PictHand3" width="100" top="350" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/停止.png" width="100" top="50" left="480" visible="true"]
-  [image layer=1 folder="image" storage="hand/停止.png" width="100" top="200" left="480" visible="true"]
-  [image layer=1 folder="image" storage="hand/停止.png" width="100" top="350" left="480" visible="true"]
+  [image layer=3 folder="image" storage="&f.PictHand1" width="75" top="105" left="380" visible="true"]
+  [image layer=3 folder="image" storage="&f.PictHand2" width="75" top="205" left="380" visible="true"]
+  [image layer=3 folder="image" storage="&f.PictHand3" width="75" top="305" left="380" visible="true"]
+  [image layer=3 folder="image" storage="hand/停止.png" width="75" top="105" left="480" visible="true"]
+  [image layer=3 folder="image" storage="hand/停止.png" width="75" top="205" left="480" visible="true"]
+  [image layer=3 folder="image" storage="hand/停止.png" width="75" top="305" left="480" visible="true"]
   [jump target="*敵行動不能"]
 [endif]
 
-[image layer=1 folder="image" storage="&f.PictHand1" width="100" top="50" left="380" visible="true"]
-[image layer=1 folder="image" storage="&f.PictHand2" width="100" top="200" left="380" visible="true"]
-[image layer=1 folder="image" storage="&f.PictHand3" width="100" top="350" left="380" visible="true"]
-[image layer=1 folder="image" storage="&f.PictHand4" width="100" top="50" left="480" visible="true"]
-[image layer=1 folder="image" storage="&f.PictHand5" width="100" top="200" left="480" visible="true"]
-[image layer=1 folder="image" storage="&f.PictHand6" width="100" top="350" left="480" visible="true"]
+[image layer=3 folder="image" storage="&f.PictHand1" width="75" top="105" left="380" visible="true"]
+[image layer=3 folder="image" storage="&f.PictHand2" width="75" top="205" left="380" visible="true"]
+[image layer=3 folder="image" storage="&f.PictHand3" width="75" top="305" left="380" visible="true"]
+[image layer=3 folder="image" storage="&f.PictHand4" width="75" top="105" left="480" visible="true"]
+[image layer=3 folder="image" storage="&f.PictHand5" width="75" top="205" left="480" visible="true"]
+[image layer=3 folder="image" storage="&f.PictHand6" width="75" top="305" left="480" visible="true"]
 [wait time=1500]
 
 
 *勝敗判定
 [iscript]
-tf.hand = f.selectOption[f.H].hand;
-tf.EnHand = f.EnSelectOption[f.N + (f.EnCount * 3)];
-tf.Hight =  f.N * 150 + 50;
+tf.Hand = f.selectOption[f.H].hand;
+tf.EnHand = f.EnSelectOption[f.EnSelectPattern[f.N + f.EnCount * 3]].hand;
+tf.Hight =  f.N * 100 + 125;
 [endscript]
 
-[if exp="tf.hand == 'グーー' && tf.EnHand == 'チョキ'"]
+[if exp="tf.Hand == 'グー' && tf.EnHand == 'チョキ'"]
   ;勝利(VP+1)　くぬぎの攻撃力上昇[r]
   [eval exp="f.VP = f.VP + 3"]
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.VBuff = f.VBuff + 0.1"]
-  [image layer=1 folder="image" storage="hand/マル.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=1 folder="image" storage="buff/STRup.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  [image layer=4 storage="hand/マル.png" width="75" top="&tf.Hight" left="380" visible="true"]
+  [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="480" visible="true"]
+  [image layer=4 storage="buff/STRup.png" width="75" top="&tf.Hight" left="280" visible="true"]
 [endif]
-[if exp="tf.hand == 'チョキ' && tf.EnHand == 'パーー'"]
+[if exp="tf.Hand == 'チョキ' && tf.EnHand == 'パー'"]
   ;勝利(VP+1)　くぬぎの気力上昇[r]
   [eval exp="f.VP = f.VP + 3"]
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.FP = f.FP + 5"]
-  [image layer=1 folder="image" storage="hand/マル.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=1 folder="image" storage="buff/FPup.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  [image layer=4 storage="hand/マル.png" width="75" top="&tf.Hight" left="380" visible="true"]
+  [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="480" visible="true"]
+  [image layer=4 storage="buff/FPup.png" width="75" top="&tf.Hight" left="280" visible="true"]
 [endif]
-[if exp="tf.hand == 'パーー' && tf.EnHand == 'グーー'"]
+[if exp="tf.Hand == 'パー' && tf.EnHand == 'グー'"]
   ;勝利(VP+1)　くぬぎの敏捷上昇[r]
   [eval exp="f.VP = f.VP + 3"]
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.SPD = f.SPD + 5" cond="f.SPD < f.BaseSPD"]
-  [image layer=1 folder="image" storage="hand/マル.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=1 folder="image" storage="buff/SPDup.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  [image layer=4 storage="hand/マル.png" width="75" top="&tf.Hight" left="380" visible="true"]
+  [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="480" visible="true"]
+  [image layer=4 storage="buff/SPDup.png" width="75" top="&tf.Hight" left="280" visible="true"]
 [endif]
 
-[if exp="tf.hand == 'グーー' && tf.EnHand == 'パーー'"]
+[if exp="tf.Hand == 'グー' && tf.EnHand == 'パー'"]
   ;敗北(VP-1)　敵の敏捷上昇[r]
   [eval exp="f.VP = f.VP - 3"]
   [eval exp="f.EnVB = f.EnVB + 1"]
   [eval exp="f.EnSPD = f.EnSPD + 5" cond="f.EnSPD < f.BaseEnSPD"]
-  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/マル.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=1 folder="image" storage="buff/SPDup.png" width="100" top="&tf.Hight" left="580" visible="true"]
+  [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="380" visible="true"]
+  [image layer=4 storage="hand/マル.png" width="75" top="&tf.Hight" left="480" visible="true"]
+  [image layer=4 storage="buff/SPDup.png" width="75" top="&tf.Hight" left="580" visible="true"]
   [endif]
-[if exp="tf.hand == 'チョキ' && tf.EnHand == 'グーー'"]
+[if exp="tf.Hand == 'チョキ' && tf.EnHand == 'グー'"]
   ;敗北(VP-1)　敵の攻撃力上昇[r]
   [eval exp="f.VP = f.VP - 3"]
   [eval exp="f.EnVB = f.EnVB + 1"]
   [eval exp="f.EnVBuff = f.EnVBuff + 0.1"]
-  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/マル.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=1 folder="image" storage="buff/STRup.png" width="100" top="&tf.Hight" left="580" visible="true"]
+  [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="380" visible="true"]
+  [image layer=4 storage="hand/マル.png" width="75" top="&tf.Hight" left="480" visible="true"]
+  [image layer=4 storage="buff/STRup.png" width="75" top="&tf.Hight" left="580" visible="true"]
 [endif]
-[if exp="tf.hand == 'パーー' && tf.EnHand == 'チョキ'"]
+[if exp="tf.Hand == 'パー' && tf.EnHand == 'チョキ'"]
   ;敗北(VP-1)　敵の気力上昇[r]
   [eval exp="f.VP = f.VP - 3"]
   [eval exp="f.EnVB = f.EnVB + 1"]
   [eval exp="f.EnFP = f.EnFP + 5"]
-  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/マル.png" width="100" top="&tf.Hight" left="480" visible="true"]
-  [image layer=1 folder="image" storage="buff/FPup.png" width="100" top="&tf.Hight" left="580" visible="true"]
+  [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="380" visible="true"]
+  [image layer=4 storage="hand/マル.png" width="75" top="&tf.Hight" left="480" visible="true"]
+  [image layer=4 storage="buff/FPup.png" width="75" top="&tf.Hight" left="580" visible="true"]
 [endif]
 
-[if exp="tf.hand == 'グーー' && tf.EnHand == 'グーー' && f.Priority == 1"]
+[if exp="tf.Hand == 'グー' && tf.EnHand == 'グー' && f.SPD > f.EnSPD"]
   [eval exp="f.VP = f.VP + 1"]
-  [image layer=1 folder="image" storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-[elsif exp="tf.hand == 'グーー' && tf.EnHand == 'グーー' && f.Priority != 1"]
+  [image layer=4 storage="hand/ウエ.png" width="75" top="&tf.Hight" left="380" visible="true"]
+  [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="480" visible="true"]
+[elsif exp="tf.Hand == 'グー' && tf.EnHand == 'グー' && f.SPD <= f.EnSPD"]
   [eval exp="f.VP = f.VP - 1"]
-  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="380" visible="true"]
+  [image layer=4 storage="hand/ウエ.png" width="75" top="&tf.Hight" left="480" visible="true"]
 [endif]
 
-[if exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.Priority == 1"]
+[if exp="tf.Hand == 'チョキ' && tf.EnHand == 'チョキ' && f.SPD > f.EnSPD"]
   [eval exp="f.VP = f.VP + 1"]
-  [image layer=1 folder="image" storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-[elsif exp="tf.hand == 'チョキ' && tf.EnHand == 'チョキ' && f.Priority != 1"]
+  [image layer=4 storage="hand/ウエ.png" width="75" top="&tf.Hight" left="380" visible="true"]
+  [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="480" visible="true"]
+[elsif exp="tf.Hand == 'チョキ' && tf.EnHand == 'チョキ' && f.SPD <= f.EnSPD"]
   [eval exp="f.VP = f.VP - 1"]
-  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=4  storage="hand/バツ.png" width="75" top="&tf.Hight" left="380" visible="true"]
+  [image layer=4  storage="hand/ウエ.png" width="75" top="&tf.Hight" left="480" visible="true"]
 [endif]
 
-[if exp="tf.hand == 'パーー' && tf.EnHand == 'パーー' && f.Priority == 1"]
+[if exp="tf.Hand == 'パー' && tf.EnHand == 'パー' && f.SPD > f.EnSPD"]
   [eval exp="f.VP = f.VP + 1"]
-  [image layer=1 folder="image" storage="hand/ウエ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="480" visible="true"]
-[elsif exp="tf.hand == 'パーー' && tf.EnHand == 'パーー' && f.Priority != 1"]
+  [image layer=4 storage="hand/ウエ.png" width="75" top="&tf.Hight" left="380" visible="true"]
+  [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="480" visible="true"]
+[elsif exp="tf.Hand == 'パー' && tf.EnHand == 'パー' && f.SPD <= f.EnSPD"]
   [eval exp="f.VP = f.VP - 1"]
-  [image layer=1 folder="image" storage="hand/バツ.png" width="100" top="&tf.Hight" left="380" visible="true"]
-  [image layer=1 folder="image" storage="hand/ウエ.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="380" visible="true"]
+  [image layer=4 storage="hand/ウエ.png" width="75" top="&tf.Hight" left="480" visible="true"]
 [endif]
 
 [if exp="f.N<2"]
@@ -388,6 +394,7 @@ tf.Hight =  f.N * 150 + 50;
 [eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
 [wt7][wait time="500"]
 [showStatus]
+[wait time="1000"]
 [jump target="*コマンド判定"]
 [s]
 
@@ -395,24 +402,24 @@ tf.Hight =  f.N * 150 + 50;
 *コマンド判定
 [iscript]
 f.Comand = 0;
-if(f.selectOption[f.count-3].hand == "グーー" && f.selectOption[f.count-2].hand == "グーー" && f.selectOption[f.count-1].hand == "グーー"){
+if(f.selectOption[f.count-3].hand == "グー" && f.selectOption[f.count-2].hand == "グー" && f.selectOption[f.count-1].hand == "グー"){
   f.Comand = 1;
 }
 if(f.selectOption[f.count-3].hand == "チョキ" && f.selectOption[f.count-2].hand == "チョキ" && f.selectOption[f.count-1].hand == "チョキ"){
   f.Comand = 2;
 }
-if(f.selectOption[f.count-3].hand == "パーー" && f.selectOption[f.count-2].hand == "パーー" && f.selectOption[f.count-1].hand == "パーー"){
+if(f.selectOption[f.count-3].hand == "パー" && f.selectOption[f.count-2].hand == "パー" && f.selectOption[f.count-1].hand == "パー"){
   f.Comand = 3;
 }
 [endscript]
 [if exp="f.VP>0"]
-  [freeimage layer=0]
+  [freeimage layer=3][freeimage layer=4]
   くぬぎの攻撃![wt5]
   [jump target="*コマンド技1" cond="f.Comand == 1"]
   [jump target="*コマンド技2" cond="f.Comand == 2"]
   [jump target="*通常攻撃"]
 [else]
-  [freeimage layer=0]
+  [freeimage layer=3][freeimage layer=4]
   [EnName]の攻撃![wt5]
   [jump target="*コマンド技3" cond="f.Comand == 3"]
   [jump target="*敵通常攻撃"]
@@ -522,7 +529,7 @@ if(f.EnCount>2){
 
 
 *コマンド技1
-;グーーX３、単純物理
+;グーX３、単純物理
 [iscript]
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
@@ -709,25 +716,25 @@ tf.EnHand = f.EnSelectOption[f.N + (f.EnCount * 3)];
 tf.Hight =  f.N * 150 + 50;
 [endscript]
 
-[if exp="tf.EnHand == 'グーー'"]
+[if exp="tf.EnHand == 'グー'"]
   [eval exp="f.EnVP = f.EnVP + 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
   [eval exp="f.EnVBuff = f.EnVBuff + 0.1"]
-  [image layer=0 storage="buff/STRup.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=0 storage="buff/STRup.png" width="75" top="&tf.Hight" left="480" visible="true"]
   ;勝利(VP+1)　くぬぎの攻撃力上昇[r]
 [endif]
 [if exp="tf.EnHand == 'チョキ'"]
   [eval exp="f.EnVP = f.EnVP + 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
   [eval exp="f.EnFP = f.EnFP + 5"]
-  [image layer=0 storage="buff/FPup.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=0 storage="buff/FPup.png" width="75" top="&tf.Hight" left="480" visible="true"]
   ;勝利(VP+1)　くぬぎの気力上昇[r]
 [endif]
-[if exp="tf.EnHand == 'パーー'"]
+[if exp="tf.EnHand == 'パー'"]
   [eval exp="f.EnVP = f.EnVP + 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
   [eval exp="f.EnSPD = f.EnSPD + 5"]
-  [image layer=0 storage="buff/SPDup.png" width="100" top="&tf.Hight" left="480" visible="true"]
+  [image layer=0 storage="buff/SPDup.png" width="75" top="&tf.Hight" left="480" visible="true"]
   ;勝利(VP+1)　くぬぎの敏捷上昇[r]
 [endif]
 
@@ -744,28 +751,28 @@ tf.Hight =  f.N * 150 + 50;
 
 *敵行動不能
 [iscript]
-tf.hand = f.selectOption[f.H].hand;
+tf.Hand = f.selectOption[f.H].hand;
 [endscript]
 
-[if exp="tf.hand == 'グーー'"]
+[if exp="tf.Hand == 'グー'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.VBuff = f.VBuff + 0.1"]
-  [image layer=0 storage="buff/STRup.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  [image layer=0 storage="buff/STRup.png" width="75" top="&tf.Hight" left="280" visible="true"]
   ;勝利(VP+1)　くぬぎの攻撃力上昇[r]
 [endif]
-[if exp="tf.hand == 'チョキ'"]
+[if exp="tf.Hand == 'チョキ'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.FP = f.FP + 5"]
-  [image layer=0 storage="buff/FPup.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  [image layer=0 storage="buff/FPup.png" width="75" top="&tf.Hight" left="280" visible="true"]
   ;勝利(VP+1)　くぬぎの気力上昇[r]
 [endif]
-[if exp="tf.hand == 'パーー'"]
+[if exp="tf.Hand == 'パー'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
   [eval exp="f.SPD = f.SPD + 5"]
-  [image layer=0 storage="buff/SPDup.png" width="100" top="&tf.Hight" left="280" visible="true"]
+  [image layer=0 storage="buff/SPDup.png" width="75" top="&tf.Hight" left="280" visible="true"]
   ;勝利(VP+1)　くぬぎの敏捷上昇[r]
 [endif]
 

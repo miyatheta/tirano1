@@ -8,21 +8,21 @@ f.originDEF = 60;
 f.originSPD = 100;
 f.originFP = 0;//気力
 f.originERO = 0;//快感
-f.originARS = 50;//淫らさ
+f.originARS = 0;//淫らさ
 f.originSEN = 100;//感度
 f.originMND = 100;//精神力=房中体力
 f.originTIR = 0;//疲労度
 
 f.originOption=[
-{id:0, hand:'グーー', name:'力', suit:'P', switch:0},
-{id:1, hand:'グーー', name:'力', suit:'P', switch:0},
-{id:2, hand:'グーー', name:'力', suit:'P', switch:0},
+{id:0, hand:'グー', name:'力', suit:'P', switch:0},
+{id:1, hand:'グー', name:'力', suit:'P', switch:0},
+{id:2, hand:'グー', name:'力', suit:'P', switch:0},
 {id:3, hand:'チョキ', name:'心', suit:'F', switch:0},
 {id:4, hand:'チョキ', name:'心', suit:'F', switch:0},
 {id:5, hand:'チョキ', name:'心', suit:'F', switch:0},
-{id:6, hand:'パーー', name:'技', suit:'A', switch:0},
-{id:7, hand:'パーー', name:'技', suit:'A', switch:0},
-{id:8, hand:'パーー', name:'技', suit:'A', switch:0}];
+{id:6, hand:'パー', name:'技', suit:'A', switch:0},
+{id:7, hand:'パー', name:'技', suit:'A', switch:0},
+{id:8, hand:'パー', name:'技', suit:'A', switch:0}];
 
 [endscript]
 
@@ -127,15 +127,15 @@ f.EnEND = f.BaseEnEND;
 f.BindPower = f.BaseBindPower;
 
 f.originEnOption=[
-{id:0, hand:'グーー', name:'力', switch:0},
-{id:1, hand:'グーー', name:'力', switch:0},
-{id:2, hand:'グーー', name:'力', switch:0},
+{id:0, hand:'グー', name:'力', switch:0},
+{id:1, hand:'グー', name:'力', switch:0},
+{id:2, hand:'グー', name:'力', switch:0},
 {id:3, hand:'チョキ', name:'技', switch:0},
 {id:4, hand:'チョキ', name:'技', switch:0},
 {id:5, hand:'チョキ', name:'技', switch:0},
-{id:6, hand:'パーー', name:'速', switch:0},
-{id:7, hand:'パーー', name:'速', switch:0},
-{id:8, hand:'パーー', name:'速', switch:0}];
+{id:6, hand:'パー', name:'速', switch:0},
+{id:7, hand:'パー', name:'速', switch:0},
+{id:8, hand:'パー', name:'速', switch:0}];
 
 f.BaseEnOption = JSON.stringify(f.originEnOption);
 f.BaseEnOption = JSON.parse(f.BaseEnOption);

@@ -29,8 +29,7 @@ f.Undress = 0;//脱衣
 f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 
 [endscript]
-
-[showStatus]
+;[showStatus]
 [image layer="base" visible="true" storage="mori_yoru.jpg" width=960]
 [chara_new name="kunugi" storage="chara/kunugi/kunugi_battle_stand.png"]
 [chara_show name="kunugi" left=50 top=100 width=400]
@@ -41,16 +40,19 @@ f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 [eval exp="f.countAmpl++" cond="f.countAmpl > 0"]
 [if exp="f.countAmpl > 10"]
 くぬぎは感度増幅状態から回復した[wt7]
-[eval exp="f.countAmpl = 0 , f.countAmpl = 0"][showStatus]
+[eval exp="f.countAmpl = 0 , f.countAmpl = 0"]
+;[showStatus]
 [endif]
 
 [eval exp="f.countEstr++" cond="f.countEstr > 0"]
 [if exp="f.countEstr > 10"]
 くぬぎは発情状態から回復した[wt7]
-[eval exp="f.countEstr = 0 , f.countEstr = 0"][showStatus]
+[eval exp="f.countEstr = 0 , f.countEstr = 0"]
+;[showStatus]
 [endif]
 
-[eval exp="f.countMaso++" cond="f.countMaso > 0"][showStatus]
+[eval exp="f.countMaso++" cond="f.countMaso > 0"]
+;[showStatus]
 [if exp="f.countMaso > 10"]
 くぬぎは被虐体質から回復した[wt7]
 [eval exp="f.countMaso = 0 , f.countMaso = 0"]
@@ -59,25 +61,26 @@ f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 [eval exp="f.countBitch++" cond="f.countBitch > 0"]
 [if exp="f.countBitch > 10"]
 くぬぎは淫乱状態から回復した[wt7]
-[eval exp="f.countBitch = 0 , f.countBitch = 0"][showStatus]
+[eval exp="f.countBitch = 0 , f.countBitch = 0"]
+;[showStatus]
 [endif]
 
 [eval exp="f.countHypno++" cond="f.countHypno > 0"]
 [if exp="f.countHypno > 10"]
 くぬぎは催淫状態から回復した[wt7]
-[eval exp="f.countHypno = 0 , f.countHypno = 0"][showStatus]
+[eval exp="f.countHypno = 0 , f.countHypno = 0"]
+;[showStatus]
 [endif]
 
 [if exp="f.countParas > 30"]
 くぬぎは虫憑き状態から回復した[wt7]
-[eval exp="f.countParas = 0 , f.countParas = 0"][showStatus]
+[eval exp="f.countParas = 0 , f.countParas = 0"]
+;[showStatus]
 [endif]
 
 
 
 *エネミー選択
-[image layer=1 folder="image" storage="Card/Card_A.png" width="100" top="50" left="380" visible="true"]
-[freeimage layer=1]
 
 [emb exp="f.stage"]回戦[r]
 [glink target="*敵1" exp="f.enemy=1" text="敵１" size=15 x=50 y=100]
@@ -101,15 +104,15 @@ f.originEnEND = 70;//忍耐力
 f.originBindPower = 100;
 
 f.originEnOption=[
-{id:0, hand:'グーー', name:'力', suit:'P', switch:0},
-{id:1, hand:'グーー', name:'力', suit:'P', switch:0},
-{id:2, hand:'グーー', name:'力', suit:'P', switch:0},
-{id:3, hand:'グーー', name:'力', suit:'P', switch:0},
+{id:0, hand:'グー', name:'力', suit:'P', switch:0},
+{id:1, hand:'グー', name:'力', suit:'P', switch:0},
+{id:2, hand:'グー', name:'力', suit:'P', switch:0},
+{id:3, hand:'グー', name:'力', suit:'P', switch:0},
 {id:4, hand:'チョキ', name:'心', suit:'F', switch:0},
 {id:5, hand:'チョキ', name:'心', suit:'F', switch:0},
 {id:6, hand:'チョキ', name:'心', suit:'F', switch:0},
-{id:7, hand:'パーー', name:'技', suit:'A', switch:0},
-{id:8, hand:'パーー', name:'技', suit:'A', switch:0}];
+{id:7, hand:'パー', name:'技', suit:'A', switch:0},
+{id:8, hand:'パー', name:'技', suit:'A', switch:0}];
 
 f.EnOption = [];
 f.EnOption = JSON.stringify(f.originEnOption);
@@ -144,13 +147,13 @@ f.originEnTEC = 70;//技術力
 f.originEnEND = 70;//忍耐力
 f.originBindPower = 80;
 
-f.originEnOption[0] = ['グーー','グーー','グーー','グーー','チョキ','チョキ','チョキ','パーー','パーー'];
-f.originEnOption[1] = ['グーー','チョキ','チョキ','パーー','グーー','グーー','グーー','パーー','チョキ'];
-f.originEnOption[2] = ['グーー','グーー','グーー','チョキ','グーー','パーー','チョキ','チョキ','パーー'];
-f.originEnOption[3] = ['パーー','チョキ','グーー','チョキ','パーー','グーー','グーー','チョキ','グーー'];
-f.originEnOption[4] = ['チョキ','グーー','グーー','チョキ','パーー','チョキ','パーー','グーー','グーー'];
-f.originEnOption[5] = ['チョキ','チョキ','グーー','パーー','チョキ','グーー','グーー','グーー','パーー'];
-f.originEnOption[6] = ['チョキ','グーー','チョキ','パーー','グーー','グーー','グーー','パーー','チョキ'];
+f.originEnOption[0] = ['グー','グー','グー','グー','チョキ','チョキ','チョキ','パー','パー'];
+f.originEnOption[1] = ['グー','チョキ','チョキ','パー','グー','グー','グー','パー','チョキ'];
+f.originEnOption[2] = ['グー','グー','グー','チョキ','グー','パー','チョキ','チョキ','パー'];
+f.originEnOption[3] = ['パー','チョキ','グー','チョキ','パー','グー','グー','チョキ','グー'];
+f.originEnOption[4] = ['チョキ','グー','グー','チョキ','パー','チョキ','パー','グー','グー'];
+f.originEnOption[5] = ['チョキ','チョキ','グー','パー','チョキ','グー','グー','グー','パー'];
+f.originEnOption[6] = ['チョキ','グー','チョキ','パー','グー','グー','グー','パー','チョキ'];
 
 f.ClutchRate = 0;//組付初期値
 
@@ -173,13 +176,13 @@ f.originEnTEC = 70;//技術力
 f.originEnEND = 70;//忍耐力
 f.originBindPower = 120;
 
-f.originEnOption[0] = ['グーー','グーー','チョキ','チョキ','チョキ','チョキ','パーー','パーー','パーー'];
-f.originEnOption[1] = ['グーー','チョキ','チョキ','パーー','パーー','チョキ','グーー','パーー','チョキ'];
-f.originEnOption[2] = ['グーー','パーー','チョキ','チョキ','パーー','グーー','チョキ','チョキ','パーー'];
-f.originEnOption[3] = ['パーー','チョキ','グーー','チョキ','パーー','チョキ','パーー','チョキ','グーー'];
-f.originEnOption[4] = ['チョキ','グーー','チョキ','チョキ','パーー','チョキ','パーー','パーー','グーー'];
-f.originEnOption[5] = ['チョキ','チョキ','グーー','チョキ','パーー','チョキ','グーー','パーー','パーー'];
-f.originEnOption[6] = ['チョキ','グーー','チョキ','パーー','パーー','チョキ','グーー','パーー','チョキ'];
+f.originEnOption[0] = ['グー','グー','チョキ','チョキ','チョキ','チョキ','パー','パー','パー'];
+f.originEnOption[1] = ['グー','チョキ','チョキ','パー','パー','チョキ','グー','パー','チョキ'];
+f.originEnOption[2] = ['グー','パー','チョキ','チョキ','パー','グー','チョキ','チョキ','パー'];
+f.originEnOption[3] = ['パー','チョキ','グー','チョキ','パー','チョキ','パー','チョキ','グー'];
+f.originEnOption[4] = ['チョキ','グー','チョキ','チョキ','パー','チョキ','パー','パー','グー'];
+f.originEnOption[5] = ['チョキ','チョキ','グー','チョキ','パー','チョキ','グー','パー','パー'];
+f.originEnOption[6] = ['チョキ','グー','チョキ','パー','パー','チョキ','グー','パー','チョキ'];
 
 f.ClutchRate = 50;//組付初期値
 [endscript]

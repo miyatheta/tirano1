@@ -31,7 +31,8 @@ f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 [endscript]
 ;[showStatus]
 [image layer="base" visible="true" storage="mori_yoru.jpg" width=960]
-[chara_new name="kunugi" storage="chara/kunugi/kunugi_battle_stand.png"]
+[chara_new name="kunugi" storage="chara/kunugi/battle_stand.png"]
+[chara_face name="kunugi" face="battle_stand_nude" storage="chara/kunugi/battle_stand_nude.png"]
 [chara_show name="kunugi" left=50 top=100 width=400]
 
 *時間経過

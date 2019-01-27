@@ -150,12 +150,6 @@ calcStatus(f.EnEROdigit,f.EnERO);
 [image layer=1 storage="&f.SPDdigit[3]" width="20" top="30" left="375" visible="true"]
 [image layer=1 storage="&f.SPDdigit[4]" width="20" top="30" left="395" visible="true"]
 
-;[image layer=1 storage="UI/number/疲労.png" width="75" top="575" left="0" visible="true"]
-;[image layer=1 storage="&f.TIRdigit[1]" width="20" top="575" left="75" visible="true"]
-;[image layer=1 storage="&f.TIRdigit[2]" width="20" top="575" left="100" visible="true"]
-;[image layer=1 storage="&f.TIRdigit[3]" width="20" top="575" left="125" visible="true"]
-;[image layer=1 storage="&f.TIRdigit[4]" width="20" top="575" left="150" visible="true"]
-
 [image layer=1 storage="UI/number/精神.png" width="75" top="480" left="0" visible="true"]
 [image layer=1 storage="&f.MNDdigit[1]" width="20" top="480" left="50" visible="true"]
 [image layer=1 storage="&f.MNDdigit[2]" width="20" top="480" left="70" visible="true"]
@@ -185,6 +179,12 @@ calcStatus(f.EnEROdigit,f.EnERO);
 [image layer=1 storage="&f.EROdigit[2]" width="20" top="560" left="70" visible="true"]
 [image layer=1 storage="&f.EROdigit[3]" width="20" top="560" left="90" visible="true"]
 [image layer=1 storage="&f.EROdigit[4]" width="20" top="560" left="110" visible="true"]
+
+[image layer=1 storage="UI/number/疲労.png" width="75" top="580" left="0" visible="true"]
+[image layer=1 storage="&f.TIRdigit[1]" width="20" top="580" left="50" visible="true"]
+[image layer=1 storage="&f.TIRdigit[2]" width="20" top="580" left="70" visible="true"]
+[image layer=1 storage="&f.TIRdigit[3]" width="20" top="580" left="90" visible="true"]
+[image layer=1 storage="&f.TIRdigit[4]" width="20" top="580" left="110" visible="true"]
 
 [image layer=1 storage="UI/number/敵名.png" width="75" top="475" left="680" visible="true"]
 

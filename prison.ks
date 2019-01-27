@@ -3,7 +3,7 @@
 調教の内容によって状態異常になります[l]
 [glink target="*過敏" text="過敏" color="red" size=15 x=50 y=70]
 [glink target="*発情" text="発情" color="red" size=15 x=50 y=100]
-[glink target="*射乳" text="射乳" color="red" size=15 x=50 y=130]
+[glink target="*寄生" text="寄生" color="red" size=15 x=50 y=130]
 [glink target="*被虐" text="被虐" color="red" size=15 x=50 y=160]
 [glink target="*淫乱" text="淫乱" color="red" size=15 x=50 y=190]
 [glink target="*催淫" text="催淫" color="red" size=15 x=50 y=220]
@@ -21,10 +21,10 @@
 くぬぎは発情状態になった[lrcm]
 [jump target="*終了"]
 
-*射乳
+*寄生
 ;//蟲憑：３の倍数のターンに気力減少。気力がない場合快感上昇。
 [eval exp="f.Paras = 1 , f.countParas = 1"]
-くぬぎは虫憑き状態になった[lrcm]
+くぬぎは寄生蟲に寄生された[lrcm]
 [jump target="*終了"]
 
 *被虐
@@ -33,10 +33,10 @@
 くぬぎは被虐状態になった[lrcm]
 [jump target="*終了"]
 
-*淫乱
-;//淫乱：戦闘中毎ターン淫力が上昇。房中の選択肢が変化。
-[eval exp="f.Bitch = 1 , f.countBitch = 1"]
-くぬぎは淫乱状態になった[lrcm]
+*射乳
+;//射乳：胸の感度が上昇。Bitchから変更
+[eval exp="f.Boob = 1 , f.countBoob = 1"]
+くぬぎは射乳体質になった[lrcm]
 [jump target="*終了"]
 
 *催淫

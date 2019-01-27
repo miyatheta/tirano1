@@ -8,7 +8,7 @@ f.originDEF = 60;
 f.originSPD = 100;
 f.originFP = 0;//気力
 f.originERO = 0;//快感
-f.originARS = 0;//淫らさ
+f.originARS = 50;//淫らさ
 f.originSEN = 100;//感度
 f.originMND = 100;//精神力=房中体力
 f.originTIR = 0;//疲労度

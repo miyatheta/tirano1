@@ -1,5 +1,5 @@
 *房中開始
-[position width=960 height=150 top=490 left=0]
+[position width=600 height=150 top=490 left=180]
 [freeimage layer=2]
 [freeimage layer=3]
 [freeimage layer=4]
@@ -13,20 +13,21 @@ tf.loop = 0;
 tf.Step = 0;
 tf.Orga = 0;
 [endscript]
-[if exp="tf.n == 0"]
-[eval exp="tf.Min=1,tf.Max=3"][dice]
-[eval exp="tf.n = tf.dice"]
-[elsif exp="tf.n >= 3"]
-[eval exp="tf.n = 1"]
-[endif]
-
 
 房中開始です[wt7]
 
 *導入分岐
-[jump target="*導入1" cond="tf.Step == 0"]
-[jump target="*導入2" cond="tf.Step == 1 && tf.loop > 1 && f.EnErect > 33"]
-[jump target="*導入3" cond="tf.Step == 2 && tf.loop > 1 && f.EnErect > 66"]
+[if exp="tf.n == 0"]
+  [eval exp="tf.Min=1,tf.Max=3"][dice]
+  [eval exp="tf.n = tf.dice"]
+[elsif exp="tf.n >= 3"]
+  [eval exp="tf.n = 1"]
+[endif]
+[jump target="*導入1" cond="tf.Step == 0 "]
+[jump target="*導入2" cond="tf.Step == 1 && tf.loop >= 1 && f.EnErect > 33"]
+[jump target="*導入3" cond="tf.Step == 2 && tf.loop >= 1 && f.EnErect > 66"]
+[jump target="*行動選択"]
+[s]
 
 *導入1
 敵は装束を脱ぎ捨ててマラを取り出すと[r]くぬぎの腰を掴み、その秘所に荒々しく挿入した[lrcm]
@@ -73,10 +74,10 @@ tf.Orga = 0;
 
 *行動選択
 くぬぎの行動[wt7]
-[glink target="*行動1" text="身をかばう" x="50" y="100" size="20"]
-[glink target="*行動2" text="敵意を燃やす" x="50" y="150" size="20"]
-[glink target="*行動3" text="気を引き締める" x="50" y="200" size="20"]
-[glink target="*行動4" text="x" x="50" y="250" size="20"]
+[glink target="*行動1" text="身をかばう" x="50" y="100" size="15"]
+[glink target="*行動2" text="敵意を燃やす" x="50" y="150" size="15"]
+[glink target="*行動3" text="気を引き締める" x="50" y="200" size="15"]
+[glink target="*行動4" text="x" x="50" y="250" size="15"]
 [s]
 
 *行動1
@@ -190,6 +191,7 @@ tf.Orga = 0;
 くぬぎは敵を挑発した[lrcm]
 敵の理性が減少[wt7][eval exp="f.EnMND = f.EnMND - 5"][eval exp="f.EnMND = 0" cond="f.EnMND < 0"]
 敵の暴力性が上昇[wt7][eval exp="f.EnANG = f.EnANG + 5"][eval exp="f.EnANG = 100" cond="f.EnANG > 100"]
+[showStatus]
 [jump target="*敵行動選択"]
 
 *返事A2
@@ -197,6 +199,7 @@ tf.Orga = 0;
 くぬぎは悦ぶフリをした[lrcm]
 敵の理性が減少[wt7][eval exp="f.EnMND = f.EnMND - 5"][eval exp="f.EnMND = 0" cond="f.EnMND < 0"]
 敵の欲情が上昇[wt7][eval exp="f.EnErect = f.EnErect + 5"][eval exp="f.EnErect = 100" cond="f.EnErect > 100"]
+[showStatus]
 [jump target="*敵行動選択"]
 
 *返事A3
@@ -204,6 +207,7 @@ tf.Orga = 0;
 くぬぎは涙を零して哀願した[lrcm]
 敵の暴力性が減少[wt7][eval exp="f.EnANG = f.EnANG - 5"][eval exp="f.EnANG = 0" cond="f.EnANG < 0"]
 敵の欲情が上昇[wt7][eval exp="f.EnErect = f.EnMND + 5"][eval exp="f.EnErect = 100" cond="f.EnErect > 100"]
+[showStatus]
 [jump target="*敵行動選択"]
 
 *返事A4
@@ -211,6 +215,7 @@ tf.Orga = 0;
 くぬぎは敵の言葉に顔を背け沈黙を貫いた[lrcm]
 敵の理性が上昇[wt7][eval exp="f.EnMND = f.EnMND + 5"][eval exp="f.EnMND = 100" cond="f.EnMND > 100"]
 敵の欲情が減少[wt7][eval exp="f.EnErect = f.EnErect - 5"][eval exp="f.EnErect = 0" cond="f.EnErect < 0"]
+[showStatus]
 [jump target="*敵行動選択"]
 
 *返事B1
@@ -218,6 +223,7 @@ tf.Orga = 0;
 くぬぎは敵を挑発した[lrcm]
 敵の理性が減少[wt7][eval exp="f.EnMND = f.EnMND - 5"][eval exp="f.EnMND = 0" cond="f.EnMND < 0"]
 敵の暴力性が上昇[wt7][eval exp="f.EnANG = f.EnANG + 5"][eval exp="f.EnANG = 100" cond="f.EnANG > 100"]
+[showStatus]
 [jump target="*敵行動選択"]
 
 *返事B2
@@ -225,6 +231,7 @@ tf.Orga = 0;
 くぬぎは敵のイチモツの大きさを褒めそやした[lrcm]
 敵の理性が減少[wt7][eval exp="f.EnMND = f.EnMND - 5"][eval exp="f.EnMND = 0" cond="f.EnMND < 0"]
 敵の欲情が上昇[wt7][eval exp="f.EnErect = f.EnErect + 5"][eval exp="f.EnErect = 100" cond="f.EnErect > 100"]
+[showStatus]
 [jump target="*敵行動選択"]
 
 *返事B3
@@ -232,6 +239,7 @@ tf.Orga = 0;
 くぬぎは涙声で叫んだ[lrcm]
 敵の暴力性が減少[wt7][eval exp="f.EnANG = f.EnANG - 5"][eval exp="f.EnANG = 0" cond="f.EnANG < 0"]
 敵の欲情が上昇[wt7][eval exp="f.EnErect = f.EnMND + 5"][eval exp="f.EnErect = 100" cond="f.EnErect > 100"]
+[showStatus]
 [jump target="*敵行動選択"]
 
 *返事B4
@@ -239,6 +247,7 @@ tf.Orga = 0;
 くぬぎは敵の言葉に顔を背け沈黙を貫いた[lrcm]
 敵の理性が上昇[wt7][eval exp="f.EnMND = f.EnMND + 5"][eval exp="f.EnMND = 100" cond="f.EnMND > 100"]
 敵の欲情が減少[wt7][eval exp="f.EnErect = f.EnErect - 5"][eval exp="f.EnErect = 0" cond="f.EnErect < 0"]
+[showStatus]
 [jump target="*敵行動選択"]
 
 *返事C1
@@ -246,6 +255,7 @@ tf.Orga = 0;
 くぬぎは敵の言葉に反抗的に言い返した[lrcm]
 敵の理性が上昇[wt7][eval exp="f.EnMND = f.EnMND - 5"][eval exp="f.EnMND = 0" cond="f.EnMND < 0"]
 敵の欲情が減少[wt7][eval exp="f.EnANG = f.EnANG + 5"][eval exp="f.EnANG = 100" cond="f.EnANG > 100"]
+[showStatus]
 [jump target="*敵行動選択"]
 
 *返事C2
@@ -253,6 +263,7 @@ tf.Orga = 0;
 くぬぎは敵を煽った[lrcm]
 敵の理性が上昇[wt7][eval exp="f.EnMND = f.EnMND - 5"][eval exp="f.EnMND = 0" cond="f.EnMND < 0"]
 敵の欲情が減少[wt7][eval exp="f.EnErect = f.EnErect + 5"][eval exp="f.EnErect = 100" cond="f.EnErect > 100"]
+[showStatus]
 [jump target="*敵行動選択"]
 
 *返事C3
@@ -260,6 +271,7 @@ tf.Orga = 0;
 くぬぎは首を振りながら悲鳴を上げた[lrcm]
 敵の理性が上昇[wt7][eval exp="f.EnANG = f.EnANG - 5"][eval exp="f.EnANG = 0" cond="f.EnANG < 0"]
 敵の欲情が減少[wt7][eval exp="f.EnErect = f.EnMND + 5"][eval exp="f.EnErect = 100" cond="f.EnErect > 100"]
+[showStatus]
 [jump target="*敵行動選択"]
 
 *返事1C4
@@ -267,6 +279,7 @@ tf.Orga = 0;
 くぬぎは目を瞑り、声を上げるのを堪えた[lrcm]
 敵の理性が上昇[wt7][eval exp="f.EnMND = f.EnMND + 5"][eval exp="f.EnMND = 100" cond="f.EnMND > 100"]
 敵の欲情が減少[wt7][eval exp="f.EnErect = f.EnErect - 5"][eval exp="f.EnErect = 0" cond="f.EnErect < 0"]
+[showStatus]
 [jump target="*敵行動選択"]
 
 *敵行動選択
@@ -292,21 +305,25 @@ tf.randomNum = (tf.dice / 1000) + 1;
 *反応1
 [call storage="voicePL.ks" target="*悲鳴房中"]
 くぬぎの快感が上昇[wt7][eval exp="f.ERO = f.ERO + 5"][eval exp="f.ERO = 99" cond="f.ERO > 99"]
+[showStatus]
 [jump target="*判定"]
 
 *反応2
 [call storage="voicePL.ks" target="*悲鳴房中"]
 くぬぎの戦意が減少[wt7][eval exp="f.FGT = f.FGT - 5"][eval exp="f.FGT = 1" cond="f.FGT < 1"]
+[showStatus]
 [jump target="*判定"]
 
 *反応3
 [call storage="voicePL.ks" target="*悲鳴房中"]
 くぬぎの戦意が減少[wt7][eval exp="f.FGT = f.FGT - 5"][eval exp="f.FGT = 1" cond="f.FGT < 1"]
+[showStatus]
 [jump target="*判定"]
 
 *反応4
 [call storage="voicePL.ks" target="*悲鳴房中"]
 くぬぎの戦意が減少[wt7][eval exp="f.FGT = f.FGT - 5"][eval exp="f.FGT = 1" cond="f.FGT < 1"]
+[showStatus]
 [jump target="*判定"]
 
 
@@ -316,7 +333,7 @@ tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
 tf.randomNum = (tf.dice / 1000) + 1;
 
-tf.Damage = Math.floor(f.EnTEC/3 * f.SEN/100 * tf.randomNum);
+tf.Damage = Math.floor(f.EnTEC/10 * f.SEN/100 * tf.randomNum);
 f.ERO = f.ERO + tf.Damage;
 if(f.ERO > 100){f.ERO = 100;}
 [endscript]
@@ -332,13 +349,14 @@ tf.ATP = Math.floor(f.value * sexAppeal * naked * tf.randomNum);
 tf.EnDFP = (100 - f.EnEND) / 100;
 tf.EnDamage = Math.floor(tf.ATP * tf.EnDFP);
 if(tf.EnDamage < 0){tf.EnDamage = 0;}
-f.EnERO = f.EnERO + tf.EnDamage;
-if(f.EnERO > 200){f.EnERO = 200;}
+f.EnErect = f.EnErect + tf.EnDamage;
+if(f.EnErect > 200){f.EnErect = 200;}
 [endscript]
 敵は激しく腰を前後した[lrcm]
 [call storage="voicePL.ks" target="*悲鳴房中"]
 くぬぎの快感度が[emb exp="tf.Damage"]上昇した[lrcm][eval exp="f.ERO = f.ERO + tf.Damage"]
 敵の快感度が[emb exp="tf.EnDamage"]上昇した[lrcm][eval exp="f.EnErect = f.EnErect + tf.EnDamage"]
+[showStatus]
 
 [if exp="f.ERO >= 100 && f.StanOrga > 0"]
 [jump target="*連続絶頂1"]
@@ -353,6 +371,7 @@ if(f.EnERO > 200){f.EnERO = 200;}
 [call storage="voicePL.ks" target="*悲鳴絶頂"]
 くぬぎの理性が減少した[wt7]
 くぬぎの戦意が減少した[wt7]
+[showStatus]
 [eval exp="f.StanOrga=3"]
 [jump target="*敵判定"]
 [s]
@@ -362,6 +381,7 @@ if(f.EnERO > 200){f.EnERO = 200;}
 くぬぎは絶頂を迎えた[wt7]
 くぬぎの理性が減少した[wt7]
 くぬぎの戦意が減少した[wt7]
+[showStatus]
 [eval exp="f.StanOrga=3"]
 [jump target="*敵判定"]
 [s]
@@ -434,12 +454,12 @@ if(f.EnERO > 200){f.EnERO = 200;}
 [s]
 
 *房中継続
-[eval exp="tf.n++ , tf.loop++ , f.StanOrga--"]
+[eval exp="tf.n = tf.n + 1 , tf.loop = tf.loop + 1 , f.StanOrga = f.StanOrga - 1"]
 [if exp="f.StanOrga == 1"]
 [eval exp="f.StanOrga = 0" cond="f.StanOrga > 0"]
 くぬぎは絶頂から立ち直った[lrcm]
 [endif]
-[jump target="*敵発言分岐"]
+[jump target="*導入分岐"]
 
 
 *敗北シーン1
@@ -485,5 +505,5 @@ if(f.EnERO > 200){f.EnERO = 200;}
 敵に汚される屈辱に歯を食いしばりながら[lrcm]
 くぬぎは体に活力が湧いてくるのを感じた[lrcm]
 くぬぎ（この力があれば...戦える！！）[lrcm]
-[eval exp="f.EnERO = 0"]
+[eval exp="f.EnErect = 0"]
 [jump storage="battle.ks" target="*房中帰り"]

@@ -471,6 +471,7 @@ error[s]
 [jump target="*戦闘続行" cond="f.HP > 0"]
 
 *房中帰り
+[position width=960 height=50 top=590 left=0]
 房中術により[wt7]
 くぬぎの体力が回復した[wt7]
 くぬぎの敏捷度が上昇した[wt7]

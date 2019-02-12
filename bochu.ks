@@ -1,17 +1,18 @@
 *房中開始
-房中です[lrcm]
+[position width=960 height=150 top=490 left=0]
+[freeimage layer=2]
+[freeimage layer=3]
+[freeimage layer=4]
+[freeimage layer=5]
+[freeimage layer=8]
+[freeimage layer=9]
 [iscript]
-f.EnERO = 100
 tf.React = 0;
 tf.n=0;
 tf.loop = 0;
 tf.Step = 0;
 tf.Orga = 0;
 [endscript]
-[eval exp="f.APP=200,f.SEN=150"]
-[showStatus]
-
-*敵発言分岐
 [if exp="tf.n == 0"]
 [eval exp="tf.Min=1,tf.Max=3"][dice]
 [eval exp="tf.n = tf.dice"]
@@ -19,43 +20,19 @@ tf.Orga = 0;
 [eval exp="tf.n = 1"]
 [endif]
 
+
+房中開始です[wt7]
+
+*導入分岐
 [jump target="*導入1" cond="tf.Step == 0"]
-[jump target="*導入2" cond="tf.Step == 1 && tf.loop > 1 && f.EnERO > 133"]
-[jump target="*導入3" cond="tf.Step == 2 && tf.loop > 1 && f.EnERO > 166"]
-
-[jump target="*敵発言1A" cond="tf.n == 1 && tf.Step==1"]
-[jump target="*敵発言1B" cond="tf.n == 2 && tf.Step==1"]
-[jump target="*敵発言1C" cond="tf.n == 3 && tf.Step==1"]
-
-[jump target="*敵発言2A" cond="tf.n == 1 && tf.Step==2"]
-[jump target="*敵発言2B" cond="tf.n == 2 && tf.Step==2"]
-[jump target="*敵発言2C" cond="tf.n == 3 && tf.Step==2"]
-
-[jump target="*敵発言2A" cond="tf.n == 1 && tf.Step==3"]
-[jump target="*敵発言2B" cond="tf.n == 2 && tf.Step==3"]
-[jump target="*敵発言2C" cond="tf.n == 3 && tf.Step==3"]
-エラー[s]
+[jump target="*導入2" cond="tf.Step == 1 && tf.loop > 1 && f.EnErect > 33"]
+[jump target="*導入3" cond="tf.Step == 2 && tf.loop > 1 && f.EnErect > 66"]
 
 *導入1
 敵は装束を脱ぎ捨ててマラを取り出すと[r]くぬぎの腰を掴み、その秘所に荒々しく挿入した[lrcm]
 くぬぎ「あうっ！！」[lrcm]
-[eval exp="tf.Step = 1 , tf.loop = 0"][jump target="*敵発言分岐 "]
-
-*敵発言1A
-敵「フハハハ！！どうだ俺の愚息の味は！！たまらんだろう！？」[lrcm]
-[eval exp="tf.act='A'"]
-[jump target="*返事選択通常"]
-
-*敵発言1B
-敵「さすがくノ一！アソコも鍛えているな！！俺のデカマラをしっかりくわえ込みやがった！！」[lrcm]
-[eval exp="tf.act='B'"]
-[jump target="*返事選択通常"]
-
-*敵発言1C
-敵「ホラホラ！！もっと気合入れてアソコを締めろ！！」[lrcm]
-[eval exp="tf.act='C'"]
-[jump target="*返事選択通常"]
-
+[eval exp="tf.Step = 1 , tf.loop = 0"]
+[jump target="行動選択"]
 
 *導入2
 [if exp="tf.Orga > 1"]
@@ -73,26 +50,8 @@ tf.Orga = 0;
 敵「戦いだけじゃなく、こっちの技もよく仕込まれるってわけか」[lrcm]
 敵「だが、ここからが本番だぜ？」
 [endif]
-敵はそう言うと体勢を変えた[lrcm]
-
 [eval exp="tf.Step = 2 , tf.loop = 0"]
-[jump target="*敵発言分岐"]
-
-*敵発言2A
-敵「オラァオラァ！鳴きやがれ！！」[lrcm]
-[eval exp="tf.act='A'"]
-[jump target="*返事選択通常"]
-
-*敵発言2B
-敵「さすがくノ一！アソコも鍛えているな！！俺のデカマラをしっかりくわえ込みやがった！」[lrcm]
-[eval exp="tf.act='B'"]
-[jump target="*返事選択通常"]
-
-*敵発言2C
-敵「ホラホラ！！もっと気合入れてアソコを締めろ！！」[lrcm]
-[eval exp="tf.act='C'"]
-[jump target="*返事選択通常"]
-
+[jump target="行動選択"]
 
 *導入3
 [if exp="tf.Orga > 2"]
@@ -109,284 +68,249 @@ tf.Orga = 0;
 敵「ちっ、この俺の責めにここまで耐えやがるとは」[lrcm]
 敵「だがな。こいつには耐えられねえだろ」[lrcm]
 [endif]
-敵はそう言うと体勢を変えた[lrcm]
-
 [eval exp="tf.Step = 3 , tf.loop = 0"]
+[jump target="行動選択"]
+
+*行動選択
+くぬぎの行動[wt7]
+[glink target="*行動1" text="身をかばう" x="50" y="100" size="20"]
+[glink target="*行動2" text="敵意を燃やす" x="50" y="150" size="20"]
+[glink target="*行動3" text="気を引き締める" x="50" y="200" size="20"]
+[glink target="*行動4" text="x" x="50" y="250" size="20"]
+[s]
+
+*行動1
+くぬぎは腕で自分の身を庇った[wt7]
+[wt7]
 [jump target="*敵発言分岐"]
 
+*行動2
+くぬぎは敵を睨みつけた[wt7]
+戦意が上昇[wt7]
+[jump target="*敵発言分岐"]
+
+*行動3
+くぬぎは唇を噛んだ[wt7]
+理性が上昇した[wt7]
+[jump target="*敵発言分岐"]
+
+*行動4
+くぬぎは腕で自分の身を庇った[wt7]
+[jump target="*敵発言分岐"]
+
+*敵発言分岐
+[emb exp="tf.Step"]＆[emb exp="tf.n"]＆[emb exp="tf.loop"][lrcm]
+[jump target="*敵発言1A" cond="tf.n == 1 && tf.Step==1"]
+[jump target="*敵発言1B" cond="tf.n == 2 && tf.Step==1"]
+[jump target="*敵発言1C" cond="tf.n == 3 && tf.Step==1"]
+
+[jump target="*敵発言2A" cond="tf.n == 1 && tf.Step==2"]
+[jump target="*敵発言2B" cond="tf.n == 2 && tf.Step==2"]
+[jump target="*敵発言2C" cond="tf.n == 3 && tf.Step==2"]
+
+[jump target="*敵発言3A" cond="tf.n == 1 && tf.Step==3"]
+[jump target="*敵発言3B" cond="tf.n == 2 && tf.Step==3"]
+[jump target="*敵発言3C" cond="tf.n == 3 && tf.Step==3"]
+エラー[s]
+
+*敵発言1A
+敵発言1A
+敵「フハハハ！！どうだ俺の愚息の味は！！たまらんだろう！？」[lrcm]
+[eval exp="tf.act='A'"]
+[jump target="*返事選択通常"]
+
+*敵発言1B
+敵発言1B
+敵「さすがくノ一！アソコも鍛えているな！！俺のデカマラをしっかりくわえ込みやがった！！」[lrcm]
+[eval exp="tf.act='B'"]
+[jump target="*返事選択通常"]
+
+*敵発言1C
+敵発言1C
+敵「ホラホラ！！もっと気合入れてアソコを締めろ！！」[lrcm]
+[eval exp="tf.act='C'"]
+[jump target="*返事選択通常"]
+
+
+*敵発言2A
+敵発言2A
+敵「オラァオラァ！鳴きやがれ！！」[lrcm]
+[eval exp="tf.act='A'"]
+[jump target="*返事選択通常"]
+
+*敵発言2B
+敵発言2B
+敵「さすがくノ一！アソコも鍛えているな！！俺のデカマラをしっかりくわえ込みやがった！」[lrcm]
+[eval exp="tf.act='B'"]
+[jump target="*返事選択通常"]
+
+*敵発言2C
+敵発言2C
+敵「ホラホラ！！もっと気合入れてアソコを締めろ！！」[lrcm]
+[eval exp="tf.act='C'"]
+[jump target="*返事選択通常"]
+
+
 *敵発言3A
+敵発言3A
 敵「うおおおお、込み上げてきたぜぇっ！！」[lrcm]
 敵は最後の追い込みとばかりに腰を激しく振った[lrcm]
 [eval exp="tf.act='A'"]
 [jump target="*返事選択通常"]
 
 *敵発言3B
+敵発言3B
 敵「イクぞ！オラァ！オラァ！オラァ！」[lrcm]
 敵は最後の追い込みとばかりに腰を激しく振った[lrcm]
 [eval exp="tf.act='B'"]
 [jump target="*返事選択通常"]
 
 *敵発言3C
+敵発言3C
 敵「ウオオオおお！！出すぞっ！！」[lrcm]
 敵は最後の追い込みとばかりに腰を激しく振った[lrcm]
 [eval exp="tf.act='C'"]
 [jump target="*返事選択通常"]
 
-
 *返事選択通常
-[jump target="*返事屈服" cond="f.MND<=0"]
-[jump target="*返事絶頂" cond="f.StanOrga > 0"]
-くぬぎは・・・[lrcm]
-[glink target="*返事分岐" text="反抗する" exp="tf.res=1" size=15 x=100 y=50]
-[glink target="*返事分岐" text="挑発する" exp="tf.res=2" size=15 x=100 y=100]
-[glink target="*返事分岐" text="おだてる" exp="tf.res=3" size=15 x=100 y=150]
-[glink target="*返事分岐" text="無反応" exp="tf.res=4" size=15 x=100 y=200]
+[glink target="*返事分岐" text="挑発する" exp="tf.res=1" x="0" y="100"]
+[glink target="*返事分岐" text="誘惑する" exp="tf.res=2" x="0" y="150"]
+[glink target="*返事分岐" text="哀願する" exp="tf.res=3" x="0" y="200"]
+[glink target="*返事分岐" text="沈黙する" exp="tf.res=4" x="0" y="250"]
 [s]
+
 *返事分岐
-[eval exp="tf.tag='*返事' + tf.Step + tf.act + tf.res"]
+[eval exp="tf.tag='*返事' + tf.act + tf.res"]
+[emb exp="tf.tag"][lrcm]
 [jump target="&tf.tag"]
 エラー[s]
 
-*返事1A1
-くぬぎ「ふざけないで！んっ！あなたのものなんて最悪よっ！！」[lrcm]
-くぬぎは強気に敵を罵った[lrcm]
-[jump target="*敵反応"]
-
-*返事1A2
-くぬぎ「はっ！この程度で大きい？わ、笑わせないでっ！！」[lrcm]
+*返事A1
+くぬぎ「ふざけないで！あなたのものなんて最悪よっ！！」[lrcm]
 くぬぎは敵を挑発した[lrcm]
-[jump target="*敵反応"]
+敵の理性が減少[wt7][eval exp="f.EnMND = f.EnMND - 5"][eval exp="f.EnMND = 0" cond="f.EnMND < 0"]
+敵の暴力性が上昇[wt7][eval exp="f.EnANG = f.EnANG + 5"][eval exp="f.EnANG = 100" cond="f.EnANG > 100"]
+[jump target="*敵行動選択"]
 
-*返事1A3
+*返事A2
 くぬぎ「す、すごいぃ！！こんなの！初めてぇっ！」[lrcm]
 くぬぎは悦ぶフリをした[lrcm]
-[jump target="*敵反応"]
+敵の理性が減少[wt7][eval exp="f.EnMND = f.EnMND - 5"][eval exp="f.EnMND = 0" cond="f.EnMND < 0"]
+敵の欲情が上昇[wt7][eval exp="f.EnErect = f.EnErect + 5"][eval exp="f.EnErect = 100" cond="f.EnErect > 100"]
+[jump target="*敵行動選択"]
 
-*返事1A4
+*返事A3
+くぬぎ「いやぁっ！！お願いだから抜いてぇ！！」[lrcm]
+くぬぎは涙を零して哀願した[lrcm]
+敵の暴力性が減少[wt7][eval exp="f.EnANG = f.EnANG - 5"][eval exp="f.EnANG = 0" cond="f.EnANG < 0"]
+敵の欲情が上昇[wt7][eval exp="f.EnErect = f.EnMND + 5"][eval exp="f.EnErect = 100" cond="f.EnErect > 100"]
+[jump target="*敵行動選択"]
+
+*返事A4
 くぬぎ「・・・・・」[lrcm]
-くぬぎは敵の言葉に沈黙を貫いた[lrcm]
-[jump target="*敵反応"]
+くぬぎは敵の言葉に顔を背け沈黙を貫いた[lrcm]
+敵の理性が上昇[wt7][eval exp="f.EnMND = f.EnMND + 5"][eval exp="f.EnMND = 100" cond="f.EnMND > 100"]
+敵の欲情が減少[wt7][eval exp="f.EnErect = f.EnErect - 5"][eval exp="f.EnErect = 0" cond="f.EnErect < 0"]
+[jump target="*敵行動選択"]
 
-
-*返事1B1
-くぬぎ「ふざけないで！んっ！あなたのものなんて最悪よっ！！」[lrcm]
-くぬぎは口汚く言い捨てた[lrcm]
-[jump target="*敵反応"]
-
-*返事1B2
-くぬぎ「このっ！程度の大きさ！んっ！大したことないわ！！」[lrcm]
+*返事B1
+くぬぎ「はっ！この程度で大きい？わ、笑わせないでっ！！」[lrcm]
 くぬぎは敵を挑発した[lrcm]
-[jump target="*敵反応"]
+敵の理性が減少[wt7][eval exp="f.EnMND = f.EnMND - 5"][eval exp="f.EnMND = 0" cond="f.EnMND < 0"]
+敵の暴力性が上昇[wt7][eval exp="f.EnANG = f.EnANG + 5"][eval exp="f.EnANG = 100" cond="f.EnANG > 100"]
+[jump target="*敵行動選択"]
 
-*返事1B3
-くぬぎ「あんっ！だ、だめぇ！！おおきすぎぃっ！」[lrcm]
-くぬぎは敵のブツの大きさを褒めそやした[lrcm]
-[jump target="*敵反応"]
+*返事B2
+くぬぎ「あんっ！だ、だめぇ！！すごっ！おおきすぎぃっ！！」[lrcm]
+くぬぎは敵のイチモツの大きさを褒めそやした[lrcm]
+敵の理性が減少[wt7][eval exp="f.EnMND = f.EnMND - 5"][eval exp="f.EnMND = 0" cond="f.EnMND < 0"]
+敵の欲情が上昇[wt7][eval exp="f.EnErect = f.EnErect + 5"][eval exp="f.EnErect = 100" cond="f.EnErect > 100"]
+[jump target="*敵行動選択"]
 
-*返事1B4
+*返事B3
+くぬぎ「だめぇ！！そんな大きなもの入らないいい！！」[lrcm]
+くぬぎは涙声で叫んだ[lrcm]
+敵の暴力性が減少[wt7][eval exp="f.EnANG = f.EnANG - 5"][eval exp="f.EnANG = 0" cond="f.EnANG < 0"]
+敵の欲情が上昇[wt7][eval exp="f.EnErect = f.EnMND + 5"][eval exp="f.EnErect = 100" cond="f.EnErect > 100"]
+[jump target="*敵行動選択"]
+
+*返事B4
 くぬぎ「・・・・・」[lrcm]
-くぬぎは敵の言葉に沈黙を返した[lrcm]
-[jump target="*敵反応"]
+くぬぎは敵の言葉に顔を背け沈黙を貫いた[lrcm]
+敵の理性が上昇[wt7][eval exp="f.EnMND = f.EnMND + 5"][eval exp="f.EnMND = 100" cond="f.EnMND > 100"]
+敵の欲情が減少[wt7][eval exp="f.EnErect = f.EnErect - 5"][eval exp="f.EnErect = 0" cond="f.EnErect < 0"]
+[jump target="*敵行動選択"]
 
-
-*返事1C1
-くぬぎ「あなたの！言うことなんてぇ！聞かないわ！！」[lrcm]
+*返事C1
+くぬぎ「うるさいっ！さっさと果てろ！この下郎ぉ！！」[lrcm]
 くぬぎは敵の言葉に反抗的に言い返した[lrcm]
-[jump target="*敵反応"]
+敵の理性が上昇[wt7][eval exp="f.EnMND = f.EnMND - 5"][eval exp="f.EnMND = 0" cond="f.EnMND < 0"]
+敵の欲情が減少[wt7][eval exp="f.EnANG = f.EnANG + 5"][eval exp="f.EnANG = 100" cond="f.EnANG > 100"]
+[jump target="*敵行動選択"]
 
-*返事1C2
-くぬぎ「ふっ！そういうあなたこそぉ！もっと激しく来なさいよ！！」[lrcm]
-くぬぎは敵を挑発した[lrcm]
-[jump target="*敵反応"]
+*返事C2
+くぬぎ「あなたこそぉ！もっと激しくしてぇ！！」[lrcm]
+くぬぎは敵を煽った[lrcm]
+敵の理性が上昇[wt7][eval exp="f.EnMND = f.EnMND - 5"][eval exp="f.EnMND = 0" cond="f.EnMND < 0"]
+敵の欲情が減少[wt7][eval exp="f.EnErect = f.EnErect + 5"][eval exp="f.EnErect = 100" cond="f.EnErect > 100"]
+[jump target="*敵行動選択"]
 
-*返事1C3
-くぬぎ「はいぃ！せいいっぱい、締めますぅ！！」[lrcm]
-くぬぎは敵の言葉に従順なフリをした[lrcm]
-[jump target="*敵反応"]
+*返事C3
+くぬぎ「いやぁっ！！そんなに激しくしないでぇ！！壊れちゃう！！」[lrcm]
+くぬぎは首を振りながら悲鳴を上げた[lrcm]
+敵の理性が上昇[wt7][eval exp="f.EnANG = f.EnANG - 5"][eval exp="f.EnANG = 0" cond="f.EnANG < 0"]
+敵の欲情が減少[wt7][eval exp="f.EnErect = f.EnMND + 5"][eval exp="f.EnErect = 100" cond="f.EnErect > 100"]
+[jump target="*敵行動選択"]
 
 *返事1C4
-くぬぎ「・・・・・」[lrcm]
-くぬぎは敵に冷たい視線を向けた[lrcm]
-[jump target="*敵反応"]
+くぬぎ「っ・・・・・！」[lrcm]
+くぬぎは目を瞑り、声を上げるのを堪えた[lrcm]
+敵の理性が上昇[wt7][eval exp="f.EnMND = f.EnMND + 5"][eval exp="f.EnMND = 100" cond="f.EnMND > 100"]
+敵の欲情が減少[wt7][eval exp="f.EnErect = f.EnErect - 5"][eval exp="f.EnErect = 0" cond="f.EnErect < 0"]
+[jump target="*敵行動選択"]
 
-
-*返事2A1
-くぬぎ「ふざけないで！んっ！あなたのものなんて最悪よっ！！」[lrcm]
-くぬぎは強気に敵を罵った[lrcm]
-[jump target="*敵反応"]
-
-*返事2A2
-くぬぎ「はっ！この程度で大きい？わ、笑わせないでっ！！」[lrcm]
-くぬぎは敵を挑発した[lrcm]
-[jump target="*敵反応"]
-
-*返事2A3
-くぬぎ「す、すごいぃ！！こんなの！初めてぇっ！」[lrcm]
-くぬぎは悦ぶフリをした[lrcm]
-[jump target="*敵反応"]
-
-*返事2A4
-くぬぎ「・・・・・」[lrcm]
-くぬぎは敵の言葉に沈黙を貫いた[lrcm]
-[jump target="*敵反応"]
-
-
-*返事2B1
-くぬぎ「ふざけないで！んっ！あなたのものなんて最悪よっ！！」[lrcm]
-くぬぎは口汚く言い捨てた[lrcm]
-[jump target="*敵反応"]
-
-*返事2B2
-くぬぎ「このっ！程度の大きさ！んっ！大したことないわ！！」[lrcm]
-くぬぎは敵を挑発した[lrcm]
-[jump target="*敵反応"]
-
-*返事2B3
-くぬぎ「あんっ！だ、だめぇ！！おおきすぎぃっ！」[lrcm]
-くぬぎは敵のブツの大きさを褒めそやした[lrcm]
-[jump target="*敵反応"]
-
-*返事2B4
-くぬぎ「・・・・・」[lrcm]
-くぬぎは敵の言葉に沈黙を返した[lrcm]
-[jump target="*敵反応"]
-
-
-*返事2C1
-くぬぎ「あなたの！言うことなんてぇ！聞かないわ！！」[lrcm]
-くぬぎは敵の言葉に反抗的に言い返した[lrcm]
-[jump target="*敵反応"]
-
-*返事2C2
-くぬぎ「ふっ！そういうあなたこそぉ！もっと激しく来なさいよ！！」[lrcm]
-くぬぎは敵を挑発した[lrcm]
-[jump target="*敵反応"]
-
-*返事2C3
-くぬぎ「はいぃ！せいいっぱい、締めますぅ！！」[lrcm]
-くぬぎは敵の言葉に従順なフリをした[lrcm]
-[jump target="*敵反応"]
-
-*返事2C4
-くぬぎ「・・・・・」[lrcm]
-くぬぎは敵に冷たい視線を向けた[lrcm]
-[jump target="*敵反応"]
-
-
-*返事3A1
-くぬぎ「ふざけないで！んっ！あなたのものなんて最悪よっ！！」[lrcm]
-くぬぎは強気に敵を罵った[lrcm]
-[jump target="*敵反応"]
-
-*返事3A2
-くぬぎ「はっ！この程度で大きい？わ、笑わせないでっ！！」[lrcm]
-くぬぎは敵を挑発した[lrcm]
-[jump target="*敵反応"]
-
-*返事3A3
-くぬぎ「す、すごいぃ！！こんなの！初めてぇっ！」[lrcm]
-くぬぎは悦ぶフリをした[lrcm]
-[jump target="*敵反応"]
-
-*返事3A4
-くぬぎ「・・・・・」[lrcm]
-くぬぎは敵の言葉に沈黙を貫いた[lrcm]
-[jump target="*敵反応"]
-
-
-*返事3B1
-くぬぎ「ふざけないで！んっ！あなたのものなんて最悪よっ！！」[lrcm]
-くぬぎは口汚く言い捨てた[lrcm]
-[jump target="*敵反応"]
-
-*返事3B2
-くぬぎ「このっ！程度の大きさ！んっ！大したことないわ！！」[lrcm]
-くぬぎは敵を挑発した[lrcm]
-[jump target="*敵反応"]
-
-*返事3B3
-くぬぎ「あんっ！だ、だめぇ！！おおきすぎぃっ！」[lrcm]
-くぬぎは敵のブツの大きさを褒めそやした[lrcm]
-[jump target="*敵反応"]
-
-*返事3B4
-くぬぎ「・・・・・」[lrcm]
-くぬぎは敵の言葉に沈黙を返した[lrcm]
-[jump target="*敵反応"]
-
-
-*返事3C1
-くぬぎ「あなたの！言うことなんてぇ！聞かないわ！！」[lrcm]
-くぬぎは敵の言葉に反抗的に言い返した[lrcm]
-[jump target="*敵反応"]
-
-*返事3C2
-くぬぎ「ふっ！そういうあなたこそぉ！もっと激しく来なさいよ！！」[lrcm]
-くぬぎは敵を挑発した[lrcm]
-[jump target="*敵反応"]
-
-*返事3C3
-くぬぎ「はいぃ！せいいっぱい、締めますぅ！！」[lrcm]
-くぬぎは敵の言葉に従順なフリをした[lrcm]
-[jump target="*敵反応"]
-
-*返事3C4
-くぬぎ「・・・・・」[lrcm]
-くぬぎは敵に冷たい視線を向けた[lrcm]
-[jump target="*敵反応"]
-
-
-*返事屈服
-くぬぎ「はいっ！！あんっ！！太くてぇっ！！[wait time=100]
-たくましくてぇ！んあっ！！[wait time=100]
-たまらないですっ！！！」[lrcm]
-反抗心を失ったくぬぎは敵の言葉を肯定してしまう[lrcm]
-[eval exp="tf.React=1"]
-[jump target="*敵攻撃"]
-エラー[s]
-
-*返事絶頂
-[if exp="f.StanOrga == 1"]
-くぬぎ「あっ♥はぁん♥あ゛～～～～♥」[lrcm]
-絶頂しているくぬぎはただ喘ぐことしかできない[lrcm]
-[eval exp="tf.React=1"]
-
-[elsif exp="f.StanOrga > 1"]
-くぬぎ「あ゛っ♥あ゛～～～～♥あああ----ッ♥♥♥♥」[lrcm]
-くぬぎは絶頂から降りてくることができず[lrcm]
-虚ろな目で喘ぎ声を上げ続けている[lrcm]
-[endif]
-
-[jump target="*敵攻撃"]
-エラー[s]
-
-
-*敵反応
+*敵行動選択
 [iscript]
-tf.Min = 0, tf.Max = 99;
+tf.Min = 0, tf.Max = 1000;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
-if(tf.dice < 50){
-  tf.React = 0;//ネガティブ
-} else{
-  tf.React = 1;//ポジティブ
-}
+tf.randomNum = (tf.dice / 1000) + 1;
 [endscript]
-
-[if exp="tf.React==0"]
-敵はくぬぎの反応に幻滅したようだ[lrcm]
-[jump target="*敵攻撃"]
+[if exp="tf.dice<250"]
+敵はくぬぎの胸を揉みしだいた[wt7]
+[jump target="*反応1"]
+[elsif exp="tf.dice>=250 && tf.dice<500"]
+敵はくぬぎの唇に吸い付いた[wt7]
+[jump target="*反応2"]
+[elsif exp="tf.dice<=500 && tf.dice<750"]
+敵はくぬぎの尻を叩いた[wt7]
+[jump target="*反応3"]
+[else]
+敵はくぬぎの陰核を捻った[wt7]
+[jump target="*反応4"]
 [endif]
 
-[if exp="tf.React==1"]
-敵はくぬぎの反応に興奮したようだ[lrcm]
-くぬぎの淫力が上がった[lrcm]
-[eval exp="f.APP = f.APP + 10"][showStatus][lrcm]
-[jump target="*敵攻撃"]
-[endif]
-エラー[s]
+*反応1
+[call storage="voicePL.ks" target="*悲鳴房中"]
+くぬぎの快感が上昇[wt7][eval exp="f.ERO = f.ERO + 5"][eval exp="f.ERO = 99" cond="f.ERO > 99"]
+[jump target="*判定"]
+
+*反応2
+[call storage="voicePL.ks" target="*悲鳴房中"]
+くぬぎの戦意が減少[wt7][eval exp="f.FGT = f.FGT - 5"][eval exp="f.FGT = 1" cond="f.FGT < 1"]
+[jump target="*判定"]
+
+*反応3
+[call storage="voicePL.ks" target="*悲鳴房中"]
+くぬぎの戦意が減少[wt7][eval exp="f.FGT = f.FGT - 5"][eval exp="f.FGT = 1" cond="f.FGT < 1"]
+[jump target="*判定"]
+
+*反応4
+[call storage="voicePL.ks" target="*悲鳴房中"]
+くぬぎの戦意が減少[wt7][eval exp="f.FGT = f.FGT - 5"][eval exp="f.FGT = 1" cond="f.FGT < 1"]
+[jump target="*判定"]
 
 
-*敵攻撃
+*判定
 [iscript]
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
@@ -396,7 +320,6 @@ tf.Damage = Math.floor(f.EnTEC/3 * f.SEN/100 * tf.randomNum);
 f.ERO = f.ERO + tf.Damage;
 if(f.ERO > 100){f.ERO = 100;}
 [endscript]
-
 [iscript]
 tf.Min = 0, tf.Max = 50;
 tf.dice = Math.floor(Math.random()*(tf.Max+1-tf.Min))+tf.Min;
@@ -404,7 +327,7 @@ tf.randomNum = (tf.dice / 1000) + 1;
 
 f.value = 20;
 naked = (f.Undress/10) + 1;
-sexAppeal = 1 + (f.APP - 50) / 100;
+sexAppeal = 1 + f.APP / 100;
 tf.ATP = Math.floor(f.value * sexAppeal * naked * tf.randomNum);
 tf.EnDFP = (100 - f.EnEND) / 100;
 tf.EnDamage = Math.floor(tf.ATP * tf.EnDFP);
@@ -413,78 +336,113 @@ f.EnERO = f.EnERO + tf.EnDamage;
 if(f.EnERO > 200){f.EnERO = 200;}
 [endscript]
 敵は激しく腰を前後した[lrcm]
-くぬぎ「あんっ！ああっ！！」[lrcm]
-くぬぎの快感度が[emb exp="tf.Damage"]上昇した[lrcm]
-敵の興奮度が[emb exp="tf.EnDamage"]上昇した[lrcm]
-[showStatus][lrcm]
+[call storage="voicePL.ks" target="*悲鳴房中"]
+くぬぎの快感度が[emb exp="tf.Damage"]上昇した[lrcm][eval exp="f.ERO = f.ERO + tf.Damage"]
+敵の快感度が[emb exp="tf.EnDamage"]上昇した[lrcm][eval exp="f.EnErect = f.EnErect + tf.EnDamage"]
 
-[eval exp="tf.n++ , tf.loop++"
+[if exp="f.ERO >= 100 && f.StanOrga > 0"]
+[jump target="*連続絶頂1"]
+[elsif exp="f.ERO >= 100"]
+[jump target="*絶頂1"]
+[else]
+[jump target="*敵判定"]
+[endif]
 
-[jump target="絶頂" cond="f.ERO >= 100"]
-[jump target="房中敗北A" cond="f.HP <= 0"]
-[jump target="房中敗北B" cond="f.EnERO >= 100 && f.MND <= 0"]
-[jump target="房中勝利" cond="f.EnERO >= 200 && f.StanOrga == 0"]
+*絶頂1
+くぬぎは絶頂を迎えた[wt7]
+[call storage="voicePL.ks" target="*悲鳴絶頂"]
+くぬぎの理性が減少した[wt7]
+くぬぎの戦意が減少した[wt7]
+[eval exp="f.StanOrga=3"]
+[jump target="*敵判定"]
+[s]
 
-[if exp="f.StanOrga > 0"]
+*連続絶頂1
+くぬぎ「ダメぇ！！また！イッちゃう！！イッたままなのに！またイッちゃうううう！！！」[wt7]
+くぬぎは絶頂を迎えた[wt7]
+くぬぎの理性が減少した[wt7]
+くぬぎの戦意が減少した[wt7]
+[eval exp="f.StanOrga=3"]
+[jump target="*敵判定"]
+[s]
+
+*敵判定
+[if exp="f.EnErect>=100"]
+[jump target="*敵絶頂"]
+[else]
+[jump target="*房中継続"]
+[endif]
+[s]
+
+*敵絶頂
+敵「くっ！！もう堪らん！！出すぞ！！」[wt7]
+[eval exp="tf.Min=0 ,tf.Max=99"][dice]
+
+[if exp="f.FGT<=0"]
+[jump target="*敵絶頂戦意喪失時"]
+[elsif exp="f.StanOrga>0"]
+[jump target="*敵絶頂スタン時"]
+[elsif exp="f.EnMND > tf.dice"]
+[jump target="*敵絶頂外出"]
+[else]
+[jump target="*敵絶頂勝利時"]
+[s]
+
+*敵絶頂戦意喪失時
+[jump target="*敗北シーン1"]
+[s]
+
+*敵絶頂スタン時
+くぬぎ「いやぁ！！いまは、らめぇ！！」[wt7]
+敵「うおおおおおおっ」[wt7]
+[call storage="voicePL.ks" target="*悲鳴絶頂"]
+敵は盛大にくぬぎの中に精を解き放った[wt7]
+本来は術をかける絶好機[wt7]
+しかし未だに絶頂から戻ってこれていないくぬぎに術をかける余裕はなかった[wt7]
+[if exp="f.ERO>=100"]
+それどころか...[wt7]
+くぬぎ「ダメぇ！！また！イッちゃう！！イッたままなのに！またイッちゃうううう！！！」[wt7]
+くぬぎは敵の射精の衝撃によりそのまま再び絶頂を迎えた[wt7]
+[eval exp="f.StanOrga=3"]
+[endif]
+[jump target="*房中継続"]
+[s]
+
+*敵絶頂外出
+[call storage="voicePL.ks" target="*悲鳴房中"]
+くぬぎ（このままっ！！中に出させれば！！）[wt7]
+忌まわしい封印を緩めて戦う力を取り戻すことができる[wt7]
+相手の激しい腰使いに翻弄されながら、くぬぎは一縷の
+しかし[wt7]
+敵「うおおおおおおっ！！」[wt7]
+敵はいきり立った陰茎を膣から引き抜くと、その瞬間に射精した[wt7]
+くぬぎ「あああああああっ！！」[wt7]
+勢いよく吹き出した生暖かい精液がくぬぎの肌に降り掛かる[wt7]
+くぬぎ「あ・・・あっ！」[wt7]
+敵「危ねえ、危ねえ。うっかり中出ししちまうところだったぜ」[wt7]
+白濁まみれで呆然とするくぬぎを見て敵はにやりと笑った[wt7]
+敵「おっと残念そうな顔だな。なんだ中が良かったか？」[wt7]
+くぬぎ（こいつ！！）[wt7]
+敵「心配しなくともまだまだ終わりじゃねえぞ！！」[wt7]
+敵はくぬぎを組み敷くと、依然として硬度を失わないイチモツをくぬぎの陰唇にねじ込んだ[wt7]
+くぬぎ「きゃああああああっ！！」[wt7]
+[jump target="*房中継続"]
+[s]
+
+*敵絶頂勝利時
+[jump target="*勝利シーン"]
+[s]
+
+*房中継続
+[eval exp="tf.n++ , tf.loop++ , f.StanOrga--"]
+[if exp="f.StanOrga == 1"]
 [eval exp="f.StanOrga = 0" cond="f.StanOrga > 0"]
 くぬぎは絶頂から立ち直った[lrcm]
 [endif]
-
 [jump target="*敵発言分岐"]
-error[s]
 
 
-*絶頂
-くぬぎ「だめっ！！イクっ！！イクっ！！ああああああああっ！！」[lrcm]
-くぬぎは絶頂を迎えた[lrcm]
-[eval exp="f.MND = f.MND - 30"]
-[eval exp="f.HP = f.HP - 50"]
-[showStatus]
-
-[jump target="房中敗北A" cond="f.HP <= 0"]
-[jump target="房中敗北B" cond="f.EnERO >= 100 && f.MND <= 0"]
-
-[eval exp="f.ERO = 0"]
-くぬぎの快感への抵抗が低下した[lrcm]
-[eval exp="f.SEN = f.SEN + 20"]
-[eval exp="f.StanOrga++"]
-[showStatus]
-[jump target="*敵発言分岐"]
-エラー[s]
-
-
-*房中敗北A
-;スタミナ切れ
-敗北A[lrcm]
-くぬぎ「はぁ・・・・はぁ・・・・」[lrcm]
-くぬぎ「もう、だめぇ・・・・」[lrcm]
-敵の激しい責めにくぬぎは音を上げた[lrcm]
-くぬぎ「あ、待って・・・少し・・・休ませてぇ」[lrcm]
-思わず情けない声で哀願してしまうが、敵がそれを聞き入れるはずもない[lrcm]
-敵「何をこの程度で弱音を吐くとは！くのいちの風上にもおけぬな！！」[lrcm]
-敵はぐったりとしたくぬぎをうつ伏せにひっくり返すと背後から激しく突き立てた[lrcm]
-くぬぎ「ああん！！あうん！！」[lrcm]
-くぬぎの嬌声と腰を打ちつける音だけが響き続ける[lrcm]
-それは完全に一方的な陵辱だった[lrcm]
-敵「くっ！！出すぞ！！」[lrcm]
-挿入を繰り返していた敵もいよいよ辛抱たまらなくなったらしい[lrcm]
-一際激しく腰を前後させてから、一気にくぬぎの最奥まで貫くとそこで精を解き放った[lrcm]
-くぬぎ「ああああああああああっ！！！」
-激しい快楽に焼かれ白く染まった意識をくぬぎは手放した[l][r][cm]
-[iscript]
-f.ERO = 0;
-f.HP = f.BaseSTM;
-f.MND = f.BaseMND;
-[endscript]
-[showStatus]
-くぬぎは敗北した[lrcm][wait time=1000]
-[jump storage="selectStage.ks" target="*エネミー選択"]
-エラー[s]
-
-
-*房中敗北B
-;抵抗力切れ & スタミナ切れ OR 敵興奮度MAX
-敗北B[lrcm]
+*敗北シーン1
 くぬぎ「あんっ！！あんっ！！」[lrcm]
 敵「フハハハ！！どうだ小娘が！！」[lrcm]
 抵抗する気力を失ったくぬぎは敵のなすがままに犯されていた[lrcm]
@@ -506,42 +464,26 @@ f.MND = f.BaseMND;
 激しい快楽に焼かれ白く染まった意識をくぬぎは手放した[lrcm]
 [showStatus]
 くぬぎは敗北した[lrcm]
-[eval exp="f.ERO = 0 , f.MND = f.BaseMND"]
 [eval exp="f.ARS = f.ARS + 1"]
-くぬぎの淫力が上昇した[lrcm]
+くぬぎの淫らさが上昇した[lrcm]
+[eval exp="f.BaseMND = f.BaseMND - 1"][eval exp="f.BaseMND = 0" cond="f.BaseMND < 0 "]
+くぬぎの理性の最大値が減少した[lrcm]
+[eval exp="f.ERO = 0 , f.MND = f.BaseMND"]
 [wait time=500]
-[jump storage="selectStage.ks" target="*エネミー選択"]
-エラー[s]
+[jump storage="prison.ks" target="*スタート"]
+
+*敗北シーン2
 
 
-*房中勝利
+*敗北シーン3
+
+
+*勝利シーン
 敵「ぐおおおおっ！！出すぞ！！」[lrcm]
-敵の肉棒が中で一際大きく膨らむのを感じてくぬぎの目が煌めいた[lrcm]
-くぬぎ「っ・・・・今よっ！！忍法・吸精破顔術！！」[lrcm]
-くぬぎが印を切ると、膣が敵の逸物を一際強烈に締め上げた[lrcm]
-敵「ごおおおおおおっ！！何という圧力、何という上物よ！！」[lrcm]
-その感触に敵は為す術もなく精を迸らせる[lrcm]
-満ち足りた呆け顔を一瞬見せた敵だったが、すぐにその顔に動揺の色が走る[lrcm]
-敵「と、止まらぬ！？」[lrcm]
-くぬぎの膣に刺さったままの肉棒からは精液が延々と吹き出し続け、一向に収まる様子がないのだ[lrcm]
-異常を感じ腰を離そうとした敵だが、くぬぎの膣はまるで吸盤のように肉棒に吸い付き肉棒を抜くことができない[lrcm]
-くぬぎ「んっ・・・んん・・・！！」[lrcm]
-その間もくぬぎの中は巧みにうねり、蠢き、精を搾り取り飲み下していく[lrcm]
-敵「あ、ああああ・・・あああああああっ・・・」[lrcm]
-もはや竿からは痛みを感じ始めていたがそれを上回る快楽の雷が脳天までを走り続け、敵はうめき声を上げながら腰を振ることしかできない[lrcm]
-いつしか敵の顔からは血の気が引き白くなっていたが、それに反比例するように恍惚の笑みが浮かび上がってきていた[lrcm]
-そしてしばらく後、敵は満面の笑みを浮かべたまま白眼を剥くととうとう仰向けに地に倒れた[lrcm]
-くぬぎ「んうっ・・・・！！」[lrcm]
-すっかり萎えきった肉棒が抜け落ちると、くぬぎの膣からは大量の白濁液が噴き出した[lrcm]
-装束を整え立ち上がったくぬぎは敵を一瞥した[lrcm]
-くぬぎ「極楽浄土。見えたかしら？」[lrcm]
-くぬぎは勝利した[lrcm]
-[eval exp="f.TIR = f.TIR - 20"][eval exp="f.TIR = 0" cond="f.TIR < 0"]
-[eval exp="f.ERO = 0 , f.MND = f.BaseMND"]
-[eval exp="f.ARS = f.ARS + 1"]
-くぬぎの疲労度が回復した[lrcm]
-くぬぎの淫力が上昇した[lrcm]
-[showStatus]
-[wait time=500]
-[jump storage="selectStage.ks" target="*エネミー選択"]
-エラー[s]
+敵の肉棒が中で一際大きく膨らむと怒涛の勢いで[lrcm]
+くぬぎ「くぅっ！！」[lrcm]
+敵に汚される屈辱に歯を食いしばりながら[lrcm]
+くぬぎは体に活力が湧いてくるのを感じた[lrcm]
+くぬぎ（この力があれば...戦える！！）[lrcm]
+[eval exp="f.EnERO = 0"]
+[jump storage="battle.ks" target="*房中帰り"]

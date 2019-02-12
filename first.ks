@@ -8,9 +8,11 @@ f.originDEF = 60;
 f.originSPD = 100;
 f.originFP = 0;//気力
 f.originERO = 0;//快感
-f.originARS = 50;//淫らさ
+f.originAPP = 50;//魅力
+f.originARS = 0;//淫らさ
 f.originSEN = 100;//感度
-f.originMND = 100;//精神力=房中体力
+f.originMND = 100;//理性
+f.originFGT = 100;//戦意（房中の体力）
 f.originTIR = 0;//疲労度
 
 f.originOption=[
@@ -34,9 +36,11 @@ f.BaseDEF = f.originDEF;
 f.BaseSPD = f.originSPD;
 f.BaseFP = f.originFP;
 f.BaseERO = f.originERO;
+f.BaseAPP = f.originAPP;
 f.BaseARS = f.originARS;
 f.BaseSEN = f.originSEN;
 f.BaseMND = f.originMND;
+f.BaseFGT = f.originFGT;
 f.BaseTIR = f.originTIR;
 
 f.BaseOption = [];
@@ -58,6 +62,7 @@ f.APP = f.BaseAPP;
 f.ARS = f.BaseARS;
 f.SEN  = f.BaseSEN;
 f.MND = f.BaseMND;
+f.FGT = f.BaseFGT;
 f.TIR = f.BaseTIR;
 
 f.VBuff = 1.0;
@@ -102,6 +107,8 @@ f.originEnFP = 0;
 f.originEnERO = 0;
 f.originEnTEC = 0;//技術力
 f.originEnEND = 0;//忍耐力
+f.originEnMND = 0;//理性
+f.originEnANG = 0;//暴力性
 f.originBindPower = 100;
 
 f.ClutchRate = 20;//組付初期値
@@ -114,6 +121,8 @@ f.BaseEnFP = f.originEnFP;
 f.BaseEnERO = f.originEnERO;
 f.BaseEnTEC = f.originEnTEC;
 f.BaseEnEND = f.originEnEND;
+f.BaseEnMND = f.originEnMND;
+f.BaseEnANG = f.originEnANG;
 f.BaseBindPower = f.originBindPower;
 
 f.EnHP = f.BaseEnHP;
@@ -124,6 +133,8 @@ f.EnFP = f.BaseEnFP;
 f.EnERO = f.BaseEnERO;
 f.EnTEC = f.BaseEnTEC;
 f.EnEND = f.BaseEnEND;
+f.EnMND = f.BaseEnMND;
+f.EnANG = f.BaseEnANG;
 f.BindPower = f.BaseBindPower;
 
 f.originEnOption=[
@@ -146,6 +157,7 @@ f.EnCount = 0;
 
 f.EnVBuff = 1.0;
 f.EnStan = 0;
+f.EnErect = 0;
 [endscript]
 
 [jump storage="macros.ks" target="*マクロ"]

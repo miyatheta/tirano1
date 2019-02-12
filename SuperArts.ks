@@ -30,7 +30,7 @@ if(tf.Damage<0){tf.Damage=0;}
 「代わり身の術」[wt7]
 くぬぎは敵の攻撃を回避した[wt5]
 くぬぎは脱衣状態になった[wt5]
-くぬぎの淫力が上昇した[wt5]
+くぬぎの魅力が上昇した[wt5]
 [eval exp="f.APP = f.APP + 1"]
 [eval exp="f.Pary = 0, f.Undress = 1"]
 [jump storage="battle.ks" target="*戦闘続行"]

@@ -10,11 +10,11 @@ for(i = 0; i < 6; i++){
 
 P = tf.Resist * tf.RRate[tf.Select];
 if(P>=30){
-  f.ResistPower = 45;
+  f.ResistPower = 46;
 }else if(P>=10){
-  f.ResistPower = 28;
+  f.ResistPower = 30;
 }else{
-  f.ResistPower = 19;
+  f.ResistPower = 25;
 }
 
 f.BindPower = f.BindPower - f.ResistPower;
@@ -26,7 +26,7 @@ if(f.BindPower < 0){f.BindPower = 0;}
 *組付選択
 くぬぎは敵に拘束されている！[wt7]
 くぬぎの敏捷が減少した[wt5]
-[eval exp="f.SPD = f.SPD - 5"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+[eval exp="f.SPD = f.SPD - 6"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
 [showStatus]
 
 [if exp="f.StanOrga==1"]
@@ -62,29 +62,29 @@ if(f.BindPower < 0){f.BindPower = 0;}
   [endscript]
   敵の体力が[emb exp="tf.Damage"]減少した。[wt5]
   [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-  [eval exp="f.EnFP = f.EnFP + 10"]
+  [eval exp="f.EnFP = f.EnFP + 10"][eval exp="f.EnFP = 100" cond="f.EnFP > 100"]
   [showStatus]
   [jump storage="battle.ks" target="*戦闘終了" cond="f.EnHP <= 0"]
 
 [elsif exp="tf.Select==4"]
   くぬぎ「ああんっ！・・・」[wt7]
   くぬぎは甘い声を上げてみせた[wt7]
-  くぬぎの魅力が上昇した[wt5]
+  くぬぎの色気が上昇した[wt5]
   [eval exp="f.APP= f.APP+ 2"]
 
 [elsif exp="tf.Select==5"]
   くぬぎは敵に体を密着させるようにしなだれかかった[wt7]
-  くぬぎの魅力が上昇した[wt5]
+  くぬぎの色気が上昇した[wt5]
   [eval exp="f.APP= f.APP+ 2"]
 [endif]
 
 [jump target="*組付終了" cond="f.BindPower <= 0"]
 
-[if exp="f.ResistPower == 45"]
+[if exp="f.ResistPower == 46"]
   敵の拘束が大きく緩んだ。[wt5]
-[elsif exp="f.ResistPower == 28"]
+[elsif exp="f.ResistPower == 30"]
   敵の拘束が少し緩んだ。[wt5]
-[elsif exp="f.ResistPower == 19"]
+[elsif exp="f.ResistPower == 25"]
   しかし、敵の拘束は緩まなかった[wt5]
 [else]
   エラー[s]
@@ -164,10 +164,10 @@ tf.randomNum = (tf.dice / 1000) + 1;
 tf.Damage = Math.floor(f.EnSTR * 0.3 * tf.randomNum);
 [endscript]
 敵はくぬぎを締め上げた[wt5]
-[call storage="voicePL.ks" target="*悲鳴"]
 くぬぎの体力が[emb exp="tf.Damage"]減少した[wt5]
+[call storage="voicePL.ks" target="*悲鳴"]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-[eval exp="f.FP = f.FP + 10"]
+[eval exp="f.FP = f.FP + 10"][eval exp="f.FP = 100" cond="f.FP > 100"]
 [showStatus]
 [jump storage="battle.ks" target="*戦闘終了" cond="f.EnHP <= 0"]
 [jump target="*被虐趣味" cond="f.Maso > 0"]
@@ -192,7 +192,7 @@ tf.Damage = Math.floor(f.EnSTR * 0.3 * tf.randomNum);
   [showStatus]
 [endif]
 [if exp="f.Bitch > 0"]
-  淫乱状態のくぬぎは魅力が上昇した[wt5]
+  淫乱状態のくぬぎは色気が上昇した[wt5]
   [eval exp="f.APP = f.APP + 2"]
   [showStatus]
 [endif]

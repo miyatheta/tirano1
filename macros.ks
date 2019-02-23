@@ -34,6 +34,8 @@ f.BaseEnDEF = f.originEnDEF;
 f.BaseEnSPD = f.originEnSPD;
 f.BaseEnFP = f.originEnFP;
 f.BaseEnERO = f.originEnERO;
+f.BaseEnMND = f.originEnMND;
+f.BaseEnANG = f.originEnANG;
 f.BaseEnTEC = f.originEnTEC;
 f.BaseEnEND = f.originEnEND;
 f.BaseBindPower = f.originBindPower;
@@ -44,6 +46,8 @@ f.EnDEF = f.BaseEnDEF;
 f.EnSPD = f.BaseEnSPD;
 f.EnFP = f.BaseEnFP;
 f.EnERO = f.BaseEnERO;
+f.EnMND = f.BaseEnMND;
+f.EnANG = f.BaseEnANG;
 f.EnTEC = f.BaseEnTEC;
 f.EnEND = f.BaseEnEND;
 f.BindPower = f.BaseBindPower;
@@ -65,6 +69,8 @@ f.EnStan = 0;
 ;◆↓パラメーターバー枠と枠内側の黒っぽい部分の横幅を設定
 [eval exp ="f.para_bar_waku_width = f.para_bar_width + 4"]
 [eval exp ="f.para_bar_empty_width = f.para_bar_width + 2"]
+[eval exp ="f.para_bar_waku_width_En = f.para_bar_width_En + 4"]
+[eval exp ="f.para_bar_empty_width_En = f.para_bar_width_En + 2"]
 ;◆↓パラメーターバー描画に使うレイヤーをアクティブに
 [layopt layer=8 visible=true]
 [layopt layer=9 visible=true]
@@ -73,6 +79,11 @@ f.EnStan = 0;
 [image layer=8 x=181 y=15 width=&f.para_bar_empty_width height=10 storage="UI/parameter/bar_empty.png"]
 [image layer=8 x=180 y=30 width=&f.para_bar_waku_width height=10 storage="UI/parameter/bar_waku.png"]
 [image layer=8 x=181 y=30 width=&f.para_bar_empty_width height=10 storage="UI/parameter/bar_empty.png"]
+
+[image layer=8 x=630 y=15 width=&f.para_bar_waku_width_En height=10 storage="UI/parameter/bar_waku.png"]
+[image layer=8 x=631 y=15 width=&f.para_bar_empty_width_En height=10 storage="UI/parameter/bar_empty.png"]
+[image layer=8 x=630 y=30 width=&f.para_bar_waku_width_En height=10 storage="UI/parameter/bar_waku.png"]
+[image layer=8 x=631 y=30 width=&f.para_bar_empty_width_En height=10 storage="UI/parameter/bar_empty.png"]
 ;◆↓テキスト部分の描画
 
 ;◆◆↓パラメーターのHPバー、HP数値表示など可変部分をレイヤー9に描画しますdraw_para_bar
@@ -80,16 +91,26 @@ f.EnStan = 0;
 [freeimage layer = 9]
 ;◆↓HP値によりHPバーの長さを計算
 [eval exp="f.para_bar_HP_now_width = parseInt(f.para_bar_width * f.HP / f.BaseHP)"]
+[eval exp="f.para_bar_EnHP_now_width = parseInt(f.para_bar_width_En * f.EnHP / f.BaseEnHP)"]
 ;◆↓HP最大値の3割以下にHP値が減ると赤いバーで描画、それよりHP値が高ければ緑色のバーで描画
-[if exp="f.para_shujinkou_HP_now <= parseInt(f.BaseHP * 0.3)"]
+[if exp="f.HP <= parseInt(f.BaseHP * 0.3)"]
     [image layer=9 x=182 y=15 width=&f.para_bar_HP_now_width height=10 storage="UI/parameter/bar_red.png"]
 [else]
     [image layer=9 x=182 y=15 width=&f.para_bar_HP_now_width height=10 storage="UI/parameter/bar_green.png"]
 [endif]
 [eval exp="f.para_bar_FP_now_width = parseInt(f.para_bar_width * f.FP / 100)"]
 [image layer=9 x=182 y=30 width=&f.para_bar_FP_now_width height=10 storage="UI/parameter/bar_blue.png"]
-;↓テキスト部分の描画
+[eval exp="f.para_bar_HP_now_width = parseInt(f.para_bar_width * f.HP / f.BaseHP)"]
 
+[if exp="f.EnHP <= parseInt(f.BaseEnHP * 0.3)"]
+    [image layer=9 x=632 y=15 width=&f.para_bar_EnHP_now_width height=10 storage="UI/parameter/bar_red.png"]
+[else]
+    [image layer=9 x=632 y=15 width=&f.para_bar_EnHP_now_width height=10 storage="UI/parameter/bar_green.png"]
+[endif]
+[eval exp="f.para_bar_EnFP_now_width = parseInt(f.para_bar_width * f.EnFP / 100)"]
+[image layer=9 x=632 y=30 width=&f.para_bar_EnFP_now_width height=10 storage="UI/parameter/bar_blue.png"]
+
+;↓テキスト部分の描画
 [freeimage layer=1]
 [iscript]
 x = "UI/number/white/x.png"
@@ -121,6 +142,8 @@ f.APPdigit=[];
 calcStatus(f.APPdigit,f.APP);
 f.SENdigit=[];
 calcStatus(f.SENdigit,f.SEN);
+f.FGTdigit=[];
+calcStatus(f.FGTdigit,f.FGT);
 
 f.EnHPdigit=[];
 calcStatus(f.EnHPdigit,f.EnHP);
@@ -153,11 +176,11 @@ calcStatus(f.EnErectdigit,f.EnErect);
 [image layer=1 storage="&f.SPDdigit[3]" width="20" top="30" left="375" visible="true"]
 [image layer=1 storage="&f.SPDdigit[4]" width="20" top="30" left="395" visible="true"]
 
-[image layer=1 storage="UI/number/理性.png" width="75" top="480" left="0" visible="true"]
-[image layer=1 storage="&f.MNDdigit[1]" width="20" top="480" left="50" visible="true"]
-[image layer=1 storage="&f.MNDdigit[2]" width="20" top="480" left="70" visible="true"]
-[image layer=1 storage="&f.MNDdigit[3]" width="20" top="480" left="90" visible="true"]
-[image layer=1 storage="&f.MNDdigit[4]" width="20" top="480" left="110" visible="true"]
+[image layer=1 storage="UI/number/疲労.png" width="75" top="480" left="0" visible="true"]
+[image layer=1 storage="&f.TIRdigit[1]" width="20" top="480" left="50" visible="true"]
+[image layer=1 storage="&f.TIRdigit[2]" width="20" top="480" left="70" visible="true"]
+[image layer=1 storage="&f.TIRdigit[3]" width="20" top="480" left="90" visible="true"]
+[image layer=1 storage="&f.TIRdigit[4]" width="20" top="480" left="110" visible="true"]
 
 [image layer=1 storage="UI/number/淫らさ.png" width="75" top="500" left="0" visible="true"]
 [image layer=1 storage="&f.ARSdigit[1]" width="20" top="500" left="50" visible="true"]
@@ -183,49 +206,55 @@ calcStatus(f.EnErectdigit,f.EnErect);
 [image layer=1 storage="&f.EROdigit[3]" width="20" top="560" left="90" visible="true"]
 [image layer=1 storage="&f.EROdigit[4]" width="20" top="560" left="110" visible="true"]
 
-[image layer=1 storage="UI/number/疲労.png" width="75" top="580" left="0" visible="true"]
-[image layer=1 storage="&f.TIRdigit[1]" width="20" top="580" left="50" visible="true"]
-[image layer=1 storage="&f.TIRdigit[2]" width="20" top="580" left="70" visible="true"]
-[image layer=1 storage="&f.TIRdigit[3]" width="20" top="580" left="90" visible="true"]
-[image layer=1 storage="&f.TIRdigit[4]" width="20" top="580" left="110" visible="true"]
+[image layer=1 storage="UI/number/理性.png" width="75" top="580" left="0" visible="true"]
+[image layer=1 storage="&f.MNDdigit[1]" width="20" top="580" left="50" visible="true"]
+[image layer=1 storage="&f.MNDdigit[2]" width="20" top="580" left="70" visible="true"]
+[image layer=1 storage="&f.MNDdigit[3]" width="20" top="580" left="90" visible="true"]
+[image layer=1 storage="&f.MNDdigit[4]" width="20" top="580" left="110" visible="true"]
+
+[image layer=1 storage="UI/number/戦意.png" width="75" top="600" left="0" visible="true"]
+[image layer=1 storage="&f.FGTdigit[1]" width="20" top="600" left="50" visible="true"]
+[image layer=1 storage="&f.FGTdigit[2]" width="20" top="600" left="70" visible="true"]
+[image layer=1 storage="&f.FGTdigit[3]" width="20" top="600" left="90" visible="true"]
+[image layer=1 storage="&f.FGTdigit[4]" width="20" top="600" left="110" visible="true"]
 
 [image layer=1 storage="UI/number/敵名.png" width="75" top="480" left="850" visible="true"]
 
-[image layer=1 storage="UI/number/体力.png" width="75" top="500" left="850" visible="true"]
-[image layer=1 storage="&f.EnHPdigit[1]" width="20" top="500" left="755" visible="true"]
-[image layer=1 storage="&f.EnHPdigit[2]" width="20" top="500" left="780" visible="true"]
-[image layer=1 storage="&f.EnHPdigit[3]" width="20" top="500" left="805" visible="true"]
-[image layer=1 storage="&f.EnHPdigit[4]" width="20" top="500" left="830" visible="true"]
+[image layer=1 storage="UI/number/体力.png" width="75" top="10" left="850" visible="true"]
+[image layer=1 storage="&f.EnHPdigit[1]" width="20" top="10" left="755" visible="true"]
+[image layer=1 storage="&f.EnHPdigit[2]" width="20" top="10" left="780" visible="true"]
+[image layer=1 storage="&f.EnHPdigit[3]" width="20" top="10" left="805" visible="true"]
+[image layer=1 storage="&f.EnHPdigit[4]" width="20" top="10" left="830" visible="true"]
 
-[image layer=1 storage="UI/number/気力.png" width="75" top="520" left="850" visible="true"]
-[image layer=1 storage="&f.EnFPdigit[1]" width="20" top="520" left="755" visible="true"]
-[image layer=1 storage="&f.EnFPdigit[2]" width="20" top="520" left="780" visible="true"]
-[image layer=1 storage="&f.EnFPdigit[3]" width="20" top="520" left="805" visible="true"]
-[image layer=1 storage="&f.EnFPdigit[4]" width="20" top="520" left="830" visible="true"]
+[image layer=1 storage="UI/number/気力.png" width="75" top="30" left="850" visible="true"]
+[image layer=1 storage="&f.EnFPdigit[1]" width="20" top="30" left="755" visible="true"]
+[image layer=1 storage="&f.EnFPdigit[2]" width="20" top="30" left="780" visible="true"]
+[image layer=1 storage="&f.EnFPdigit[3]" width="20" top="30" left="805" visible="true"]
+[image layer=1 storage="&f.EnFPdigit[4]" width="20" top="30" left="830" visible="true"]
 
-[image layer=1 storage="UI/number/敏捷.png" width="75" top="540" left="850" visible="true"]
-[image layer=1 storage="&f.EnSPDdigit[1]" width="20" top="540" left="755" visible="true"]
-[image layer=1 storage="&f.EnSPDdigit[2]" width="20" top="540" left="780" visible="true"]
-[image layer=1 storage="&f.EnSPDdigit[3]" width="20" top="540" left="805" visible="true"]
-[image layer=1 storage="&f.EnSPDdigit[4]" width="20" top="540" left="830" visible="true"]
+[image layer=1 storage="UI/number/敏捷.png" width="75" top="30" left="550" visible="true"]
+[image layer=1 storage="&f.EnSPDdigit[1]" width="20" top="30" left="455" visible="true"]
+[image layer=1 storage="&f.EnSPDdigit[2]" width="20" top="30" left="480" visible="true"]
+[image layer=1 storage="&f.EnSPDdigit[3]" width="20" top="30" left="505" visible="true"]
+[image layer=1 storage="&f.EnSPDdigit[4]" width="20" top="30" left="530" visible="true"]
 
-[image layer=1 storage="UI/number/興奮.png" width="75" top="560" left="850" visible="true"]
-[image layer=1 storage="&f.EnEROdigit[1]" width="20" top="560" left="755" visible="true"]
-[image layer=1 storage="&f.EnEROdigit[2]" width="20" top="560" left="780" visible="true"]
-[image layer=1 storage="&f.EnEROdigit[3]" width="20" top="560" left="805" visible="true"]
-[image layer=1 storage="&f.EnEROdigit[4]" width="20" top="560" left="830" visible="true"]
+[image layer=1 storage="UI/number/興奮.png" width="75" top="520" left="850" visible="true"]
+[image layer=1 storage="&f.EnEROdigit[1]" width="20" top="520" left="755" visible="true"]
+[image layer=1 storage="&f.EnEROdigit[2]" width="20" top="520" left="780" visible="true"]
+[image layer=1 storage="&f.EnEROdigit[3]" width="20" top="520" left="805" visible="true"]
+[image layer=1 storage="&f.EnEROdigit[4]" width="20" top="520" left="830" visible="true"]
 
-[image layer=1 storage="UI/number/理性.png" width="75" top="580" left="850" visible="true"]
-[image layer=1 storage="&f.EnMNDdigit[1]" width="20" top="580" left="755" visible="true"]
-[image layer=1 storage="&f.EnMNDdigit[2]" width="20" top="580" left="780" visible="true"]
-[image layer=1 storage="&f.EnMNDdigit[3]" width="20" top="580" left="805" visible="true"]
-[image layer=1 storage="&f.EnMNDdigit[4]" width="20" top="580" left="830" visible="true"]
+[image layer=1 storage="UI/number/理性.png" width="75" top="540" left="850" visible="true"]
+[image layer=1 storage="&f.EnMNDdigit[1]" width="20" top="540" left="755" visible="true"]
+[image layer=1 storage="&f.EnMNDdigit[2]" width="20" top="540" left="780" visible="true"]
+[image layer=1 storage="&f.EnMNDdigit[3]" width="20" top="540" left="805" visible="true"]
+[image layer=1 storage="&f.EnMNDdigit[4]" width="20" top="540" left="830" visible="true"]
 
-[image layer=1 storage="UI/number/快感.png" width="75" top="600" left="850" visible="true"]
-[image layer=1 storage="&f.EnErectdigit[1]" width="20" top="600" left="755" visible="true"]
-[image layer=1 storage="&f.EnErectdigit[2]" width="20" top="600" left="780" visible="true"]
-[image layer=1 storage="&f.EnErectdigit[3]" width="20" top="600" left="805" visible="true"]
-[image layer=1 storage="&f.EnErectdigit[4]" width="20" top="600" left="830" visible="true"]
+[image layer=1 storage="UI/number/快感.png" width="75" top="560" left="850" visible="true"]
+[image layer=1 storage="&f.EnErectdigit[1]" width="20" top="560" left="755" visible="true"]
+[image layer=1 storage="&f.EnErectdigit[2]" width="20" top="560" left="780" visible="true"]
+[image layer=1 storage="&f.EnErectdigit[3]" width="20" top="560" left="805" visible="true"]
+[image layer=1 storage="&f.EnErectdigit[4]" width="20" top="560" left="830" visible="true"]
 
 [endmacro]
 
@@ -298,6 +327,19 @@ if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 [endmacro]
 
+[macro name="battleEND"]
+[iscript]
+for(i=0; i<f.selectOption.length; i++){
+  f.selectOption[i].switch=0
+}
+f.selectOption = [];
+f.count=0;
+f.EnCount=0;
+
+f.Undress=0;
+[endscript]
+[endmacro]
+
 [macro name="Masochism"]
 [iscript]
 tf.Damage = Math.floor(2 * f.SEN / 100);
@@ -315,5 +357,7 @@ tf.Damage = Math.floor(1 * f.SEN / 100);
 tf.Damage = Math.floor(5 * f.SEN / 100);
 [endscript]
 [endmacro]
+
+
 
 [jump storage="selectStage.ks" target="*ステージセレクト"]

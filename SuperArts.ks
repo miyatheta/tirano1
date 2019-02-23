@@ -29,8 +29,9 @@ if(tf.Damage<0){tf.Damage=0;}
 *身代わりの術
 「代わり身の術」[wt7]
 くぬぎは敵の攻撃を回避した[wt5]
+[chara_mod name="kunugi" face="battle_stand_nude"]
 くぬぎは脱衣状態になった[wt5]
-くぬぎの魅力が上昇した[wt5]
+くぬぎの色気が上昇した[wt5]
 [eval exp="f.APP = f.APP + 1"]
 [eval exp="f.Pary = 0, f.Undress = 1"]
 [jump storage="battle.ks" target="*戦闘続行"]
@@ -77,8 +78,9 @@ if(tf.Damage<0){tf.Damage=0;}
 
 [jump target="*身代わりの術" cond="f.Pary > 0"]
 
-[call storage="voicePL.ks" target="*悲鳴"]
+
 くぬぎの体力が[emb exp="tf.Damage"]減少した。[wt7]
+[call storage="voicePL.ks" target="*悲鳴"]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
 [showStatus]
 

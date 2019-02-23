@@ -3,8 +3,8 @@
 [iscript]
 //PL初期設定
 f.originHP = 1000;
-f.originSTR = 70;
-f.originDEF = 60;
+f.originSTR = 40;
+f.originDEF = 30;
 f.originSPD = 100;
 f.originFP = 0;//気力
 f.originERO = 0;//快感

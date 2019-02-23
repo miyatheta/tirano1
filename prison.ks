@@ -47,4 +47,5 @@
 
 *終了
 くぬぎは隙を見て逃げ出した[lrcm]
+[eval exp="f.stage=1"]
 [jump storage="selectStage.ks" target="*ステージセレクト"]

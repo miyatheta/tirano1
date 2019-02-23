@@ -4,12 +4,12 @@
 [iscript]
 //環境変数
 f.turn = 0;
-f.Priority = 0;
 f.BindCount = 0;
 f.ClutchTurn = 0;
-f.SPD = f.SPD - f.TIR;
+f.SPD = f.BaseSPD - f.TIR;
 if(f.SPD<0){f.SPD=0};
 f.para_bar_width = 100;
+f.para_bar_width_En = 100;
 [endscript]
 [jump target="*ターン開始"]
 [s]
@@ -251,7 +251,6 @@ f.H=f.count-3;
 f.VP=0;
 f.VB=0;
 f.EnVB=0;
-if(f.SPD > f.EnSPD){f.Priority = 1;} else {f.Priority = 0;}
 
 f.PictHand1 = "Card/Card_" + f.selectOption[f.count-3].suit + ".png";
 f.PictHand2 = "Card/Card_" + f.selectOption[f.count-2].suit + ".png";
@@ -313,7 +312,7 @@ tf.Hight =  f.N * 100 + 125;
   ;勝利(VP+1)　くぬぎの気力上昇[r]
   [eval exp="f.VP = f.VP + 3"]
   [eval exp="f.VB = f.VB + 1"]
-  [eval exp="f.FP = f.FP + 5"]
+  [eval exp="f.FP = f.FP + 5"][eval exp="f.FP = 100" cond="f.FP > 100"]
   [image layer=4 storage="hand/マル.png" width="75" top="&tf.Hight" left="380" visible="true"]
   [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="480" visible="true"]
   [image layer=4 storage="buff/FPup.png" width="75" top="&tf.Hight" left="280" visible="true"]
@@ -322,7 +321,7 @@ tf.Hight =  f.N * 100 + 125;
   ;勝利(VP+1)　くぬぎの敏捷上昇[r]
   [eval exp="f.VP = f.VP + 3"]
   [eval exp="f.VB = f.VB + 1"]
-  [eval exp="f.SPD = f.SPD + 5" cond="f.SPD < f.BaseSPD"]
+  [eval exp="f.SPD = f.SPD + 3" cond="f.SPD < f.BaseSPD"]
   [image layer=4 storage="hand/マル.png" width="75" top="&tf.Hight" left="380" visible="true"]
   [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="480" visible="true"]
   [image layer=4 storage="buff/SPDup.png" width="75" top="&tf.Hight" left="280" visible="true"]
@@ -332,7 +331,7 @@ tf.Hight =  f.N * 100 + 125;
   ;敗北(VP-1)　敵の敏捷上昇[r]
   [eval exp="f.VP = f.VP - 3"]
   [eval exp="f.EnVB = f.EnVB + 1"]
-  [eval exp="f.EnSPD = f.EnSPD + 5" cond="f.EnSPD < f.BaseEnSPD"]
+  [eval exp="f.EnSPD = f.EnSPD + 3" cond="f.EnSPD < f.BaseEnSPD"]
   [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="380" visible="true"]
   [image layer=4 storage="hand/マル.png" width="75" top="&tf.Hight" left="480" visible="true"]
   [image layer=4 storage="buff/SPDup.png" width="75" top="&tf.Hight" left="580" visible="true"]
@@ -350,7 +349,7 @@ tf.Hight =  f.N * 100 + 125;
   ;敗北(VP-1)　敵の気力上昇[r]
   [eval exp="f.VP = f.VP - 3"]
   [eval exp="f.EnVB = f.EnVB + 1"]
-  [eval exp="f.EnFP = f.EnFP + 5"]
+  [eval exp="f.EnFP = f.EnFP + 5"][eval exp="f.EnFP = 100" cond="f.EnFP > 100"]
   [image layer=4 storage="hand/バツ.png" width="75" top="&tf.Hight" left="380" visible="true"]
   [image layer=4 storage="hand/マル.png" width="75" top="&tf.Hight" left="480" visible="true"]
   [image layer=4 storage="buff/FPup.png" width="75" top="&tf.Hight" left="580" visible="true"]
@@ -433,7 +432,7 @@ error[s]
 [Damage]
 [EnName]の体力が[emb exp="tf.Damage"]減少した。[wt7]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-[eval exp="f.EnFP = f.EnFP + 20"]
+[eval exp="f.EnFP = f.EnFP + 20"][eval exp="f.EnFP = 100" cond="f.EnFP > 100"]
 [showStatus]
 [jump target="*戦闘終了" cond="f.EnHP <= 0"]
 [jump target="*戦闘続行" cond="f.EnHP > 0"]
@@ -447,16 +446,18 @@ error[s]
   くぬぎは[EnName]の攻撃を回避した[wt5]
   [chara_mod name="kunugi" face="battle_stand_nude"]
   くぬぎは脱衣状態になった[wt5]
-  くぬぎの魅力が上昇した[wt5]
+  くぬぎの色気が上昇した[wt5]
   [eval exp="f.APP = f.APP + 2"]
   [eval exp="f.Pary = 0, f.Undress = 1"]
   [jump target="*戦闘続行" cond="f.HP > 0"]
 [endif]
 
-[call storage="voicePL.ks" target="*悲鳴"]
+
 くぬぎの体力が[emb exp="tf.Damage"]減少した。[wt7]
 [eval exp="f.HP = f.HP - tf.Damage"][eval exp="f.HP = 0" cond="f.HP < 0"]
-[eval exp="f.FP = f.FP + 20"]
+[jump target="*戦闘終了" cond="f.HP <= 0"]
+[call storage="voicePL.ks" target="*悲鳴"]
+[eval exp="f.FP = f.FP + 20"][eval exp="f.FP = 100" cond="f.FP > 100"]
 [showStatus]
 
 [if exp="f.Maso > 0"]
@@ -466,7 +467,7 @@ error[s]
   [showStatus]
 [endif]
 
-[jump target="*戦闘終了" cond="f.HP <= 0"]
+
 [jump target="*戦闘絶頂" cond="f.ERO >= 100"]
 [jump target="*戦闘続行" cond="f.HP > 0"]
 
@@ -474,9 +475,13 @@ error[s]
 [position width=960 height=50 top=590 left=0]
 房中術により[wt7]
 くぬぎの体力が回復した[wt7]
+くぬぎの疲労度が回復した[wt7]
 くぬぎの敏捷度が上昇した[wt7]
 くぬぎの攻撃力が上昇した[wt7]
 くぬぎの防御力が上昇した[wt7]
+[eval exp="f.HP = f.HP + 300 , f.TIR = 0 , f.STR = f.STR + 40 , f.DEF = f.DEF + 40 , f.SPD = f.SPD + 60"]
+[eval exp="f.SPD = 100" cond="f.SPD > 100"]
+[eval exp="f.HP = 1000" cond="f.HP > 1000"]
 [jump target="*戦闘続行"]
 
 *戦闘続行
@@ -493,6 +498,10 @@ if(f.EnCount>2){
   f.EnCount=0;
 }
 [endscript]
+
+[eval exp="f.SPD = f.SPD - 6"][eval exp="f.SPD = 0" cond="f.SPD < 0"]
+[eval exp="f.EnSPD = f.EnSPD - 6"][eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
+[showStatus]
 
 [if exp="f.EnStan == 1"]
   [EnName]は行動不能から復帰した[wt7]
@@ -551,7 +560,7 @@ tf.Damage = tf.ATP - (tf.EnDFP * 0);
 if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-[eval exp="f.EnFP = f.EnFP + 20"]
+[eval exp="f.EnFP = f.EnFP + 20"][eval exp="f.EnFP = 100" cond="f.EnFP > 100"]
 「忍法・すずめ刺し！」[wt7]
 [EnName]の体力が[emb exp="tf.Damage"]減少した。[wt5]
 [showStatus]
@@ -574,7 +583,7 @@ if(tf.Damage<0){tf.Damage=0;}
 [eval exp="f.value = 15"][HDamage]
 [eval exp="f.EnERO = f.EnERO + tf.HDamage"][eval exp="f.EnERO = 100" cond="f.EnERO >= 100"]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
-[eval exp="f.EnFP = f.EnFP + 20"]
+[eval exp="f.EnFP = f.EnFP + 20"][eval exp="f.EnFP = 100" cond="f.EnFP > 100"]
 「忍法・よだか落とし！」[wt7]
 [EnName]の体力が[emb exp="tf.Damage"]減少した。[wt5]
 [EnName]の興奮度[emb exp="tf.HDamage"]が上昇した[wt5]
@@ -596,7 +605,7 @@ if(tf.Damage<0){tf.Damage=0;}
 [endscript]
 [eval exp="f.EnHP = f.EnHP - tf.Damage"][eval exp="f.EnHP = 0" cond="f.EnHP < 0"]
 [eval exp="f.EnSPD = f.EnSPD - 10"][eval exp="f.EnSPD = 0" cond="f.EnSPD < 0"]
-[eval exp="f.EnFP = f.EnFP + 20"]
+[eval exp="f.EnFP = f.EnFP + 20"][eval exp="f.FP = 100" cond="f.FP > 100"]
 くぬぎ「甘い！」[wt7]
 「忍法・つばめ返り！」[wt7]
 [EnName]の体力が[emb exp="tf.Damage"]減少した。[wt5]
@@ -662,12 +671,12 @@ f.count=0;
 *スキル3使用
 [freeimage layer=5]
 [eval exp="f.APP = f.APP + 10"]
-[eval exp="f.value = 30"][HDamage]
+[eval exp="f.value = 80"][HDamage]
 [eval exp="f.EnERO = f.EnERO + tf.HDamage"][eval exp="f.EnERO = 100" cond="f.EnERO >= 100"]
 [eval exp="f.CharmBuff = 25 , f.CharmET = 3"]
 スキル3使用[wt5]
 くぬぎは魅了の術を使った[wt5]
-くぬぎの魅力が上昇した[wt5]
+くぬぎの色気が上昇した[wt5]
 [EnName]の興奮度が[emb exp="tf.HDamage"]上がった[wt5]
 [EnName]の攻撃力が低下した[wt7]
 [showStatus]
@@ -703,7 +712,7 @@ if(f.SPD < f.EnSPD){
   「代わり身の術」[wt7]
   くぬぎは[EnName]の攻撃を回避した[wt5]
   [chara_mod name="kunugi" face="battle_stand_nude"]
-  くぬぎは脱衣状態になった[wt5]くぬぎの魅力が上昇した[wt5]
+  くぬぎは脱衣状態になった[wt5]くぬぎの色気が上昇した[wt5]
   [eval exp="f.APP = f.APP + 2"]
   [eval exp="f.Pary = 0, f.Undress = 1"]
   [jump target="*戦闘続行" cond="f.HP > 0"]
@@ -736,14 +745,14 @@ tf.Hight =  f.N * 150 + 50;
 [if exp="tf.EnHand == 'チョキ'"]
   [eval exp="f.EnVP = f.EnVP + 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
-  [eval exp="f.EnFP = f.EnFP + 5"]
+  [eval exp="f.EnFP = f.EnFP + 5"][eval exp="f.EnFP = 100" cond="f.EnFP > 100"]
   [image layer=0 storage="buff/FPup.png" width="75" top="&tf.Hight" left="480" visible="true"]
   ;勝利(VP+1)　くぬぎの気力上昇[r]
 [endif]
 [if exp="tf.EnHand == 'パー'"]
   [eval exp="f.EnVP = f.EnVP + 1"]
   [eval exp="f.EnVB = f.EnVB + 1"]
-  [eval exp="f.EnSPD = f.EnSPD + 5"]
+  [eval exp="f.EnSPD = f.EnSPD + 3"]
   [image layer=0 storage="buff/SPDup.png" width="75" top="&tf.Hight" left="480" visible="true"]
   ;勝利(VP+1)　くぬぎの敏捷上昇[r]
 [endif]
@@ -774,7 +783,7 @@ tf.Hand = f.selectOption[f.H].hand;
 [if exp="tf.Hand == 'チョキ'"]
   [eval exp="f.VP = f.VP + 1"]
   [eval exp="f.VB = f.VB + 1"]
-  [eval exp="f.FP = f.FP + 5"]
+  [eval exp="f.FP = f.FP + 5"][eval exp="f.FP = 100" cond="f.FP > 100"]
   [image layer=0 storage="buff/FPup.png" width="75" top="&tf.Hight" left="280" visible="true"]
   ;勝利(VP+1)　くぬぎの気力上昇[r]
 [endif]
@@ -826,23 +835,19 @@ tf.Hand = f.selectOption[f.H].hand;
 
 *戦闘終了
 [if exp="f.EnHP > 0"]
+[showStatus]
+[call storage="voicePL.ks" target="*悲鳴敗北"]
   くぬぎは敗北した...[wt7]
+
 [jump storage="prison.ks" target="*スタート"]
 [else]
   敵を倒した！！[wt7]
   疲労度が上昇した[wt7]
-  [eval exp="f.TIR = f.TIR + (f.turn * 3)"][eval exp="f.TIR = 100" cond="f.TIR > 100 "]
+  [eval exp="f.TIR = f.TIR + f.turn"][eval exp="f.TIR = 100" cond="f.TIR > 100 "]
   快感度が減少した[wt7]
   [eval exp="f.ERO = f.ERO - 20"][eval exp="f.ERO = 0" cond="f.ERO < 0 "]
 [endif]
 [showStatus]
 ;戦闘終了処理
-[iscript]
-for(i=0; i<f.selectOption.length; i++){
-  f.selectOption[i].switch=0
-}
-f.selectOption = [];
-f.count=0;
-f.EnCount=0;
-[endscript]
+[battleEND]
 [jump storage="selectStage.ks" target="*ステージセレクト"]

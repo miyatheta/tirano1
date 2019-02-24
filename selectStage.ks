@@ -92,7 +92,7 @@ f.CharmET = 0;//魅了の持続T(ET = EffectTurn)
 *敵1
 [iscript]
 //敵の設定
-f.Enemy={Code:1, Name:"亥川豪左衛門", HN:"豪左", Lv:1}
+f.Enemy={Code:1, Name:"亥川豪左衛門", HN:"豪左", ID:"gouza", Lv:1}
 
 f.originEnHP = 1000;
 f.originEnSTR = 80;
@@ -103,7 +103,7 @@ f.originEnERO = 0;
 f.originEnMND = 70;//理性
 f.originEnANG = 50;//暴力性
 f.originEnTEC = 70;//技術力
-f.originEnEND = 70;//忍耐力
+f.originEnEND = 60;//忍耐力
 f.originBindPower = 100;
 
 f.originEnOption=[
@@ -138,7 +138,7 @@ f.ClutchRate = 20;//組付初期値
 *敵2
 [iscript]
 //敵の設定
-f.Enemy={Code:2, Name:"蛭児石舟", HN:"蛭児", Lv:1};
+f.Enemy={Code:2, Name:"蛭児石舟", HN:"蛭児", ID:"hiruko", Lv:1};
 
 f.originEnHP = 1000;
 f.originEnSTR = 90;
@@ -169,7 +169,7 @@ f.ClutchRate = 0;//組付初期値
 *敵3
 [iscript]
 //敵の設定
-f.Enemy={Code:3, Name:"遊田弦十郎", HN:"遊田", Lv:1}
+f.Enemy={Code:3, Name:"遊田弦十郎", HN:"遊田", ID:"yuda" , Lv:1}
 
 f.originEnHP = 1000;
 f.originEnSTR = 80;

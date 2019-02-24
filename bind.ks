@@ -185,12 +185,14 @@ tf.Damage = Math.floor(f.EnSTR * 0.3 * tf.randomNum);
 
 
 *組付継続
+/*
 [if exp="f.Estr > 0"]
   発情状態のくぬぎは快感度が上昇した[wt5]
   [Estrus]
   [eval exp="f.ERO = f.ERO + tf.Damage"][eval exp="f.ERO = 100" cond="f.ERO > 100"]
   [showStatus]
 [endif]
+ */
 [if exp="f.Bitch > 0"]
   淫乱状態のくぬぎは色気が上昇した[wt5]
   [eval exp="f.APP = f.APP + 2"]
@@ -208,7 +210,7 @@ tf.Damage = Math.floor(f.EnSTR * 0.3 * tf.randomNum);
   くぬぎは敵の拘束を振りほどいた[wt7]
 [eval exp="f.Clutch = 0"]
 [chara_show name="kunugi" left=50 top=100 width=400]
-[jump storage="battle.ks" target="*ターン開始"]
+[jump storage="battle.ks" target="*戦闘続行"]
 
 
 *拘束絶頂
